@@ -6,7 +6,10 @@
     <DigitalProductsSection
       class="landing-section"
       :products="products"
-      :loading="productsLoading"
+      :categories="categories"
+      :selected-category-id="selectedCategoryId"
+      :loading="productsLoading || categoriesLoading"
+      @select-category="handleCategoryChange"
     />
     <DigitalAssetsSection
       class="landing-section"
@@ -38,13 +41,16 @@ export default {
     return {
       products: [],
       assets: [],
+      categories: [],
+      selectedCategoryId: null,
       productsLoading: false,
       assetsLoading: false,
+      categoriesLoading: false,
       sectionObserver: null,
     };
   },
   async mounted() {
-    await Promise.all([this.fetchProducts(), this.fetchAssets()]);
+    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets()]);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.landing-section').forEach((section) => {
@@ -79,13 +85,44 @@ export default {
     }
   },
   methods: {
+    async fetchCategories() {
+      this.categoriesLoading = true;
+      try {
+        const response = await this.$apiGet('/categories');
+        this.categories = Array.isArray(response?.data) ? response.data : [];
+      } catch (error) {
+        console.error('Failed to load landing page product categories:', error);
+        this.categories = [];
+      } finally {
+        this.categoriesLoading = false;
+      }
+    },
     async fetchProducts() {
       this.productsLoading = true;
       try {
+        // "All" deliberately sends no category_id query parameter.
         const response = await this.$apiGet('/products');
         this.products = Array.isArray(response?.data) ? response.data : [];
       } catch (error) {
         console.error('Failed to load landing page products:', error);
+        this.products = [];
+      } finally {
+        this.productsLoading = false;
+      }
+    },
+    async handleCategoryChange(categoryId) {
+      this.selectedCategoryId = categoryId || null;
+      this.productsLoading = true;
+
+      try {
+        // Only a selected server category sends category_id. "All" uses /products with no query.
+        const response = this.selectedCategoryId
+          ? await this.$apiGet('/products', { category_id: this.selectedCategoryId })
+          : await this.$apiGet('/products');
+
+        this.products = Array.isArray(response?.data) ? response.data : [];
+      } catch (error) {
+        console.error('Failed to load products for selected category:', error);
         this.products = [];
       } finally {
         this.productsLoading = false;
