@@ -1,40 +1,29 @@
 <template>
   <div class="min-h-screen bg-white font-sans text-gray-800 antialiased landing-page">
-
-    <!-- Navbar -->
     <Header />
 
-    <!-- Landing sections: each section reveals as it enters the viewport -->
     <HeroSection class="landing-section" />
-    <DigitalProductsSection class="landing-section" />
-    <DigitalAssetsSection class="landing-section" />
-    <PayForMeSection class="landing-section" />
-    <DigitalGrowthSection class="landing-section" />
-    <BgSection class="landing-section" />
-    <WhoCanJoinSection class="landing-section" />
-    <NewsPreviewSection class="landing-section" />
-    <FaqSection class="landing-section" />
-    <CtaSection class="landing-section" />
+    <DigitalProductsSection
+      class="landing-section"
+      :products="products"
+      :loading="productsLoading"
+    />
+    <DigitalAssetsSection
+      class="landing-section"
+      :assets="assets"
+      :loading="assetsLoading"
+    />
 
-    <!-- Footer -->
     <Footer />
-
   </div>
 </template>
 
 <script>
-import Header                 from './header.vue';
-import Footer                 from './footer.vue';
-import HeroSection            from './sections/HeroSection.vue';
+import Header from './header.vue';
+import Footer from './footer.vue';
+import HeroSection from './sections/HeroSection.vue';
 import DigitalProductsSection from './sections/DigitalProductsSection.vue';
-import DigitalAssetsSection   from './sections/DigitalAssetsSection.vue';
-import PayForMeSection        from './sections/PayForMeSection.vue';
-import DigitalGrowthSection   from './sections/DigitalGrowthSection.vue';
-import BgSection              from './sections/BgSection.vue';
-import WhoCanJoinSection      from './sections/WhoCanJoinSection.vue';
-import NewsPreviewSection     from './sections/NewsPreviewSection.vue';
-import FaqSection             from './sections/FaqSection.vue';
-import CtaSection             from './sections/CtaSection.vue';
+import DigitalAssetsSection from './sections/DigitalAssetsSection.vue';
 
 export default {
   name: 'HomePage',
@@ -44,20 +33,19 @@ export default {
     HeroSection,
     DigitalProductsSection,
     DigitalAssetsSection,
-    PayForMeSection,
-    DigitalGrowthSection,
-    BgSection,
-    WhoCanJoinSection,
-    NewsPreviewSection,
-    FaqSection,
-    CtaSection,
   },
   data() {
     return {
+      products: [],
+      assets: [],
+      productsLoading: false,
+      assetsLoading: false,
       sectionObserver: null,
     };
   },
-  mounted() {
+  async mounted() {
+    await Promise.all([this.fetchProducts(), this.fetchAssets()]);
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.landing-section').forEach((section) => {
         section.classList.add('is-visible');
@@ -90,11 +78,36 @@ export default {
       this.sectionObserver = null;
     }
   },
+  methods: {
+    async fetchProducts() {
+      this.productsLoading = true;
+      try {
+        const response = await this.$apiGet('/products');
+        this.products = Array.isArray(response?.data) ? response.data : [];
+      } catch (error) {
+        console.error('Failed to load landing page products:', error);
+        this.products = [];
+      } finally {
+        this.productsLoading = false;
+      }
+    },
+    async fetchAssets() {
+      this.assetsLoading = true;
+      try {
+        const response = await this.$apiGet('/assets');
+        this.assets = Array.isArray(response?.data) ? response.data : [];
+      } catch (error) {
+        console.error('Failed to load landing page assets:', error);
+        this.assets = [];
+      } finally {
+        this.assetsLoading = false;
+      }
+    },
+  },
 };
 </script>
 
 <style>
-/* Scroll reveal: sections animate into view as the user scrolls. */
 .landing-page .landing-section {
   opacity: 0;
   transform: translate3d(0, 48px, 0);
@@ -109,7 +122,6 @@ export default {
   transform: translate3d(0, 0, 0);
 }
 
-/* Stagger the content inside each section so it appears one-by-one. */
 .landing-page .landing-section.is-visible > * {
   animation: landing-item-in 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
