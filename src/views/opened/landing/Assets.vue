@@ -3,74 +3,68 @@
     <Header />
 
     <main class="pt-16">
-      <section class="bg-slate-50 py-20 sm:py-28">
-        <div class="max-w-7xl mx-auto px-6">
+      <section class="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-blue-50 border-b border-slate-100">
+        <div class="absolute -top-32 -right-20 w-96 h-96 rounded-full bg-indigo-200/40 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-40 -left-20 w-96 h-96 rounded-full bg-blue-200/30 blur-3xl pointer-events-none"></div>
+        <div class="relative max-w-7xl mx-auto px-6 py-20 lg:py-24">
           <div class="max-w-3xl">
-            <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 border border-indigo-200 rounded-full text-xs font-bold text-indigo-700 uppercase tracking-widest">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-indigo-100 text-indigo-700 text-[11px] font-black uppercase tracking-[0.18em] shadow-sm">
               <i class="fas fa-bullhorn text-[10px]"></i> Social Media Marketing
             </span>
-            <h1 class="mt-5 text-4xl sm:text-6xl font-black tracking-tight text-slate-900">
-              Grow your brand with social media that works.
+            <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 leading-tight tracking-tight">
+              Find social media accounts <span class="text-indigo-600">ready to grow.</span>
             </h1>
-            <p class="mt-6 text-base sm:text-lg leading-relaxed text-slate-600 max-w-2xl">
-              We plan, create, publish and optimise social media content for brands and creators across the platforms that matter to your audience.
+            <p class="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
+              Browse available social media accounts on Redmit. Compare platforms, audiences, followers, engagement and pricing in one place.
             </p>
-            <div class="mt-8 flex flex-col sm:flex-row gap-3">
-              <router-link to="/register" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-secondary hover:bg-secondary-dark text-white font-black text-sm rounded-xl transition-all">
-                Get Started <i class="fas fa-arrow-right text-xs"></i>
-              </router-link>
-              <router-link to="/contact-us" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-700 font-bold text-sm rounded-xl transition-all">
-                Talk to Us
-              </router-link>
-            </div>
           </div>
         </div>
       </section>
 
-      <section class="py-20 sm:py-24">
+      <section class="py-16 sm:py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-6">
-          <div class="text-center max-w-2xl mx-auto mb-14">
-            <p class="text-xs font-black uppercase tracking-widest text-indigo-600">What we do</p>
-            <h2 class="mt-3 text-3xl sm:text-4xl font-black text-slate-900">Everything you need to build a stronger presence.</h2>
+          <div class="flex flex-wrap gap-2 justify-center mb-10">
+            <button v-for="tab in tabs" :key="tab.value" type="button" @click="activeTab = tab.value" class="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all border" :class="activeTab === tab.value ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'">
+              <i :class="tab.icon" class="text-sm"></i>{{ tab.label }}
+            </button>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <article v-for="service in services" :key="service.title" class="p-7 rounded-2xl border border-slate-200 bg-white hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
-              <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5">
-                <i :class="service.icon" class="text-xl"></i>
+          <div v-if="loading" class="py-20 text-center text-slate-400">Loading social media accounts...</div>
+          <div v-else-if="!filteredAssets.length" class="py-20 text-center text-slate-400">No social media accounts available right now.</div>
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <article v-for="asset in filteredAssets" :key="asset.id" class="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-slate-200/60 hover:-translate-y-1 transition-all duration-300">
+              <div class="px-5 py-4 flex items-center justify-between border-b border-slate-100 bg-slate-50">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-slate-900"><i :class="[platformIcon(asset.socialMediaDetails?.platform), 'text-white text-lg']"></i></div>
+                  <div><p class="text-xs font-black text-slate-800">{{ platformName(asset.socialMediaDetails?.platform) }}</p><p class="text-[10px] text-slate-400">{{ asset.socialMediaDetails?.niche || 'Social Media' }}</p></div>
+                </div>
+                <span class="text-[10px] font-black px-2 py-0.5 rounded-full" :class="asset.isSold ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'">{{ asset.isSold ? 'Sold' : 'Available' }}</span>
               </div>
-              <h3 class="text-lg font-black text-slate-900">{{ service.title }}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-slate-500">{{ service.description }}</p>
+
+              <div class="px-5 py-4 space-y-3">
+                <h2 class="font-black text-slate-800 text-sm line-clamp-2">{{ asset.name }}</h2>
+                <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">{{ asset.description }}</p>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                  <div><p class="text-sm font-black text-slate-900">{{ formatNumber(asset.socialMediaDetails?.followers) }}</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">Followers</p></div>
+                  <div><p class="text-sm font-black text-slate-900">{{ asset.socialMediaDetails?.engagementRate ? `${asset.socialMediaDetails.engagementRate}%` : '—' }}</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">Eng. Rate</p></div>
+                  <div><p class="text-sm font-black text-slate-900">{{ formatNumber(asset.socialMediaDetails?.views || asset.socialMediaDetails?.posts) }}</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ asset.socialMediaDetails?.views ? 'Views' : 'Posts' }}</p></div>
+                </div>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  <span v-if="asset.socialMediaDetails?.country" class="text-[10px] px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full font-semibold">{{ asset.socialMediaDetails.country }}</span>
+                  <span v-if="asset.socialMediaDetails?.username" class="text-[10px] px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full font-semibold">@{{ asset.socialMediaDetails.username }}</span>
+                </div>
+              </div>
+
+              <div class="px-5 pb-5">
+                <div class="flex items-center justify-between mb-3">
+                  <div><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Price</p><p class="text-xl font-black text-slate-900">{{ formatPrice(asset.price, asset.currency) }}</p></div>
+                  <div class="text-right"><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Seller</p><p class="text-xs font-bold text-slate-700">{{ asset.seller?.fullName || asset.seller?.username || 'Redmit seller' }}</p></div>
+                </div>
+                <button @click="requireLogin" :disabled="asset.isSold" class="w-full py-2.5 bg-slate-900 hover:bg-primary disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                  <i class="fas fa-lock text-[10px]"></i>{{ asset.isSold ? 'Sold' : 'View & Buy — Sign In Required' }}
+                </button>
+              </div>
             </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-20 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p class="text-xs font-black uppercase tracking-widest text-indigo-600">Platforms</p>
-            <h2 class="mt-3 text-3xl sm:text-4xl font-black text-slate-900">Meet your audience where they already are.</h2>
-            <p class="mt-5 text-sm sm:text-base text-slate-600 leading-relaxed">Our social media marketing service can support the major platforms, with the content and strategy adapted to each channel.</p>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div v-for="platform in platforms" :key="platform.name" class="bg-white border border-slate-200 rounded-2xl p-5 text-center">
-              <i :class="platform.icon" class="text-2xl text-slate-800"></i>
-              <p class="mt-3 text-xs font-bold text-slate-700">{{ platform.name }}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-20 sm:py-24">
-        <div class="max-w-5xl mx-auto px-6">
-          <div class="rounded-3xl bg-slate-900 p-8 sm:p-12 text-white text-center">
-            <p class="text-xs font-black uppercase tracking-widest text-indigo-300">Ready to grow?</p>
-            <h2 class="mt-3 text-3xl sm:text-4xl font-black">Let Redmit handle your social media marketing.</h2>
-            <p class="mt-4 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed text-slate-300">Tell us about your brand, goals and audience. We will help you build a practical social strategy and a content plan that fits.</p>
-            <router-link to="/register" class="mt-7 inline-flex items-center gap-2 px-7 py-3.5 bg-white text-slate-900 hover:bg-slate-100 rounded-xl text-sm font-black transition-colors">
-              Start Now <i class="fas fa-arrow-right text-xs"></i>
-            </router-link>
           </div>
         </div>
       </section>
@@ -89,21 +83,58 @@ export default {
   components: { Header, Footer },
   data() {
     return {
-      services: [
-        { title: 'Content Strategy', description: 'A clear content direction built around your audience, goals, offers and brand voice.', icon: 'fas fa-lightbulb' },
-        { title: 'Content Creation', description: 'Scroll-stopping posts, captions, creative concepts and campaign content tailored to your channels.', icon: 'fas fa-pen-nib' },
-        { title: 'Publishing & Scheduling', description: 'Consistent publishing and scheduling so your channels stay active without the daily workload.', icon: 'fas fa-calendar-alt' },
-        { title: 'Community Management', description: 'Help managing comments, messages and audience interactions while keeping your brand voice consistent.', icon: 'fas fa-comments' },
-        { title: 'Growth & Optimisation', description: 'Performance reviews and ongoing optimisation to improve reach, engagement and conversion.', icon: 'fas fa-chart-line' },
-        { title: 'Campaign Management', description: 'Social campaigns coordinated around launches, promotions and other important business moments.', icon: 'fas fa-bullhorn' },
-      ],
-      platforms: [
-        { name: 'Instagram', icon: 'fab fa-instagram' },
-        { name: 'Facebook', icon: 'fab fa-facebook' },
-        { name: 'TikTok', icon: 'fab fa-tiktok' },
-        { name: 'YouTube', icon: 'fab fa-youtube' },
+      assets: [],
+      loading: false,
+      activeTab: 'all',
+      tabs: [
+        { value: 'all', label: 'All', icon: 'fas fa-th-large' },
+        { value: 'TIKTOK', label: 'TikTok', icon: 'fab fa-tiktok' },
+        { value: 'INSTAGRAM', label: 'Instagram', icon: 'fab fa-instagram' },
+        { value: 'YOUTUBE', label: 'YouTube', icon: 'fab fa-youtube' },
+        { value: 'FACEBOOK', label: 'Facebook', icon: 'fab fa-facebook' },
+        { value: 'TELEGRAM', label: 'Telegram', icon: 'fab fa-telegram' },
       ],
     };
+  },
+  computed: {
+    filteredAssets() {
+      return this.activeTab === 'all' ? this.assets : this.assets.filter((asset) => asset.socialMediaDetails?.platform === this.activeTab);
+    },
+  },
+  async mounted() {
+    await this.fetchAssets();
+  },
+  methods: {
+    async fetchAssets() {
+      this.loading = true;
+      try {
+        const response = await this.$apiGet('/assets');
+        this.assets = Array.isArray(response?.data) ? response.data : [];
+      } catch (error) {
+        console.error('Failed to load social media assets:', error);
+        this.assets = [];
+      } finally {
+        this.loading = false;
+      }
+    },
+    formatPrice(price, currency) {
+      return `${currency || 'USD'} ${Number(price || 0).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    },
+    formatNumber(value) {
+      if (value === null || value === undefined) return '—';
+      const n = Number(value);
+      if (Number.isNaN(n)) return value;
+      return n >= 1000000 ? `${(n / 1000000).toFixed(1)}M` : n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}K` : n.toLocaleString();
+    },
+    platformName(platform) {
+      return platform ? platform.charAt(0) + platform.slice(1).toLowerCase() : 'Social Media';
+    },
+    platformIcon(platform) {
+      return ({ TIKTOK: 'fab fa-tiktok', INSTAGRAM: 'fab fa-instagram', YOUTUBE: 'fab fa-youtube', FACEBOOK: 'fab fa-facebook', TELEGRAM: 'fab fa-telegram' })[platform] || 'fas fa-globe';
+    },
+    requireLogin() {
+      this.$router.push('/login');
+    },
   },
 };
 </script>
