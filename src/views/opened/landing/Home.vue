@@ -11,7 +11,6 @@
       :loading="productsLoading || categoriesLoading"
       @select-category="handleCategoryChange"
     />
-    <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
 
     <section class="landing-section bg-slate-50 py-20">
       <div class="max-w-5xl mx-auto px-6">
@@ -40,25 +39,22 @@ import Header from './header.vue';
 import Footer from './footer.vue';
 import HeroSection from './sections/HeroSection.vue';
 import DigitalProductsSection from './sections/DigitalProductsSection.vue';
-import DigitalAssetsSection from './sections/DigitalAssetsSection.vue';
 
 export default {
   name: 'HomePage',
-  components: { Header, Footer, HeroSection, DigitalProductsSection, DigitalAssetsSection },
+  components: { Header, Footer, HeroSection, DigitalProductsSection },
   data() {
     return {
       products: [],
-      assets: [],
       categories: [],
       selectedCategoryId: null,
       productsLoading: false,
-      assetsLoading: false,
       categoriesLoading: false,
       sectionObserver: null,
     };
   },
   async mounted() {
-    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets()]);
+    await Promise.all([this.fetchCategories(), this.fetchProducts()]);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.landing-section').forEach((section) => section.classList.add('is-visible'));
       return;
@@ -117,18 +113,6 @@ export default {
         this.products = [];
       } finally {
         this.productsLoading = false;
-      }
-    },
-    async fetchAssets() {
-      this.assetsLoading = true;
-      try {
-        const response = await this.$apiGet('/assets');
-        this.assets = Array.isArray(response?.data) ? response.data : [];
-      } catch (error) {
-        console.error('Failed to load landing page assets:', error);
-        this.assets = [];
-      } finally {
-        this.assetsLoading = false;
       }
     },
   },
