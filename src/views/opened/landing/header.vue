@@ -19,10 +19,10 @@
           </button>
           <transition name="dropdown">
             <div v-if="servicesOpen" class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden z-50 py-2">
-              <a v-for="s in serviceLinks" :key="s.label" :href="s.href" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors group">
+              <router-link v-for="s in serviceLinks" :key="s.label" :to="s.path" @click="servicesOpen = false" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors group">
                 <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" :class="s.bg"><i :class="[s.icon, s.color, 'text-sm']"></i></div>
                 <div><p class="text-xs font-bold text-slate-800 group-hover:text-primary transition-colors">{{ s.label }}</p><p class="text-[10px] text-slate-400">{{ s.desc }}</p></div>
-              </a>
+              </router-link>
             </div>
           </transition>
         </div>
@@ -47,9 +47,9 @@
           <div class="px-4 pt-2">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Services</p>
             <div class="grid grid-cols-2 gap-2">
-              <a v-for="s in serviceLinks" :key="s.label" :href="s.href" @click="mobileOpen = false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 transition">
+              <router-link v-for="s in serviceLinks" :key="s.label" :to="s.path" @click="mobileOpen = false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 transition">
                 <i :class="[s.icon, s.color, 'text-xs']"></i><span class="text-xs font-semibold text-slate-700">{{ s.label }}</span>
-              </a>
+              </router-link>
             </div>
           </div>
         </nav>
@@ -77,8 +77,8 @@ export default {
         { name: 'Contact', path: '/contact-us' },
       ],
       serviceLinks: [
-        { label: 'Digital Products', desc: 'Buy & sell downloads', href: '/#products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600' },
-        { label: 'Digital Assets', desc: 'Trade accounts & domains', href: '/#assets', icon: 'fas fa-exchange-alt', bg: 'bg-indigo-50', color: 'text-indigo-600' },
+        { label: 'Digital Products', desc: 'Buy & sell downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600' },
+        { label: 'Social Media Marketing', desc: 'Grow your social presence', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600' },
       ],
     };
   },
