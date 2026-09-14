@@ -26,32 +26,81 @@
 
       <!-- Form Card -->
       <div v-else class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
-        <form @submit.prevent="handleRegister" class="space-y-5">
+        <form @submit.prevent="handleRegister" class="space-y-4">
 
+          <!-- Full Name -->
+          <div>
+            <label class="field-label">Full Name</label>
+            <input v-model="form.fullName" type="text" required
+                   placeholder="John Doe" class="field-input mt-1" />
+          </div>
+
+          <!-- Username -->
+          <div>
+            <label class="field-label">Username</label>
+            <input v-model="form.username" type="text" required
+                   placeholder="john_doe" class="field-input mt-1" />
+          </div>
+
+          <!-- Email Address -->
           <div>
             <label class="field-label">Email Address</label>
             <input v-model="form.email" type="email" required
-                   placeholder="you@example.com" class="field-input mt-1" />
+                   placeholder="john@example.com" class="field-input mt-1" />
           </div>
 
+          <!-- Phone Number -->
           <div>
             <label class="field-label">Phone Number</label>
             <input v-model="form.phone" type="tel" required
-                   placeholder="+251 9xx xxx xxx" class="field-input mt-1" />
+                   placeholder="+1234567890" class="field-input mt-1" />
           </div>
 
+          <!-- Avatar Image Upload -->
+          <div>
+            <label class="field-label">Avatar</label>
+            <div class="mt-1 flex items-center gap-3">
+              <div v-if="avatarPreview" class="w-12 h-12 rounded-full overflow-hidden border border-slate-200 shrink-0">
+                <img :src="avatarPreview" class="w-full h-full object-cover" alt="Preview" />
+              </div>
+              <input type="file" ref="avatarInput" accept="image/*" @change="handleFileUpload"
+                     class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer" />
+            </div>
+          </div>
+
+          <!-- Password -->
           <div>
             <label class="field-label">Password</label>
             <div class="relative mt-1">
               <input :type="showPwd ? 'text' : 'password'" v-model="form.password" required
-                     placeholder="Min. 6 characters" class="field-input pr-11" />
+                     placeholder="Password123!" class="field-input pr-11" />
               <button type="button" @click="showPwd = !showPwd"
                 class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition">
                 <i :class="showPwd ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-sm"></i>
               </button>
             </div>
+
+            <!-- Password Validation Rules Indicator -->
+            <div class="mt-2 grid grid-cols-2 gap-1.5 text-[11px] text-slate-500">
+              <span :class="pwdRules.min ? 'text-green-600 font-semibold' : ''" class="flex items-center gap-1">
+                <i :class="pwdRules.min ? 'fas fa-check' : 'fas fa-circle text-[6px]'"></i> 8+ Characters
+              </span>
+              <span :class="pwdRules.upper ? 'text-green-600 font-semibold' : ''" class="flex items-center gap-1">
+                <i :class="pwdRules.upper ? 'fas fa-check' : 'fas fa-circle text-[6px]'"></i> Uppercase letter
+              </span>
+              <span :class="pwdRules.lower ? 'text-green-600 font-semibold' : ''" class="flex items-center gap-1">
+                <i :class="pwdRules.lower ? 'fas fa-check' : 'fas fa-circle text-[6px]'"></i> Lowercase letter
+              </span>
+              <span :class="pwdRules.number ? 'text-green-600 font-semibold' : ''" class="flex items-center gap-1">
+                <i :class="pwdRules.number ? 'fas fa-check' : 'fas fa-circle text-[6px]'"></i> Number
+              </span>
+              <span :class="pwdRules.special ? 'text-green-600 font-semibold' : ''" class="flex items-center gap-1 col-span-2">
+                <i :class="pwdRules.special ? 'fas fa-check' : 'fas fa-circle text-[6px]'"></i> Special character (!@#$%^&*)
+              </span>
+            </div>
           </div>
 
+          <!-- Confirm Password -->
           <div>
             <label class="field-label">Confirm Password</label>
             <input :type="showPwd ? 'text' : 'password'" v-model="form.confirmPassword" required
@@ -112,47 +161,93 @@ export default {
     return {
       loading: false,
       success: false,
-      error:   '',
+      error: '',
       showPwd: false,
+      avatarFile: null,
+      avatarPreview: null,
       form: {
-        email:           '',
-        phone:           '',
-        password:        '',
+        fullName: '',
+        username: '',
+        email: '',
+        phone: '',
+        password: '',
         confirmPassword: '',
-        agreed:          false,
+        agreed: false,
       },
     };
   },
+  computed: {
+    pwdRules() {
+      const pwd = this.form.password;
+      return {
+        min: pwd.length >= 8,
+        upper: /[A-Z]/.test(pwd),
+        lower: /[a-z]/.test(pwd),
+        number: /[0-9]/.test(pwd),
+        special: /[!@#$%^&*(),.?":{}|<>]/.test(pwd),
+      };
+    },
+    isPasswordValid() {
+      return Object.values(this.pwdRules).every(Boolean);
+    }
+  },
   methods: {
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.avatarFile = file;
+        this.avatarPreview = URL.createObjectURL(file);
+      }
+    },
     async handleRegister() {
       this.error = '';
 
-      if (!this.form.email.trim())       { this.error = 'Email is required.'; return; }
-      if (!this.form.phone.trim())       { this.error = 'Phone number is required.'; return; }
-      if (this.form.password.length < 6) { this.error = 'Password must be at least 6 characters.'; return; }
-      if (this.form.password !== this.form.confirmPassword) {
-        this.error = 'Passwords do not match.'; return;
+      if (!this.form.fullName.trim()) { this.error = 'Full name is required.'; return; }
+      if (!this.form.username.trim()) { this.error = 'Username is required.'; return; }
+      if (!this.form.email.trim()) { this.error = 'Email address is required.'; return; }
+      if (!this.form.phone.trim()) { this.error = 'Phone number is required.'; return; }
+      
+      if (!this.isPasswordValid) {
+        this.error = 'Password does not meet all security requirements.';
+        return;
       }
-      if (!this.form.agreed) { this.error = 'You must agree to the terms.'; return; }
+
+      if (this.form.password !== this.form.confirmPassword) {
+        this.error = 'Passwords do not match.';
+        return;
+      }
+
+      if (!this.form.agreed) {
+        this.error = 'You must agree to the terms.';
+        return;
+      }
 
       this.loading = true;
-      await new Promise(r => setTimeout(r, 800));
 
-      /* ── Real API — uncomment when backend is ready ──
       try {
-        await this.$apiPost('/auth/signup', {
-          email:    this.form.email,
-          phone:    this.form.phone,
-          password: this.form.password,
-        });
-        this.success = true;
-      } catch(err) {
-        this.error = err?.response?.data?.message || 'Registration failed. Please try again.';
-      } finally { this.loading = false; }
-      ── */
+        // Construct multipart/form-data payload
+        const payload = new FormData();
+        payload.append('fullName', this.form.fullName.trim());
+        payload.append('username', this.form.username.trim());
+        payload.append('email', this.form.email.trim());
+        payload.append('phone', this.form.phone.trim());
+        payload.append('password', this.form.password);
 
-      this.success = true;
-      this.loading = false;
+        if (this.avatarFile) {
+          payload.append('avatar', this.avatarFile);
+        }
+
+        const headers = {
+          'Content-Type': 'multipart/form-data',
+        };
+
+        await this.$apiPost('auth/register', payload, headers);
+        this.success = true;
+      } catch (err) {
+        this.error = err?.response?.data?.message || err?.message || 'Registration failed. Please try again.';
+      } finally {
+        this.loading = false;
+      }
     },
   },
 };

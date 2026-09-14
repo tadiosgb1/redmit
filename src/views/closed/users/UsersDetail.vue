@@ -1,4 +1,3 @@
-
 <template>
   <div class="p-6 bg-gray-50 min-h-screen text-sm text-gray-800">
     <!-- Loading -->
@@ -6,70 +5,55 @@
 
     <!-- Page Header -->
     <div class="flex items-center justify-between mb-6 border-b pb-4 border-gray-200">
-      <h1 class="text-lg font-bold text-gray-800">Users Detail</h1>
+      <h1 class="text-lg font-bold text-gray-800">User Details</h1>
+      <button @click="$router.back()" class="text-blue-600 hover:underline">← Back to Users</button>
     </div>
 
     <!-- Detail Card -->
-    <div class="bg-white overflow-hidden rounded-md border border-gray-200 p-4 hidden md:block space-y-2">
-      <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>First Name:</strong> {{ item.first_name }}</div>
-      <div><strong>Middle Name:</strong> {{ item.middle_name || '—' }}</div>
-      <div><strong>Last Name:</strong> {{ item.last_name }}</div>
-      <div><strong>Email:</strong> {{ item.email }}</div>
-      <div><strong>Phone:</strong> {{ item.phone_number || item.phone || '—' }}</div>
-      <div><strong>Date of Birth:</strong> {{ item.date_of_birth || '—' }}</div>
-      <div><strong>Age:</strong> {{ item.age || '—' }}</div>
-      <div><strong>Department:</strong> {{ item.department || '—' }}</div>
-      <div><strong>Gender:</strong> {{ formatGender(item.gender) }}</div>
-      
-      <!-- Profile Photo -->
-      <div v-if="item.photo">
-        <strong>Profile Photo:</strong>
-        <div class="mt-2">
-          <img :src="$getFileUrl(item.photo)" alt="Profile photo" class="w-32 h-32 object-cover rounded-lg border">
+    <div v-if="!loading && item.id" class="bg-white rounded-md border border-gray-200 p-6 shadow-sm space-y-6">
+      <!-- Profile Header / Avatar -->
+      <div class="flex items-center space-x-4 border-b pb-4 border-gray-100">
+        <img 
+          :src="item.avatarUrl || 'http://redmitapi.kalayuredae.com/uploads/defaults/default-avatar.png'" 
+          alt="Avatar" 
+          class="w-20 h-20 object-cover rounded-full border border-gray-300 shadow-sm"
+        />
+        <div>
+          <h2 class="text-xl font-semibold text-gray-900">{{ item.fullName || '—' }}</h2>
+          <p class="text-gray-500">@{{ item.username || '—' }}</p>
+          <div class="mt-2 flex items-center gap-2">
+            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+              {{ item.role }}
+            </span>
+            <span 
+              :class="item.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+              class="px-2.5 py-0.5 text-xs font-semibold rounded-full"
+            >
+              {{ item.isActive ? 'Active' : 'Inactive' }}
+            </span>
+            <span 
+              :class="item.isVerified ? 'bg-emerald-100 text-emerald-800' : 'bg-yellow-100 text-yellow-800'"
+              class="px-2.5 py-0.5 text-xs font-semibold rounded-full"
+            >
+              {{ item.isVerified ? 'Verified' : 'Unverified' }}
+            </span>
+          </div>
         </div>
       </div>
-      
-      <!-- CV -->
-      <div v-if="item.cv">
-        <strong>CV/Resume:</strong>
-        <div class="mt-1">
-          <a :href="$getFileUrl(item.cv)" target="_blank" class="text-blue-600 hover:underline">View CV/Resume</a>
-        </div>
+
+      <!-- User Information Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div><strong>Full Name:</strong> {{ item.fullName || '—' }}</div>
+        <div><strong>Username:</strong> {{ item.username || '—' }}</div>
+        <div><strong>Email:</strong> {{ item.email || '—' }}</div>
+        <div><strong>Phone:</strong> {{ item.phone || '—' }}</div>
+        <div><strong>Role:</strong> {{ item.role || '—' }}</div>
+        <div><strong>Status:</strong> {{ item.isActive ? 'Active' : 'Inactive' }}</div>
+        <div><strong>Verification Status:</strong> {{ item.isVerified ? 'Verified' : 'Pending Verification' }}</div>
+        <div><strong>Created At:</strong> {{ formatDate(item.createdAt) }}</div>
+        <div><strong>Last Updated:</strong> {{ formatDate(item.updatedAt) }}</div>
       </div>
     </div>
-
-    <!-- Mobile View -->
-    <div class="md:hidden bg-white rounded-md border border-gray-200 p-4 space-y-2">
-      <div><strong>ID:</strong> {{ item.id }}</div>
-      <div><strong>First Name:</strong> {{ item.first_name }}</div>
-      <div><strong>Middle Name:</strong> {{ item.middle_name || '—' }}</div>
-      <div><strong>Last Name:</strong> {{ item.last_name }}</div>
-      <div><strong>Email:</strong> {{ item.email }}</div>
-      <div><strong>Phone:</strong> {{ item.phone_number || item.phone || '—' }}</div>
-      <div><strong>Date of Birth:</strong> {{ item.date_of_birth || '—' }}</div>
-      <div><strong>Age:</strong> {{ item.age || '—' }}</div>
-      <div><strong>Department:</strong> {{ item.department || '—' }}</div>
-      <div><strong>Gender:</strong> {{ formatGender(item.gender) }}</div>
-      
-      <!-- Profile Photo -->
-      <div v-if="item.photo">
-        <strong>Profile Photo:</strong>
-        <div class="mt-2">
-          <img :src="$getFileUrl(item.photo)" alt="Profile photo" class="w-24 h-24 object-cover rounded-lg border">
-        </div>
-      </div>
-      
-      <!-- CV -->
-      <div v-if="item.cv">
-        <strong>CV/Resume:</strong>
-        <div class="mt-1">
-          <a :href="$getFileUrl(item.cv)" target="_blank" class="text-blue-600 hover:underline">View CV/Resume</a>
-        </div>
-      </div>
-    </div>
-
-    <button @click="$router.back()" class="mt-4 text-blue-600 hover:underline">Back</button>
   </div>
 </template>
 
@@ -85,27 +69,20 @@ export default {
     };
   },
   methods: {
-    formatGender(gender) {
-      if (!gender) return '—';
-      
-      const genderMap = {
-        'male': 'Male',
-        'female': 'Female', 
-        'other': 'Other',
-        'prefer_not_to_say': 'Prefer not to say'
-      };
-      
-      return genderMap[gender] || gender;
-    },
+    formatDate(dateStr) {
+      if (!dateStr) return '—';
+      return new Date(dateStr).toLocaleString();
+    }
   },
   async mounted() {
     this.loading = true;
     const id = this.$route.params.id;
     try {
       const response = await this.$apiGetById('/users', id);
-      this.item = response || {};
+      // Unpacks `data` property from endpoint response: { status, message, data }
+      this.item = response?.data || response || {};
     } catch (error) {
-      console.error(error);
+      console.error('Error loading user details:', error);
     } finally {
       this.loading = false;
     }

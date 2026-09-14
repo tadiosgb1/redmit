@@ -16,9 +16,9 @@
         <form @submit.prevent="handleLogin" class="space-y-5">
 
           <div>
-            <label class="field-label">Email</label>
-            <input v-model="form.email" type="email" required
-                   placeholder="you@example.com" class="field-input mt-1" />
+            <label class="field-label">Email, Phone, or Username</label>
+            <input v-model="form.identifier" type="text" required
+                   placeholder="Email, phone, or username" class="field-input mt-1" />
           </div>
 
           <div>
@@ -79,55 +79,88 @@ export default {
   name: 'LoginPage',
   data() {
     return {
-      form:    { email: '', password: '' },
-      error:   '',
+      form: { identifier: '', password: '' },
+      error: '',
       loading: false,
       showPwd: false,
     };
   },
   methods: {
     async handleLogin() {
-      this.error   = '';
+      this.error = '';
       this.loading = true;
-      await new Promise(r => setTimeout(r, 600));
 
-      const email = this.form.email.trim().toLowerCase();
-      const pass  = this.form.password;
+      const input = this.form.identifier.trim();
+      const pass = this.form.password;
 
-      if (email === 'admin@gmail.com' && pass === '1234') {
+      // 1. Keep sample logins
+      if (input.toLowerCase() === 'admin@gmail.com' && pass === '1234') {
         localStorage.setItem('token', 'mock-admin-token');
-        localStorage.setItem('role',  'admin');
-        localStorage.setItem('name',  'Admin');
-        localStorage.setItem('email', email);
+        localStorage.setItem('userId', 'mock-admin-id');
+        localStorage.setItem('role', 'ADMIN');
+        localStorage.setItem('name', 'Admin');
+        localStorage.setItem('username', 'admin');
+        localStorage.setItem('email', input.toLowerCase());
+        localStorage.setItem('phone', '+1234567890');
         this.loading = false;
         this.$router.push('/dashboard/first-dash');
         return;
       }
-      if (email === 'user@gmail.com' && pass === '1234') {
+      if (input.toLowerCase() === 'user@gmail.com' && pass === '1234') {
         localStorage.setItem('token', 'mock-user-token');
-        localStorage.setItem('role',  'user');
-        localStorage.setItem('name',  'User');
-        localStorage.setItem('email', email);
+        localStorage.setItem('userId', 'mock-user-id');
+        localStorage.setItem('role', 'USER');
+        localStorage.setItem('name', 'User');
+        localStorage.setItem('username', 'user');
+        localStorage.setItem('email', input.toLowerCase());
+        localStorage.setItem('phone', '+1234567890');
         this.loading = false;
         this.$router.push('/dashboard/first-dash');
         return;
       }
 
-      /* ── Real API — uncomment when backend is ready ──
-      try {
-        const res = await this.$apiPost('/auth/login', this.form);
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('role',  res.role || res.user?.role?.code || '');
-        localStorage.setItem('name',  res.user?.fullName || '');
-        localStorage.setItem('email', res.user?.email   || '');
-        this.$router.push('/dashboard/first-dash');
-      } catch(err) {
-        this.error = err?.response?.data?.message || 'Invalid credentials.';
-      } finally { this.loading = false; }
-      ── */
+      // 2. Determine field type (email, phone, or username)
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+      const isPhone = /^\+?[0-9\s\-]{7,15}$/.test(input);
 
-      this.error   = 'Incorrect email or password.';
-      this.loading = false;
+      const payload = {
+        password: pass
+      };
+
+      if (isEmail) {
+        payload.email = input.toLowerCase();
+      } else if (isPhone) {
+        payload.phone = input;
+      } else {
+        payload.username = input;
+      }
+
+      // 3. Connect to live server endpoint
+      try {
+        const res = await this.$apiPost("/auth/login", payload);
+
+        if (res.status === 1 || res.token) {
+          const user = res.user || res.data?.user || {};
+
+          // Store authentication & user details in LocalStorage
+          localStorage.setItem('token', res.token || res.data?.token || '');
+          localStorage.setItem('userId', user.id || '');
+          localStorage.setItem('role', user.role || '');
+          localStorage.setItem('name', user.fullName || '');
+          localStorage.setItem('username', user.username || '');
+          localStorage.setItem('email', user.email || '');
+          localStorage.setItem('phone', user.phone || '');
+          localStorage.setItem('avatarUrl', user.avatarUrl || '');
+
+          this.$router.push('/dashboard/first-dash');
+        } else {
+          this.error = res.message || 'Login failed.';
+        }
+      } catch (err) {
+        this.error = err?.response?.data?.message || err?.message || 'Invalid credentials or server error.';
+      } finally {
+        this.loading = false;
+      }
     },
   },
 };

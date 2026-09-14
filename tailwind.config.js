@@ -56,6 +56,9 @@ export default {
         darkBackground: '#1a202c',
         darkText: '#ffffff',
         icon:'#FF6B00',
+        primary:'#2563eb',
+        secondary:'#dc2626',
+        tertiary:'#3b82f6',
 
         // ── CPCT-Youth Brand Palette ────────────────────────────
         // Primary  : deep forest green  (main brand, CTAs, highlights)

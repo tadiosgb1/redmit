@@ -31,7 +31,7 @@ export function getApiClient() {
 
   // ── Request interceptor: attach latest access token ──────────────────────
   _client.interceptors.request.use(config => {
-    const token = localStorage.getItem("access");
+    const token = localStorage.getItem("token");
     if (token) config.headers["Authorization"] = `Bearer ${token}`;
     return config;
   });

@@ -44,15 +44,69 @@ const routes = [
       { path: 'profile',    name: 'Profile',    component: () => import('../views/closed/Profile.vue') },
 
       // Marketplace
-      { path: 'products',            name: 'Products-view',    component: () => import('../views/closed/ProductsView.vue') },
-      { path: 'products/add',        name: 'Products-add',     component: () => import('../views/closed/ProductsView.vue') },
-      { path: 'products/categories', name: 'Categories-view',  component: () => import('../views/closed/ProductsView.vue') },
-      { path: 'assets',              name: 'Assets-view',      component: () => import('../views/closed/AssetsView.vue') },
-      { path: 'assets/add',          name: 'Assets-add',       component: () => import('../views/closed/AssetsView.vue') },
+      { path: 'products',            name: 'Products-view',    component: () => import('../views/closed/products/ProductsView.vue') },
+    {
+      path: "/products/:id",
+      name: "Products-detail",
+      component: () => import("@/views/closed/products/ProductDetails.vue"),
+      props: true,
+    },
+
+
+      { path: 'products/add',        name: 'Products-add',     component: () => import('../views/closed/products/ProductsView.vue') },
+      { path: 'products/categories', name: 'Categories-view',  component: () => import('../views/closed/products/ProductsView.vue') },
+      { path: 'access',              name: 'Access-view',      component: () => import('../views/closed/Access/ViewAccess.vue') },
+      {
+      path: "/access/:id",
+      name: "Access-detail",
+      component: () => import("@/views/closed/Access/DetailAccess.vue"),
+      props: true,
+     },
+
+      
+      { path: 'access/add',          name: 'Assets-add',       component: () => import('../views/closed/AssetsView.vue') },
 
       // Services
       { path: 'pay-for-me',    name: 'PayForMe-view',      component: () => import('../views/closed/PayForMeView.vue') },
-      { path: 'access',        name: 'Access-view',        component: () => import('../views/closed/PayForMeView.vue') },
+     
+      { path: 'assets',        name: 'Assets-view',        component: () => import('../views/closed/Assets/ViewAsset.vue') },
+      
+      {
+      path: "/assets/:id",
+      name: "Assets-detail",
+      component: () => import("@/views/closed/Assets/DetailAsset.vue"),
+      props: true,
+     },
+
+
+
+       { path: 'bank-accounts',        name: 'BankAccounts-view',        component: () => import('../views/closed/BankAccounts/ViewBankAccount.vue') },
+      
+      {
+      path: "/bank-accounts/:id",
+      name: "BankAccount-detail",
+      component: () => import("@/views/closed/BankAccounts/DetailBankAccount.vue"),
+      props: true,
+     },
+
+     
+      { path: 'opportunities',        name: 'Opportunities-view',        component: () => import('../views/closed/Opportunities/ViewOpportunities.vue') },
+      
+      {
+      path: "/opportunities/:id",
+      name: "Opportunity-detail",
+      component: () => import("@/views/closed/Opportunities/DetailOpportunities.vue"),
+      props: true,
+     },
+
+     {
+      path: "/bank-accounts/:id",
+      name: "BankAccount-detail",
+      component: () => import("@/views/closed/BankAccounts/DetailBankAccount.vue"),
+      props: true,
+     },
+
+
       { path: 'growth',        name: 'Growth-view',        component: () => import('../views/closed/GrowthView.vue') },
       { path: 'monetization',  name: 'Monetization-view',  component: () => import('../views/closed/MonetizationView.vue') },
 
@@ -63,7 +117,19 @@ const routes = [
 
       // Admin only
       { path: 'users',         name: 'Users-view',         component: () => import('../views/closed/users/UsersView.vue') },
+      
+
+      { path: 'categories',         name: 'Categories-view',         component: () => import('../views/closed/Categories/ViewCategories.vue') },
+      
       { path: 'users/add',     name: 'Users-add',          component: () => import('../views/closed/users/AddUsers.vue') },
+      
+      {
+      path: 'users/detail/:id',
+          name: 'Users-detail',
+        component: () => import('../views/closed/users/UsersDetail.vue'),
+        props: true // Passes route.params.id as a prop to DetailUsers.vue
+      },
+
       { path: 'news',          name: 'News-view',          component: () => import('../views/closed/News/NewsView.vue') },
       { path: 'news/add',      name: 'News-add',           component: () => import('../views/closed/News/AddNews.vue') },
       { path: 'messages',      name: 'ContactMessage-view',component: () => import('../views/closed/ContactMessage/ContactMessageView.vue') },

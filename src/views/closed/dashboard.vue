@@ -42,9 +42,11 @@
                   class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100 transition">
             <i class="fas fa-bars text-sm"></i>
           </button>
+
           <!-- mobile logo -->
           <img src="../../assets/img/logo.jpg" alt="Redmit"
                class="lg:hidden h-8 w-auto object-contain" />
+
           <!-- breadcrumb / title desktop -->
           <div class="hidden lg:flex items-center gap-2">
             <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Redmit</span>
