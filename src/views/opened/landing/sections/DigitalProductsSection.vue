@@ -7,16 +7,31 @@
         <p class="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">Browse digital products available on Redmit. Sign in to purchase and get instant access.</p>
       </div>
 
-      <div class="flex flex-wrap gap-2 justify-center mb-10">
-        <button v-for="cat in categories" :key="cat.value" @click="activeCategory = cat.value" class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition-all" :class="activeCategory === cat.value ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'">
-          <i :class="cat.icon" class="text-xs"></i>{{ cat.label }}
+      <div v-if="categories.length" class="flex flex-wrap gap-2 justify-center mb-10">
+        <button
+          type="button"
+          @click="$emit('select-category', null)"
+          class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition-all"
+          :class="selectedCategoryId === null ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'"
+        >
+          <i class="fas fa-th-large text-xs"></i>All
+        </button>
+        <button
+          v-for="category in categories"
+          :key="category.id"
+          type="button"
+          @click="$emit('select-category', category.id)"
+          class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition-all"
+          :class="selectedCategoryId === category.id ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'"
+        >
+          <i class="fas fa-tag text-xs"></i>{{ category.name }}
         </button>
       </div>
 
       <div v-if="loading" class="py-16 text-center text-slate-400">Loading products...</div>
-      <div v-else-if="!filteredProducts.length" class="py-16 text-center text-slate-400">No products available right now.</div>
+      <div v-else-if="!products.length" class="py-16 text-center text-slate-400">No products available right now.</div>
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div v-for="product in filteredProducts" :key="product.id" class="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1 transition-all duration-300">
+        <div v-for="product in products" :key="product.id" class="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1 transition-all duration-300">
           <div class="relative h-40 flex items-center justify-center overflow-hidden bg-blue-50">
             <i class="fas fa-box-open text-5xl text-blue-400 opacity-20"></i>
             <div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-box-open text-4xl text-blue-400"></i></div>
@@ -42,23 +57,13 @@
 <script>
 export default {
   name: 'DigitalProductsSection',
-  props: { products: { type: Array, default: () => [] }, loading: { type: Boolean, default: false } },
-  data() {
-    return {
-      activeCategory: 'all',
-      categories: [
-        { value: 'all', label: 'All', icon: 'fas fa-th-large' },
-        { value: 'design-templates', label: 'Design & Templates', icon: 'fas fa-paint-brush' },
-        { value: 'software-tools', label: 'Software & Tools', icon: 'fas fa-code' },
-      ],
-    };
+  props: {
+    products: { type: Array, default: () => [] },
+    categories: { type: Array, default: () => [] },
+    selectedCategoryId: { default: null },
+    loading: { type: Boolean, default: false },
   },
-  computed: {
-    filteredProducts() {
-      if (this.activeCategory === 'all') return this.products;
-      return this.products.filter(p => p.category?.slug === this.activeCategory);
-    },
-  },
+  emits: ['select-category'],
   methods: {
     formatPrice(price, currency) { return `${currency || 'USD'} ${Number(price || 0).toFixed(2)}`; },
     requireLogin() { this.$router.push('/login'); },
