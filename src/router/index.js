@@ -5,6 +5,7 @@ import Home         from '../views/opened/landing/Home.vue';
 import About        from '../views/opened/landing/about.vue';
 import NewsEvents   from '../views/opened/landing/NewsEvents.vue';
 import ContactPage  from '../views/opened/landing/contactUs.vue';
+import OpportunitiesPage from '../views/opened/landing/Opportunities.vue';
 
 // ── Auth (full pages under landing/auth) ─────────────────────
 import Login        from '../views/opened/landing/auth/Login.vue';
@@ -23,6 +24,8 @@ const routes = [
   { path: '/about',          name: 'about',        component: About,         meta: { requiresGuest: true } },
   { path: '/news-events',    name: 'news-events',  component: NewsEvents,    meta: { requiresGuest: true } },
   { path: '/contact',        name: 'contact',      component: ContactPage,   meta: { requiresGuest: true } },
+  { path: '/contact-us',     name: 'contact-us',   component: ContactPage,   meta: { requiresGuest: true } },
+  { path: '/opportunities',  name: 'opportunities', component: OpportunitiesPage, meta: { requiresGuest: true } },
 
   // ── Auth ────────────────────────────────────────────────────
   { path: '/login',          name: 'login',        component: Login,         meta: { requiresGuest: true } },
@@ -38,105 +41,38 @@ const routes = [
     meta: { requiresAuth: true },
     redirect: '/dashboard/overview',
     children: [
-      // Overview — accessible via both /dashboard/overview AND /dashboard/first-dash
       { path: 'overview',   name: 'first-dash', component: FirstDash },
       { path: 'first-dash', name: 'first-dash-legacy', redirect: { name: 'first-dash' } },
       { path: 'profile',    name: 'Profile',    component: () => import('../views/closed/Profile.vue') },
-
-      // Marketplace
       { path: 'products',            name: 'Products-view',    component: () => import('../views/closed/products/ProductsView.vue') },
-    {
-      path: "/products/:id",
-      name: "Products-detail",
-      component: () => import("@/views/closed/products/ProductDetails.vue"),
-      props: true,
-    },
-
-
+      { path: "/products/:id", name: "Products-detail", component: () => import("@/views/closed/products/ProductDetails.vue"), props: true },
       { path: 'products/add',        name: 'Products-add',     component: () => import('../views/closed/products/ProductsView.vue') },
       { path: 'products/categories', name: 'Categories-view',  component: () => import('../views/closed/products/ProductsView.vue') },
       { path: 'access',              name: 'Access-view',      component: () => import('../views/closed/Access/ViewAccess.vue') },
-      {
-      path: "/access/:id",
-      name: "Access-detail",
-      component: () => import("@/views/closed/Access/DetailAccess.vue"),
-      props: true,
-     },
-
-      
+      { path: "/access/:id", name: "Access-detail", component: () => import("@/views/closed/Access/DetailAccess.vue"), props: true },
       { path: 'access/add',          name: 'Assets-add',       component: () => import('../views/closed/AssetsView.vue') },
-
-      // Services
       { path: 'pay-for-me',    name: 'PayForMe-view',      component: () => import('../views/closed/PayForMeView.vue') },
-     
       { path: 'assets',        name: 'Assets-view',        component: () => import('../views/closed/Assets/ViewAsset.vue') },
-      
-      {
-      path: "/assets/:id",
-      name: "Assets-detail",
-      component: () => import("@/views/closed/Assets/DetailAsset.vue"),
-      props: true,
-     },
-
-
-
-       { path: 'bank-accounts',        name: 'BankAccounts-view',        component: () => import('../views/closed/BankAccounts/ViewBankAccount.vue') },
-      
-      {
-      path: "/bank-accounts/:id",
-      name: "BankAccount-detail",
-      component: () => import("@/views/closed/BankAccounts/DetailBankAccount.vue"),
-      props: true,
-     },
-
-     
-      { path: 'opportunities',        name: 'Opportunities-view',        component: () => import('../views/closed/Opportunities/ViewOpportunities.vue') },
-      
-      {
-      path: "/opportunities/:id",
-      name: "Opportunity-detail",
-      component: () => import("@/views/closed/Opportunities/DetailOpportunities.vue"),
-      props: true,
-     },
-
-     {
-      path: "/bank-accounts/:id",
-      name: "BankAccount-detail",
-      component: () => import("@/views/closed/BankAccounts/DetailBankAccount.vue"),
-      props: true,
-     },
-
-
-      { path: 'growth',        name: 'Growth-view',        component: () => import('../views/closed/GrowthView.vue') },
-      { path: 'monetization',  name: 'Monetization-view',  component: () => import('../views/closed/MonetizationView.vue') },
-
-      // Core pages
-      { path: 'orders',        name: 'Orders-view',        component: () => import('../views/closed/OrdersView.vue') },
-      { path: 'payments',      name: 'Payments-view',      component: () => import('../views/closed/PaymentsView.vue') },
-      { path: 'settings',      name: 'Settings-view',      component: () => import('../views/closed/SettingsView.vue') },
-
-      // Admin only
-      { path: 'users',         name: 'Users-view',         component: () => import('../views/closed/users/UsersView.vue') },
-      
-
-      { path: 'categories',         name: 'Categories-view',         component: () => import('../views/closed/Categories/ViewCategories.vue') },
-      
-      { path: 'users/add',     name: 'Users-add',          component: () => import('../views/closed/users/AddUsers.vue') },
-      
-      {
-      path: 'users/detail/:id',
-          name: 'Users-detail',
-        component: () => import('../views/closed/users/UsersDetail.vue'),
-        props: true // Passes route.params.id as a prop to DetailUsers.vue
-      },
-
-      { path: 'news',          name: 'News-view',          component: () => import('../views/closed/News/NewsView.vue') },
-      { path: 'news/add',      name: 'News-add',           component: () => import('../views/closed/News/AddNews.vue') },
-      { path: 'messages',      name: 'ContactMessage-view',component: () => import('../views/closed/ContactMessage/ContactMessageView.vue') },
+      { path: "/assets/:id", name: "Assets-detail", component: () => import("@/views/closed/Assets/DetailAsset.vue"), props: true },
+      { path: 'bank-accounts', name: 'BankAccounts-view', component: () => import('../views/closed/BankAccounts/ViewBankAccount.vue') },
+      { path: "/bank-accounts/:id", name: "BankAccount-detail", component: () => import("@/views/closed/BankAccounts/DetailBankAccount.vue"), props: true },
+      { path: 'opportunities', name: 'Opportunities-view', component: () => import('../views/closed/Opportunities/ViewOpportunities.vue') },
+      { path: "/opportunities/:id", name: "Opportunity-detail", component: () => import("@/views/closed/Opportunities/DetailOpportunities.vue"), props: true },
+      { path: 'growth', name: 'Growth-view', component: () => import('../views/closed/GrowthView.vue') },
+      { path: 'monetization', name: 'Monetization-view', component: () => import('../views/closed/MonetizationView.vue') },
+      { path: 'orders', name: 'Orders-view', component: () => import('../views/closed/OrdersView.vue') },
+      { path: 'payments', name: 'Payments-view', component: () => import('../views/closed/PaymentsView.vue') },
+      { path: 'settings', name: 'Settings-view', component: () => import('../views/closed/SettingsView.vue') },
+      { path: 'users', name: 'Users-view', component: () => import('../views/closed/users/UsersView.vue') },
+      { path: 'categories', name: 'Categories-view', component: () => import('../views/closed/Categories/ViewCategories.vue') },
+      { path: 'users/add', name: 'Users-add', component: () => import('../views/closed/users/AddUsers.vue') },
+      { path: 'users/detail/:id', name: 'Users-detail', component: () => import('../views/closed/users/UsersDetail.vue'), props: true },
+      { path: 'news', name: 'News-view', component: () => import('../views/closed/News/NewsView.vue') },
+      { path: 'news/add', name: 'News-add', component: () => import('../views/closed/News/AddNews.vue') },
+      { path: 'messages', name: 'ContactMessage-view', component: () => import('../views/closed/ContactMessage/ContactMessageView.vue') },
     ],
   },
 
-  // ── Fallback ─────────────────────────────────────────────────
   { path: '/:pathMatch(.*)*', name: 'accessDenied', component: AccessDenied },
 ];
 
@@ -150,7 +86,7 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const isAuthenticated = !!localStorage.getItem('token');
-  const requiresAuth    = to.matched.some(r => r.meta.requiresAuth);
+  const requiresAuth = to.matched.some(r => r.meta.requiresAuth);
   if (requiresAuth && !isAuthenticated) {
     next('/login');
   } else {
