@@ -5,6 +5,7 @@ import NewsEvents from '../views/opened/landing/NewsEvents.vue';
 import ContactPage from '../views/opened/landing/contactUs.vue';
 import OpportunitiesPage from '../views/opened/landing/Opportunities.vue';
 import ProductsPage from '../views/opened/landing/Products.vue';
+import AssetsPage from '../views/opened/landing/Assets.vue';
 import Login from '../views/opened/landing/auth/Login.vue';
 import Register from '../views/opened/landing/auth/Register.vue';
 import ForgotPassword from '../views/opened/auth/forgotPassword.vue';
@@ -21,12 +22,12 @@ const routes = [
   { path: '/contact-us', name: 'contact-us', component: ContactPage, meta: { requiresGuest: true } },
   { path: '/opportunities', name: 'opportunities', component: OpportunitiesPage, meta: { requiresGuest: true } },
   { path: '/products', name: 'products', component: ProductsPage, meta: { requiresGuest: true } },
+  { path: '/assets', name: 'assets', component: AssetsPage, meta: { requiresGuest: true } },
   { path: '/login', name: 'login', component: Login, meta: { requiresGuest: true } },
   { path: '/register', name: 'register', component: Register, meta: { requiresGuest: true } },
   { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
   { path: '/reset/:token', name: 'reset', component: Reset },
-  {
-    path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true }, redirect: '/dashboard/overview',
+  { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true }, redirect: '/dashboard/overview',
     children: [
       { path: 'overview', name: 'first-dash', component: FirstDash },
       { path: 'first-dash', name: 'first-dash-legacy', redirect: { name: 'first-dash' } },
