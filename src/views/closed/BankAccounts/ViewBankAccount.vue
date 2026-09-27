@@ -298,8 +298,12 @@ export default {
           "/bank-accounts"
         );
 
+        // Handle the API response shape:
+        // { status: 1, message: "...", bankAccounts: [...] }
         this.accounts = Array.isArray(response)
           ? response
+          : Array.isArray(response?.bankAccounts)
+          ? response.bankAccounts
           : Array.isArray(response?.data)
           ? response.data
           : [];
