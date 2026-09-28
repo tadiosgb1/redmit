@@ -1,10 +1,10 @@
 <template>
   <div class="min-h-screen bg-slate-50 text-slate-700 text-[13px]">
-    <Loading :visible="loading" message="Loading Pay For Me..." />
+    <Loading :visible="loading" message="Loading Access..." />
     <div class="mx-auto max-w-[1500px] p-4 sm:p-5">
       <div class="mb-5 flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div><p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Marketplace</p><h1 class="mt-0.5 text-lg font-bold text-slate-800">Pay For Me</h1><p class="mt-0.5 text-[11px] text-slate-400">Manage payment request products and digital resources.</p></div>
-        <button @click="openAdd" class="inline-flex h-9 items-center justify-center gap-2 bg-primary px-4 text-xs font-semibold text-white shadow-sm hover:opacity-90"><i class="fas fa-plus text-[10px]"></i>Add Pay For Me</button>
+        <div><p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Marketplace</p><h1 class="mt-0.5 text-lg font-bold text-slate-800">Access</h1><p class="mt-0.5 text-[11px] text-slate-400">Manage payment request products and digital resources.</p></div>
+        <button @click="openAdd" class="inline-flex h-9 items-center justify-center gap-2 bg-primary px-4 text-xs font-semibold text-white shadow-sm hover:opacity-90"><i class="fas fa-plus text-[10px]"></i>Add Access</button>
       </div>
 
       <div class="mb-4 border border-slate-200 bg-white p-3 shadow-sm">
@@ -16,16 +16,16 @@
       </div>
 
       <div class="overflow-hidden border border-slate-200 bg-white shadow-sm">
-        <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3"><div><h2 class="text-sm font-bold text-slate-800">Pay For Me Items</h2><p class="mt-0.5 text-[10px] text-slate-400">{{ count }} item{{ count === 1 ? "" : "s" }}</p></div></div>
+        <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3"><div><h2 class="text-sm font-bold text-slate-800">Access Items</h2><p class="mt-0.5 text-[10px] text-slate-400">{{ count }} item{{ count === 1 ? "" : "s" }}</p></div></div>
 
         <div class="hidden overflow-x-auto md:block">
           <table class="w-full min-w-[950px]">
             <thead><tr class="border-b border-slate-100 bg-slate-50">
-              <th class="table-head">Pay For Me</th><th class="table-head">Platform</th><th class="table-head">Type</th><th class="table-head">Price</th><th class="table-head">Currency</th><th class="table-head">Files</th><th class="table-head text-right">Actions</th>
+              <th class="table-head">Access</th><th class="table-head">Platform</th><th class="table-head">Type</th><th class="table-head">Price</th><th class="table-head">Currency</th><th class="table-head">Files</th><th class="table-head text-right">Actions</th>
             </tr></thead>
             <tbody>
               <tr v-for="(item,index) in items" :key="item.id || index" class="border-b border-slate-100 hover:bg-slate-50/70">
-                <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="h-11 w-11 flex-shrink-0 overflow-hidden border border-slate-200 bg-slate-100"><img v-if="getThumbnailUrl(item)" :src="getThumbnailUrl(item)" :alt="item.name" class="h-full w-full object-cover"><div v-else class="flex h-full w-full items-center justify-center text-slate-300"><i class="fas fa-hand-holding-usd text-sm"></i></div></div><div class="min-w-0"><p class="truncate text-xs font-semibold text-slate-700">{{ item.name || "Unnamed Pay For Me" }}</p><p class="mt-0.5 max-w-[280px] truncate text-[9px] text-slate-400">{{ item.description || "No description" }}</p></div></div></td>
+                <td class="px-4 py-3"><div class="flex items-center gap-3"><div class="h-11 w-11 flex-shrink-0 overflow-hidden border border-slate-200 bg-slate-100"><img v-if="getThumbnailUrl(item)" :src="getThumbnailUrl(item)" :alt="item.name" class="h-full w-full object-cover"><div v-else class="flex h-full w-full items-center justify-center text-slate-300"><i class="fas fa-hand-holding-usd text-sm"></i></div></div><div class="min-w-0"><p class="truncate text-xs font-semibold text-slate-700">{{ item.name || "Unnamed Access" }}</p><p class="mt-0.5 max-w-[280px] truncate text-[9px] text-slate-400">{{ item.description || "No description" }}</p></div></div></td>
                 <td class="px-4 py-3"><a v-if="item.platform_link" :href="item.platform_link" target="_blank" rel="noopener" class="text-[10px] font-semibold text-primary hover:underline">Open platform</a><span v-else class="text-[9px] text-slate-400">—</span></td>
                 <td class="px-4 py-3"><span class="inline-flex bg-primary/10 px-2 py-1 text-[9px] font-semibold text-primary">{{ item.type || "—" }}</span></td>
                 <td class="px-4 py-3"><span class="text-xs font-semibold text-slate-700">{{ formatPrice(item.price) }}</span></td>
@@ -40,7 +40,7 @@
 
         <div class="divide-y divide-slate-100 md:hidden">
           <div v-for="(item,index) in items" :key="item.id || index" class="p-4">
-            <div class="flex gap-3"><div class="h-14 w-14 flex-shrink-0 overflow-hidden border border-slate-200 bg-slate-100"><img v-if="getThumbnailUrl(item)" :src="getThumbnailUrl(item)" :alt="item.name" class="h-full w-full object-cover"><div v-else class="flex h-full w-full items-center justify-center text-slate-300"><i class="fas fa-hand-holding-usd"></i></div></div><div class="min-w-0 flex-1"><div class="flex items-start justify-between gap-2"><div class="min-w-0"><p class="truncate text-xs font-semibold text-slate-700">{{ item.name || "Unnamed Pay For Me" }}</p><p class="mt-1 font-mono text-[9px] text-slate-400">{{ item.slug || "No slug" }}</p></div><span class="flex-shrink-0 text-xs font-bold text-slate-800">{{ formatPrice(item.price) }} {{ item.currency || "" }}</span></div><p class="mt-2 line-clamp-2 text-[10px] text-slate-500">{{ item.description || "No description" }}</p><div class="mt-3 flex items-center justify-between"><span class="text-[9px] text-slate-400">{{ getFiles(item).length }} file{{ getFiles(item).length === 1 ? "" : "s" }}</span><div class="flex gap-1.5"><button @click="viewItem(item)" class="h-7 border border-slate-200 px-2.5 text-[9px] font-semibold text-slate-500">View</button><button @click="editItem(item)" class="h-7 bg-primary px-2.5 text-[9px] font-semibold text-white">Edit</button></div></div></div></div>
+            <div class="flex gap-3"><div class="h-14 w-14 flex-shrink-0 overflow-hidden border border-slate-200 bg-slate-100"><img v-if="getThumbnailUrl(item)" :src="getThumbnailUrl(item)" :alt="item.name" class="h-full w-full object-cover"><div v-else class="flex h-full w-full items-center justify-center text-slate-300"><i class="fas fa-hand-holding-usd"></i></div></div><div class="min-w-0 flex-1"><div class="flex items-start justify-between gap-2"><div class="min-w-0"><p class="truncate text-xs font-semibold text-slate-700">{{ item.name || "Unnamed Access" }}</p><p class="mt-1 font-mono text-[9px] text-slate-400">{{ item.slug || "No slug" }}</p></div><span class="flex-shrink-0 text-xs font-bold text-slate-800">{{ formatPrice(item.price) }} {{ item.currency || "" }}</span></div><p class="mt-2 line-clamp-2 text-[10px] text-slate-500">{{ item.description || "No description" }}</p><div class="mt-3 flex items-center justify-between"><span class="text-[9px] text-slate-400">{{ getFiles(item).length }} file{{ getFiles(item).length === 1 ? "" : "s" }}</span><div class="flex gap-1.5"><button @click="viewItem(item)" class="h-7 border border-slate-200 px-2.5 text-[9px] font-semibold text-slate-500">View</button><button @click="editItem(item)" class="h-7 bg-primary px-2.5 text-[9px] font-semibold text-white">Edit</button></div></div></div></div>
           </div>
           <div v-if="!loading && items.length === 0" class="px-4 py-10 text-center text-xs text-slate-500">No payment request items found.</div>
         </div>
@@ -87,9 +87,9 @@ export default {
         this.pageSize = payload?.pagination?.limit || response?.pagination?.limit || this.pageSize;
         this.totalPages = payload?.pagination?.totalPages || response?.pagination?.totalPages || Math.max(1, Math.ceil(this.count / this.pageSize));
       } catch (e) {
-        console.error("Error loading Pay For Me:", e);
+        console.error("Error loading Access:", e);
         this.items = []; this.count = 0; this.totalPages = 1;
-        this.showToast(e?.response?.data?.message || "Failed to load Pay For Me", "error");
+        this.showToast(e?.response?.data?.message || "Failed to load Access", "error");
       } finally { this.loading = false; }
     },
     getThumbnailUrl(item) {
@@ -107,7 +107,7 @@ export default {
     formatPrice(value) { const number = Number(value); return Number.isNaN(number) ? "0.00" : number.toFixed(2); },
     openAdd() { this.selectedItem = null; this.showAdd = true; },
     editItem(item) { this.selectedItem = item; this.showEdit = true; },
-    viewItem(item) { if (item?.id) this.$router.push({ name: "Pay For Me-detail", params: { id: item.id } }); },
+    viewItem(item) { if (item?.id) this.$router.push({ name: "Access-detail", params: { id: item.id } }); },
     closeModals() { this.showAdd = false; this.showEdit = false; this.selectedItem = null; },
     async handleSaved() { this.closeModals(); await this.fetchAccess(this.currentPage); },
     resetFilters() { this.search = ""; this.typeFilter = ""; this.fetchAccess(1); },
