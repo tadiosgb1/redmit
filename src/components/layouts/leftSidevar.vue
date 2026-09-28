@@ -345,33 +345,10 @@ export default {
             // Digital Products
             // ---------------------------------------------------
             {
-              type: "submenu",
-
               key: "products",
-
               label: "Digital Products",
-
+              route: "Products-view",
               icon: "fa-box-open",
-
-              children: [
-
-                {
-                  label: "All Products",
-
-                  route: "Products-view",
-
-                  icon: "fa-list",
-                },
-
-                {
-                  label: "Add Product",
-
-                  route: "Products-add",
-
-                  icon: "fa-plus",
-                },
-
-              ],
             },
 
 
@@ -379,33 +356,10 @@ export default {
             // Digital Assets
             // ---------------------------------------------------
             {
-              type: "submenu",
-
               key: "assets",
-
-            label: "Digital Assets",
-
+              label: "Digital Assets",
+              route: "Assets-view",
               icon: "fa-exchange-alt",
-
-              children: [
-
-                {
-                  label: "All Listings",
-
-                  route: "Assets-view",
-
-                  icon: "fa-list",
-                },
-
-                {
-                  label: "Add Listing",
-
-                  route: "Assets-add",
-
-                  icon: "fa-plus",
-                },
-
-              ],
             },
 
           ],
