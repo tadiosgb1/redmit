@@ -108,12 +108,12 @@ export default {
   name: "AddAccess",
   data() {
     return {
-      form: { name: "", slug: "", description: "", type: "", price: "", currency: "USD" },
+      form: { name: "", slug: "", description: "", type: "", price: "", currency: "USD", platform_link: "" },
       thumbnailFile: null,
       thumbnailPreview: null,
       selectedFiles: [],
       filePreviews: [],
-      detailsText: "",
+      detailsRows: [{ key: "", value: "" }],
       saving: false,
       errors: {},
     };
@@ -125,11 +125,14 @@ export default {
     },
     validate() {
       this.errors = {};
-      if (!this.form.name.trim()) this.errors.name = "Access name is required.";
+      if (!this.form.name.trim()) this.errors.name = "Request name is required.";
       if (this.detailsText.trim()) {
         try { JSON.parse(this.detailsText); } catch (e) { this.errors.details = "Details must be valid JSON."; }
       }
       return Object.keys(this.errors).length === 0;
+    },
+    addDetail() { this.detailsRows.push({ key: "", value: "" }); },
+    removeDetail(index) { if (this.detailsRows.length > 1) this.detailsRows.splice(index, 1); },
     },
     revokePreview(url) {
       if (url && url.startsWith("blob:")) URL.revokeObjectURL(url);
@@ -178,18 +181,21 @@ export default {
         formData.append("type", this.form.type.trim());
         formData.append("price", this.form.price || "0");
         formData.append("currency", this.form.currency || "USD");
+        formData.append("platform_link", this.form.platform_link.trim());
         if (this.thumbnailFile) formData.append("thumbnail", this.thumbnailFile);
         this.selectedFiles.forEach(file => formData.append("files", file));
-        if (this.detailsText.trim()) formData.append("details", this.detailsText.trim());
+        const details = {};
+        this.detailsRows.forEach(row => { if (row.key.trim()) details[row.key.trim()] = row.value; });
+        if (Object.keys(details).length) formData.append("details", JSON.stringify(details));
 
         const response = await this.$apiPost("/Access", formData);
         if (response) {
-          this.showToast("Access created successfully", "success");
+          this.showToast("Payment request created successfully", "success");
           this.$emit("saved");
         }
       } catch (e) {
         console.error("Error creating Access:", e);
-        this.showToast(e?.response?.data?.message || "Failed to create Access", "error");
+        this.showToast(e?.response?.data?.message || "Failed to create payment request", "error");
       } finally {
         this.saving = false;
       }
