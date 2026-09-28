@@ -7,7 +7,7 @@
             <span class="w-8 h-8 bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fas fa-user-plus text-xs"></i></span>
             Add User
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5 ml-10">Create a new account and assign a role</p>
+          <p class="text-xs text-slate-500 mt-0.5 ml-10">Create a new account</p>
         </div>
         <button type="button" @click="$emit('close')" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-200/60 transition" aria-label="Close"><i class="fas fa-times text-sm"></i></button>
       </div>
@@ -17,7 +17,7 @@
           <div>
             <label class="block mb-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider">Avatar Image</label>
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 border border-slate-200 bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden relative">
+              <div class="w-12 h-12 border border-slate-200 bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden">
                 <img v-if="avatarPreview" :src="avatarPreview" alt="Avatar Preview" class="w-full h-full object-cover" />
                 <span v-else class="text-xs font-bold text-slate-500">{{ getInitials(form.fullName || form.username) }}</span>
               </div>
@@ -47,18 +47,10 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block mb-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider">Phone Number <span class="text-red-500">*</span></label>
-              <input v-model="form.phone" type="tel" required placeholder="+251..." class="input-base" />
-            </div>
-            <div>
-              <label class="block mb-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider">Role <span class="text-red-500">*</span></label>
-              <select v-model="form.role" required class="input-base bg-white">
-                <option value="USER">USER</option>
-                <option value="ADMIN">ADMIN</option>
-              </select>
-            </div>
+          <div>
+            <label class="block mb-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider">Phone Number <span class="text-red-500">*</span></label>
+            <input v-model="form.phone" type="tel" required placeholder="+251..." class="input-base" />
+            <p class="text-[10px] text-slate-400 mt-1">Use the same phone format accepted by the registration API, for example +251911000000.</p>
           </div>
 
           <div>
@@ -104,7 +96,7 @@ export default {
       error: '',
       avatarFile: null,
       avatarPreview: '',
-      form: { fullName: '', username: '', phone: '', email: '', password: '', role: 'USER' },
+      form: { fullName: '', username: '', phone: '', email: '', password: '' },
     };
   },
   beforeUnmount() {
@@ -167,11 +159,10 @@ export default {
         payload.append('username', this.form.username.trim());
         payload.append('password', this.form.password);
         payload.append('fullName', this.form.fullName.trim());
-        payload.append('role', this.form.role);
         if (this.avatarFile) payload.append('avatar', this.avatarFile);
 
-        // Registration is a public endpoint. Use the plain Axios client so
-        // an old/invalid Authorization token cannot block account creation.
+        // Match the successful Postman request exactly. The public
+        // registration endpoint assigns the default USER role itself.
         const response = await this.$apiClient.post('/auth/register', payload, {
           headers: { Accept: 'application/json' },
         });
