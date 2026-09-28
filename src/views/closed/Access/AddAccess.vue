@@ -41,6 +41,8 @@
           </div>
         </div>
 
+        <div class="mt-4"><label class="field-label">Platform Link <span class="text-slate-400">(optional)</span></label><input v-model="form.platform_link" type="url" placeholder="https://coursera.org/..." class="field-input"></div>
+
         <div class="mt-4">
           <label class="field-label">Thumbnail</label>
           <div class="border border-dashed border-slate-300 bg-slate-50 p-3">
