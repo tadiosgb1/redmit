@@ -131,11 +131,10 @@ export default {
     validate() {
       this.errors = {};
       if (!this.form.name.trim()) this.errors.name = "Request name is required.";
-            return Object.keys(this.errors).length === 0;
+      return Object.keys(this.errors).length === 0;
     },
     addDetail() { this.detailsRows.push({ key: "", value: "" }); },
     removeDetail(index) { if (this.detailsRows.length > 1) this.detailsRows.splice(index, 1); },
-    },
     revokePreview(url) {
       if (url && url.startsWith("blob:")) URL.revokeObjectURL(url);
     },
