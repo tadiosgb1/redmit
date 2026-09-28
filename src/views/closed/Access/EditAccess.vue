@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
         <div class="flex items-center gap-3">
           <div class="flex h-9 w-9 items-center justify-center bg-primary/10 text-primary"><i class="fas fa-key text-sm"></i></div>
-          <div><h2 class="text-sm font-bold text-slate-800">Edit Access</h2><p class="mt-0.5 text-[10px] text-slate-400">Update this access item</p></div>
+          <div><h2 class="text-sm font-bold text-slate-800">Edit Pay For Me</h2><p class="mt-0.5 text-[10px] text-slate-400">Update this payment request</p></div>
         </div>
         <button @click="close" :disabled="saving" class="flex h-7 w-7 items-center justify-center text-slate-400 hover:bg-slate-100 disabled:opacity-40"><i class="fas fa-times text-xs"></i></button>
       </div>
@@ -90,14 +90,14 @@ export default {
   props: { data: { type: Object, default: null } },
   data() {
     return {
-      form: { name: "", slug: "", description: "", type: "", price: "", currency: "USD" },
+      form: { name: "", slug: "", description: "", type: "", price: "", currency: "USD", platform_link: "" },
       thumbnailFile: null,
       thumbnailPreview: null,
       existingFiles: [],
       removedFileIds: [],
       selectedFiles: [],
       filePreviews: [],
-      detailsText: "",
+      detailsRows: [{ key: "", value: "" }],
       saving: false,
       errors: {},
     };
@@ -113,16 +113,17 @@ export default {
       this.form.type = this.data.type || "";
       this.form.price = this.data.price ?? "";
       this.form.currency = this.data.currency || "USD";
+      this.form.platform_link = this.data.platform_link || "";
       this.thumbnailPreview = this.getMediaUrl(this.data.thumbnail);
       this.existingFiles = Array.isArray(this.data.files) ? [...this.data.files] : [];
-      this.detailsText = this.data.details == null ? "" : typeof this.data.details === "string" ? this.data.details : JSON.stringify(this.data.details, null, 2);
+      this.detailsRows = this.parseDetails(this.data.details);
       this.thumbnailFile = null;
       this.selectedFiles = [];
       this.filePreviews = [];
       this.removedFileIds = [];
       this.errors = {};
     },
-    getMediaUrl(media) {
+    parseDetails(details) {\n      if (!details) return [{ key: "", value: "" }];\n      let parsed = details;\n      if (typeof parsed === "string") { try { parsed = JSON.parse(parsed); } catch { return [{ key: "", value: parsed }]; } }\n      if (Array.isArray(parsed)) return parsed.map(item => ({ key: item.key || item.name || "", value: item.value ?? "" }));\n      if (typeof parsed === "object") return Object.keys(parsed).map(key => ({ key, value: typeof parsed[key] === "object" ? JSON.stringify(parsed[key]) : String(parsed[key] ?? "") }));\n      return [{ key: "", value: String(parsed) }];\n    },\n    addDetail() { this.detailsRows.push({ key: "", value: "" }); },\n    removeDetail(index) { if (this.detailsRows.length > 1) this.detailsRows.splice(index, 1); },\n    getMediaUrl(media) {
       if (!media) return null;
       if (typeof media === "string") return media;
       return media.url || media.path || media.src || media.location || media.fileUrl || null;
@@ -179,7 +180,7 @@ export default {
     },
     validate() {
       this.errors = {};
-      if (!this.form.name.trim()) this.errors.name = "Access name is required.";
+      if (!this.form.name.trim()) this.errors.name = "Request name is required.";
       if (this.detailsText.trim()) {
         try { JSON.parse(this.detailsText); } catch (e) { this.errors.details = "Details must be valid JSON."; }
       }
@@ -197,10 +198,13 @@ export default {
         formData.append("type", this.form.type.trim());
         formData.append("price", this.form.price || "0");
         formData.append("currency", this.form.currency || "USD");
+        formData.append("platform_link", this.form.platform_link.trim());
         if (this.thumbnailFile) formData.append("thumbnail", this.thumbnailFile);
         this.selectedFiles.forEach(file => formData.append("files", file));
         if (this.removedFileIds.length) formData.append("removedFileIds", JSON.stringify(this.removedFileIds));
-        if (this.detailsText.trim()) formData.append("details", this.detailsText.trim());
+        const details = {};
+        this.detailsRows.forEach(row => { if (row.key.trim()) details[row.key.trim()] = row.value; });
+        if (Object.keys(details).length) formData.append("details", JSON.stringify(details));
 
         const response = await this.$apiPatch(`/Access/${this.data.id}`, "", formData);
         if (response) {
@@ -229,4 +233,4 @@ export default {
 .field-input { @apply h-9 w-full border border-slate-200 bg-white px-3 text-xs text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary/10; }
 .field-textarea { @apply w-full resize-none border border-slate-200 bg-white px-3 py-2.5 text-xs leading-5 text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary/10; }
 .error-text { @apply mt-1 text-[10px] text-red-500; }
-</style>
+</style<div class="mt-4"><label class="field-label">Platform Link <span class="text-slate-400">(optional)</span></label><input v-model="form.platform_link" type="url" placeholder="https://coursera.org/..." class="field-input"></div>\n\n        >
