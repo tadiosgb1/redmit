@@ -27,28 +27,36 @@ const routes = [
   { path: '/register', name: 'register', component: Register, meta: { requiresGuest: true } },
   { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
   { path: '/reset/:token', name: 'reset', component: Reset },
-  { path: '/dashboard', name: 'dashboard', component: Dashboard, meta: { requiresAuth: true }, redirect: '/dashboard/overview',
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard,
+    meta: { requiresAuth: true },
+    redirect: '/dashboard/overview',
     children: [
       { path: 'overview', name: 'first-dash', component: FirstDash },
       { path: 'first-dash', name: 'first-dash-legacy', redirect: { name: 'first-dash' } },
       { path: 'profile', name: 'Profile', component: () => import('../views/closed/Profile.vue') },
       { path: 'products', name: 'Products-view', component: () => import('../views/closed/products/ProductsView.vue') },
-      { path: "/products/:id", name: "Products-detail", component: () => import("@/views/closed/products/ProductDetails.vue"), props: true },
+      { path: 'products/:id', name: 'Products-detail', component: () => import('../views/closed/products/ProductDetails.vue'), props: true },
       { path: 'products/add', name: 'Products-add', component: () => import('../views/closed/products/ProductsView.vue') },
       { path: 'products/categories', name: 'Categories-view', component: () => import('../views/closed/products/ProductsView.vue') },
       { path: 'access', name: 'Access-view', component: () => import('../views/closed/Access/ViewAccess.vue') },
-      { path: "/access/:id", name: "Access-detail", component: () => import("@/views/closed/Access/DetailAccess.vue"), props: true },
+      { path: 'access/:id', name: 'Access-detail', component: () => import('../views/closed/Access/DetailAccess.vue'), props: true },
       { path: 'access/add', name: 'Access-add', component: () => import('../views/closed/Access/ViewAccess.vue') },
       { path: 'pay-for-me', name: 'PayForMe-view', component: () => import('../views/closed/PayForMeView.vue') },
       { path: 'assets', name: 'Assets-view', component: () => import('../views/closed/Assets/ViewAsset.vue') },
-      { path: "/assets/:id", name: "Assets-detail", component: () => import("@/views/closed/Assets/DetailAsset.vue"), props: true },
+      { path: 'assets/:id', name: 'Assets-detail', component: () => import('../views/closed/Assets/DetailAsset.vue'), props: true },
       { path: 'bank-accounts', name: 'BankAccounts-view', component: () => import('../views/closed/BankAccounts/ViewBankAccount.vue') },
-      { path: "/bank-accounts/:id", name: "BankAccount-detail", component: () => import("@/views/closed/BankAccounts/DetailBankAccount.vue"), props: true },
+      { path: 'bank-accounts/:id', name: 'BankAccount-detail', component: () => import('../views/closed/BankAccounts/DetailBankAccount.vue'), props: true },
       { path: 'opportunities', name: 'Opportunities-view', component: () => import('../views/closed/Opportunities/ViewOpportunities.vue') },
-      { path: "/opportunities/:id", name: "Opportunity-detail", component: () => import("@/views/closed/Opportunities/DetailOpportunities.vue"), props: true },
+      { path: 'opportunities/:id', name: 'Opportunity-detail', component: () => import('../views/closed/Opportunities/DetailOpportunities.vue'), props: true },
       { path: 'growth', name: 'Growth-view', component: () => import('../views/closed/growth/ViewGrowth.vue') },
-      { path: '/growth/:id', name: 'Growth-detail', component: () => import('../views/closed/growth/DetailGrowth.vue'), props: true },
-      { path: 'orders', name: 'Orders-view', component: () => import('../views/closed/OrdersView.vue') },
+      { path: 'growth/:id', name: 'Growth-detail', component: () => import('../views/closed/growth/DetailGrowth.vue'), props: true },
+      { path: 'orders', name: 'Orders-view', component: () => import('../views/closed/Orders/ViewOrders.vue') },
+      { path: 'orders/add', name: 'Orders-add', component: () => import('../views/closed/Orders/AddOrder.vue') },
+      { path: 'orders/:id/edit', name: 'Orders-edit', component: () => import('../views/closed/Orders/EditOrder.vue'), props: true },
+      { path: 'orders/:id', name: 'Orders-detail', component: () => import('../views/closed/Orders/DetailOrder.vue'), props: true },
       { path: 'payments', name: 'Payments-view', component: () => import('../views/closed/PaymentsView.vue') },
       { path: 'settings', name: 'Settings-view', component: () => import('../views/closed/SettingsView.vue') },
       { path: 'users', name: 'Users-view', component: () => import('../views/closed/users/UsersView.vue') },
@@ -63,6 +71,19 @@ const routes = [
   { path: '/:pathMatch(.*)*', name: 'accessDenied', component: AccessDenied },
 ];
 
-const router = createRouter({ history: createWebHistory(), routes, scrollBehavior(_to, _from, savedPosition) { return savedPosition || { top: 0 }; } });
-router.beforeEach((to, _from, next) => { const isAuthenticated = !!localStorage.getItem('token'); const requiresAuth = to.matched.some(r => r.meta.requiresAuth); if (requiresAuth && !isAuthenticated) next('/login'); else next(); });
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+  scrollBehavior(_to, _from, savedPosition) {
+    return savedPosition || { top: 0 };
+  },
+});
+
+router.beforeEach((to, _from, next) => {
+  const isAuthenticated = !!localStorage.getItem('token');
+  const requiresAuth = to.matched.some(r => r.meta.requiresAuth);
+  if (requiresAuth && !isAuthenticated) next('/login');
+  else next();
+});
+
 export default router;
