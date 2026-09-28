@@ -394,7 +394,7 @@ export default {
             {
               key: "admin-growth",
 
-              label: "Advertising",
+              label: "Channel Growth",
 
               route: "Growth-view",
 
