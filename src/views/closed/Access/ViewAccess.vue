@@ -63,7 +63,7 @@ import AddAccess from "./AddAccess.vue";
 import EditAccess from "./EditAccess.vue";
 
 export default {
-  name: "ViewPay For Me",
+  name: "ViewAccess",
   components: { Loading, AddAccess, EditAccess },
   data() {
     return { items: [], count: 0, currentPage: 1, pageSize: 10, totalPages: 1, search: "", typeFilter: "", showAdd: false, showEdit: false, selectedItem: null, loading: false };
