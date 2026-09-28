@@ -52,19 +52,19 @@
       </div>
     </div>
 
-    <AddPay For Me v-if="showAdd" @close="closeModals" @saved="handleSaved" />
-    <EditPay For Me v-if="showEdit" :data="selectedItem" @close="closeModals" @saved="handleSaved" />
+    <AddAccess v-if="showAdd" @close="closeModals" @saved="handleSaved" />
+    <EditAccess v-if="showEdit" :data="selectedItem" @close="closeModals" @saved="handleSaved" />
   </div>
 </template>
 
 <script>
 import Loading from "@/components/Loading.vue";
-import AddPay For Me from "./AddPay For Me.vue";
-import EditPay For Me from "./EditPay For Me.vue";
+import AddAccess from "./AddAccess.vue";
+import EditAccess from "./EditAccess.vue";
 
 export default {
   name: "ViewPay For Me",
-  components: { Loading, AddPay For Me, EditPay For Me },
+  components: { Loading, AddAccess, EditAccess },
   data() {
     return { items: [], count: 0, currentPage: 1, pageSize: 10, totalPages: 1, search: "", typeFilter: "", showAdd: false, showEdit: false, selectedItem: null, loading: false };
   },
