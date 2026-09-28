@@ -88,9 +88,12 @@
         </div>
 
         <div class="mt-4">
-          <label class="field-label">Details <span class="text-slate-400">(JSON object or array)</span></label>
-          <textarea v-model="detailsText" rows="5" placeholder='{"audience":"developers","language":"English"}' class="field-textarea font-mono" :class="{ 'border-red-300': errors.details }"></textarea>
-          <p v-if="errors.details" class="error-text">{{ errors.details }}</p>
+          <div class="mb-1.5 flex items-center justify-between"><label class="field-label mb-0">Payment Details <span class="text-slate-400">(optional)</span></label><button type="button" @click="addDetail" class="inline-flex h-7 w-7 items-center justify-center bg-primary text-white" title="Add detail"><i class="fas fa-plus text-[9px]"></i></button></div>
+          <div v-for="(row,index) in detailsRows" :key="index" class="mb-2 flex gap-2">
+            <input v-model="row.key" type="text" placeholder="Detail name" class="field-input flex-1">
+            <input v-model="row.value" type="text" placeholder="Detail value" class="field-input flex-[2]">
+            <button type="button" @click="removeDetail(index)" :disabled="detailsRows.length === 1" class="h-9 w-9 flex-shrink-0 border border-slate-200 text-red-500 disabled:opacity-30"><i class="fas fa-minus text-[9px]"></i></button>
+          </div>
         </div>
 
         <div class="mt-4 flex items-center justify-end gap-2 border-t border-slate-100 pt-3">
@@ -128,10 +131,7 @@ export default {
     validate() {
       this.errors = {};
       if (!this.form.name.trim()) this.errors.name = "Request name is required.";
-      if (this.detailsText.trim()) {
-        try { JSON.parse(this.detailsText); } catch (e) { this.errors.details = "Details must be valid JSON."; }
-      }
-      return Object.keys(this.errors).length === 0;
+            return Object.keys(this.errors).length === 0;
     },
     addDetail() { this.detailsRows.push({ key: "", value: "" }); },
     removeDetail(index) { if (this.detailsRows.length > 1) this.detailsRows.splice(index, 1); },
