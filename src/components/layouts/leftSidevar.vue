@@ -390,15 +390,6 @@ export default {
               badge: "New",
             },
 
-            {
-              key: "admin-access",
-
-              label: "Digital Access",
-
-              route: "Access-view",
-
-              icon: "fa-key",
-            },
 
             {
               key: "admin-growth",
