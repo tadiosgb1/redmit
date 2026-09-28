@@ -383,7 +383,7 @@ export default {
 
               label: "Pay For Me",
 
-              route: "PayForMe-view",
+              route: "Access-view",
 
               icon: "fa-hand-holding-usd",
 
