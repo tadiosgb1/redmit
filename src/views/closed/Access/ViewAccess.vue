@@ -9,8 +9,8 @@
 
       <div class="mb-4 border border-slate-200 bg-white p-3 shadow-sm">
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div><label class="mb-1 block text-[10px] font-semibold text-slate-500">Search</label><div class="relative"><i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400"></i><input v-model="search" type="text" placeholder="Search payment request..." class="h-9 w-full border border-slate-200 pl-8 pr-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" @keyup.enter="fetchPay For Me(1)"></div></div>
-          <div><label class="mb-1 block text-[10px] font-semibold text-slate-500">Type</label><select v-model="typeFilter" class="h-9 w-full border border-slate-200 px-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" @change="fetchPay For Me(1)"><option value="">All Types</option><option v-for="type in availableTypes" :key="type" :value="type">{{ type }}</option></select></div>
+          <div><label class="mb-1 block text-[10px] font-semibold text-slate-500">Search</label><div class="relative"><i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-400"></i><input v-model="search" type="text" placeholder="Search payment request..." class="h-9 w-full border border-slate-200 pl-8 pr-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" @keyup.enter="fetchAccess(1)"></div></div>
+          <div><label class="mb-1 block text-[10px] font-semibold text-slate-500">Type</label><select v-model="typeFilter" class="h-9 w-full border border-slate-200 px-3 text-xs outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" @change="fetchAccess(1)"><option value="">All Types</option><option v-for="type in availableTypes" :key="type" :value="type">{{ type }}</option></select></div>
           <div class="flex items-end"><button @click="resetFilters" class="h-9 border border-slate-200 bg-white px-4 text-[10px] font-semibold text-slate-500 hover:bg-slate-50"><i class="fas fa-sync-alt mr-1"></i>Reset</button></div>
         </div>
       </div>
@@ -47,7 +47,7 @@
 
         <div class="flex flex-col gap-2 border-t border-slate-100 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
           <p class="text-[10px] text-slate-400">Showing page {{ currentPage }} of {{ totalPages }}</p>
-          <div class="flex gap-2"><button @click="fetchPay For Me(currentPage - 1)" :disabled="currentPage <= 1 || loading" class="h-8 border border-slate-200 px-3 text-[10px] font-semibold text-slate-500 disabled:opacity-40">Previous</button><button @click="fetchPay For Me(currentPage + 1)" :disabled="currentPage >= totalPages || loading" class="h-8 border border-slate-200 px-3 text-[10px] font-semibold text-slate-500 disabled:opacity-40">Next</button></div>
+          <div class="flex gap-2"><button @click="fetchAccess(currentPage - 1)" :disabled="currentPage <= 1 || loading" class="h-8 border border-slate-200 px-3 text-[10px] font-semibold text-slate-500 disabled:opacity-40">Previous</button><button @click="fetchAccess(currentPage + 1)" :disabled="currentPage >= totalPages || loading" class="h-8 border border-slate-200 px-3 text-[10px] font-semibold text-slate-500 disabled:opacity-40">Next</button></div>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@ export default {
     availableTypes() { return [...new Set(this.items.map(item => item.type).filter(Boolean))]; },
   },
   methods: {
-    async fetchPay For Me(page = 1) {
+    async fetchAccess(page = 1) {
       if (page < 1) return;
       this.loading = true;
       try {
@@ -109,11 +109,11 @@ export default {
     editItem(item) { this.selectedItem = item; this.showEdit = true; },
     viewItem(item) { if (item?.id) this.$router.push({ name: "Pay For Me-detail", params: { id: item.id } }); },
     closeModals() { this.showAdd = false; this.showEdit = false; this.selectedItem = null; },
-    async handleSaved() { this.closeModals(); await this.fetchPay For Me(this.currentPage); },
-    resetFilters() { this.search = ""; this.typeFilter = ""; this.fetchPay For Me(1); },
+    async handleSaved() { this.closeModals(); await this.fetchAccess(this.currentPage); },
+    resetFilters() { this.search = ""; this.typeFilter = ""; this.fetchAccess(1); },
     showToast(message, type) { if (this.$root.$refs.toast) this.$root.$refs.toast.showToast(message, type); },
   },
-  mounted() { this.fetchPay For Me(); },
+  mounted() { this.fetchAccess(); },
 };
 </script>
 
