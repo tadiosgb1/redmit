@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
         <div class="flex items-center gap-3">
           <div class="flex h-9 w-9 items-center justify-center bg-primary/10 text-primary"><i class="fas fa-key text-sm"></i></div>
-          <div><h2 class="text-sm font-bold text-slate-800">Edit Pay For Me</h2><p class="mt-0.5 text-[10px] text-slate-400">Update this payment request</p></div>
+          <div><h2 class="text-sm font-bold text-slate-800">Edit Access</h2><p class="mt-0.5 text-[10px] text-slate-400">Update this payment request</p></div>
         </div>
         <button @click="close" :disabled="saving" class="flex h-7 w-7 items-center justify-center text-slate-400 hover:bg-slate-100 disabled:opacity-40"><i class="fas fa-times text-xs"></i></button>
       </div>
