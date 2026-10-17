@@ -47,6 +47,7 @@
         </div>
 
         <!-- Edit -->
+        <button v-if="product" type="button" @click="addToCart" class="inline-flex h-9 items-center justify-center gap-2 border border-primary px-3.5 text-xs font-semibold text-primary hover:bg-primary/5"><i class="fas fa-cart-plus text-[10px]"></i>Add to cart</button>
         <button
           v-if="product"
           type="button"
@@ -646,6 +647,7 @@
 <script>
 import Loading from "@/components/Loading.vue";
 import EditProducts from "./EditProducts.vue";
+import { useDigitalCart } from "@/utils/digitalCart";
 
 export default {
   name: "ProductDetails",
@@ -708,6 +710,7 @@ export default {
   },
 
   methods: {
+    addToCart() { const cart = useDigitalCart(); if (cart.add(this.product, "DIGITAL_PRODUCT")) this.$router.push({ name: "Digital-cart" }); },
     /**
      * Load product.
      *
