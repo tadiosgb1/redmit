@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-6">
       <div class="mb-10 max-w-3xl text-left">
         <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-700 uppercase tracking-widest mb-4"><i class="fas fa-box-open text-[10px]"></i> Digital Products Marketplace</span>
-        <h2 class="text-3xl font-black tracking-tight text-slate-950 mb-4 sm:text-4xl">Buy Downloadable Digital Goods</h2>
+        <h2 class="text-2xl font-extrabold tracking-tight text-slate-950 mb-3 sm:text-3xl">Buy Downloadable Digital Goods</h2>
         <p class="max-w-2xl text-sm leading-7 text-slate-600">Browse digital products available on Redmit. Sign in to purchase and get instant access.</p>
       </div>
       <div v-if="categories.length" class="mb-10 flex flex-wrap justify-start gap-2">
@@ -14,7 +14,7 @@
       <div v-else-if="!products.length" class="py-16 text-center text-slate-400">No products available right now.</div>
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <div v-for="product in products" :key="product.id" class="group bg-white border border-slate-200 rounded-none overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 hover:-translate-y-1 transition-all duration-300">
-          <div class="relative h-40 flex items-center justify-center overflow-hidden bg-blue-50"><i class="fas fa-box-open text-5xl text-blue-400 opacity-20"></i><div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-box-open text-4xl text-blue-400"></i></div><span class="absolute top-3 left-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">{{ product.category?.name || 'Digital Product' }}</span><span v-if="product.isActive" class="absolute top-3 right-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-green-100 text-green-700">Available</span></div>
+          <div class="relative h-40 flex items-center justify-center overflow-hidden bg-blue-50"><i class="fas fa-box-open text-4xl text-blue-400 opacity-20"></i><div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-box-open text-3xl text-blue-400"></i></div><span class="absolute top-3 left-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">{{ product.category?.name || 'Digital Product' }}</span><span v-if="product.isActive" class="absolute top-3 right-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-green-100 text-green-700">Available</span></div>
           <div class="p-4"><h4 class="font-black text-slate-800 text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">{{ product.name }}</h4><p class="text-xs text-slate-400 mb-3 line-clamp-2 leading-relaxed">{{ product.shortDescription || product.description }}</p><div class="flex items-center justify-between"><div><p class="text-lg font-black text-slate-900">{{ formatPrice(product.price, product.currency) }}</p><p class="text-[10px] text-slate-400">{{ product.seller?.fullName || product.seller?.username || 'Redmit seller' }}</p></div><button @click="requireLogin" class="flex items-center gap-1.5 px-3.5 py-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-xl transition-all"><i class="fas fa-lock text-[10px]"></i> Buy</button></div></div>
         </div>
       </div>
