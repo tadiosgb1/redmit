@@ -134,7 +134,7 @@ export default {
       this.$router.push({ path: '/login', query: { redirect: '/growth', service: service.slug || service.id } });
     },
     typeLabel(type) {
-      return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().replace(/w/g, char => char.toUpperCase());
+      return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     },
     serviceIcon(type) {
       const value = String(type || '').toUpperCase();
