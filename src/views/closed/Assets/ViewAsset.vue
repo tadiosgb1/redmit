@@ -322,6 +322,16 @@
 
                   <div class="flex items-center justify-center gap-1">
 
+                    <!-- Add to cart -->
+                    <button
+                      type="button"
+                      @click="addToCart(item)"
+                      class="flex h-7 items-center gap-1 border border-primary px-2 text-[10px] font-semibold text-primary transition hover:bg-primary/5"
+                      title="Add to cart"
+                    >
+                      <i class="fas fa-cart-plus text-[10px]"></i> Cart
+                    </button>
+
                     <!-- View -->
                     <button
                       type="button"
@@ -535,6 +545,15 @@
             >
               <i class="fas fa-eye text-[9px]"></i>
               View
+            </button>
+
+            <button
+              type="button"
+              @click="addToCart(item)"
+              class="flex h-7 items-center gap-1.5 border border-primary px-2.5 text-[10px] font-semibold text-primary"
+            >
+              <i class="fas fa-cart-plus text-[9px]"></i>
+              Add to cart
             </button>
 
             <button
