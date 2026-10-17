@@ -14,6 +14,29 @@
     <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
 
     <section class="landing-section bg-slate-50 py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div class="max-w-3xl">
+            <span class="inline-flex items-center gap-2 border border-blue-100 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-blue-700"><i class="fas fa-chart-line"></i> Social Media Growth</span>
+            <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Grow your audience. Build your brand.</h2>
+            <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600">From monetization setup to targeted promotion and content support, explore services that help your social channels move forward.</p>
+          </div>
+          <router-link to="/growth" class="inline-flex items-center gap-2 self-start border border-primary bg-white px-5 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-white sm:self-auto">View All Growth Services <i class="fas fa-arrow-right text-xs"></i></router-link>
+        </div>
+        <div v-if="growthLoading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-48 animate-pulse border border-slate-200 bg-white"></div></div>
+        <div v-else-if="growthServices.length" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <article v-for="service in growthServices.slice(0, 3)" :key="service.id" class="flex flex-col border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-lg">
+            <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg" :class="growthIconStyle(service.type)"><i :class="[growthIcon(service.type), 'text-base']"></i></div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ growthTypeLabel(service.type) }}</span></div>
+            <h3 class="mt-4 text-base font-bold text-slate-900">{{ service.name }}</h3>
+            <p class="mt-2 flex-1 text-sm leading-6 text-slate-600 line-clamp-3">{{ service.description }}</p>
+            <div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-xl font-bold text-slate-950">{{ formatGrowthPrice(service.price, service.currency) }}</p></div><router-link :to="{ path: '/login', query: { redirect: '/growth', service: service.slug || service.id } }" class="border border-primary px-3 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-white">Get started <i class="fas fa-arrow-right ml-1 text-[9px]"></i></router-link></div>
+          </article>
+        </div>
+        <div v-else class="border border-slate-200 bg-white p-6 text-sm text-slate-500">Growth services will be listed here as they become available. <router-link to="/growth" class="font-semibold text-primary hover:underline">Explore the growth page</router-link></div>
+      </div>
+    </section>
+
+    <section class="landing-section bg-slate-50 py-20">
       <div class="max-w-5xl mx-auto px-6">
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 sm:p-12 text-white shadow-xl shadow-blue-200/40">
           <div class="absolute -right-20 -top-24 w-72 h-72 rounded-full bg-white/10 blur-2xl"></div>
@@ -49,6 +72,8 @@ export default {
     return {
       products: [],
       assets: [],
+      growthServices: [],
+      growthLoading: false,
       categories: [],
       selectedCategoryId: null,
       productsLoading: false,
@@ -58,7 +83,7 @@ export default {
     };
   },
   async mounted() {
-    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets()]);
+    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets(), this.fetchGrowthServices()]);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.landing-section').forEach((section) => section.classList.add('is-visible'));
       return;
@@ -130,6 +155,48 @@ export default {
       } finally {
         this.assetsLoading = false;
       }
+    },
+    async fetchGrowthServices() {
+      this.growthLoading = true;
+      try {
+        const response = await this.$apiGet('/growth?page=1&limit=3');
+        this.growthServices = Array.isArray(response?.data) ? response.data.filter(service => service.isActive !== false) : [];
+      } catch (error) {
+        console.error('Failed to load landing page growth services:', error);
+        this.growthServices = [];
+      } finally {
+        this.growthLoading = false;
+      }
+    },
+    growthTypeLabel(type) {
+      return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().replace(/\\b\\w/g, char => char.toUpperCase());
+    },
+    growthIcon(type) {
+      const value = String(type || '').toUpperCase();
+      if (value.includes('TIKTOK')) return 'fab fa-tiktok';
+      if (value.includes('INSTAGRAM')) return 'fab fa-instagram';
+      if (value.includes('YOUTUBE')) return 'fab fa-youtube';
+      if (value.includes('FACEBOOK')) return 'fab fa-facebook';
+      if (value.includes('TELEGRAM')) return 'fab fa-telegram';
+      if (value.includes('MONETIZATION')) return 'fas fa-coins';
+      if (value.includes('POST') || value.includes('CONTENT')) return 'fas fa-calendar-check';
+      if (value.includes('ADS') || value.includes('PROMOTION')) return 'fas fa-bullhorn';
+      return 'fas fa-chart-line';
+    },
+    growthIconStyle(type) {
+      const value = String(type || '').toUpperCase();
+      if (value.includes('TIKTOK')) return 'bg-slate-100 text-slate-900';
+      if (value.includes('INSTAGRAM')) return 'bg-pink-50 text-pink-600';
+      if (value.includes('YOUTUBE')) return 'bg-red-50 text-red-600';
+      if (value.includes('FACEBOOK')) return 'bg-blue-50 text-blue-700';
+      if (value.includes('TELEGRAM')) return 'bg-sky-50 text-sky-600';
+      if (value.includes('MONETIZATION')) return 'bg-emerald-50 text-emerald-700';
+      return 'bg-indigo-50 text-indigo-600';
+    },
+    formatGrowthPrice(price, currency) {
+      const amount = Number(price);
+      if (!Number.isFinite(amount)) return 'Contact us';
+      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD', maximumFractionDigits: 2 }).format(amount);
     },
   },
 };
