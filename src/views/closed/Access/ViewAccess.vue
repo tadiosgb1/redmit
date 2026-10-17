@@ -31,7 +31,7 @@
                 <td class="px-4 py-3"><span class="text-xs font-semibold text-slate-700">{{ formatPrice(item.price) }}</span></td>
                 <td class="px-4 py-3"><span class="text-[10px] font-semibold uppercase text-slate-500">{{ item.currency || "—" }}</span></td>
                 <td class="px-4 py-3"><span class="text-xs font-semibold text-slate-600">{{ getFiles(item).length }}</span></td>
-                <td class="px-4 py-3"><div class="flex justify-end gap-1.5"><button @click="viewItem(item)" class="flex h-7 w-7 items-center justify-center border border-slate-200 text-slate-500 hover:bg-slate-50" title="View"><i class="fas fa-eye text-[10px]"></i></button><button @click="editItem(item)" class="flex h-7 w-7 items-center justify-center border border-slate-200 text-primary hover:bg-primary/5" title="Edit"><i class="fas fa-edit text-[10px]"></i></button></div></td>
+                <td class="px-4 py-3"><div class="flex justify-end gap-1.5"><button @click="viewItem(item)" class="flex h-7 w-7 items-center justify-center border border-slate-200 text-slate-500 hover:bg-slate-50" title="View"><i class="fas fa-eye text-[10px]"></i></button><button @click="addToCart(item)" class="h-7 border border-primary px-2 text-[9px] font-semibold text-primary" title="Add to cart"><i class="fas fa-cart-plus"></i> Cart</button><button @click="editItem(item)" class="flex h-7 w-7 items-center justify-center border border-slate-200 text-primary hover:bg-primary/5" title="Edit"><i class="fas fa-edit text-[10px]"></i></button></div></td>
               </tr>
               <tr v-if="!loading && items.length === 0"><td colspan="7" class="px-5 py-14 text-center"><div class="mx-auto flex h-11 w-11 items-center justify-center bg-slate-100 text-slate-400"><i class="fas fa-hand-holding-usd text-sm"></i></div><p class="mt-3 text-xs font-semibold text-slate-500">No payment request items found</p><p class="mt-1 text-[10px] text-slate-400">Try another search or create a new payment request item.</p></td></tr>
             </tbody>
@@ -40,7 +40,7 @@
 
         <div class="divide-y divide-slate-100 md:hidden">
           <div v-for="(item,index) in items" :key="item.id || index" class="p-4">
-            <div class="flex gap-3"><div class="h-14 w-14 flex-shrink-0 overflow-hidden border border-slate-200 bg-slate-100"><img v-if="getThumbnailUrl(item)" :src="getThumbnailUrl(item)" :alt="item.name" class="h-full w-full object-cover"><div v-else class="flex h-full w-full items-center justify-center text-slate-300"><i class="fas fa-hand-holding-usd"></i></div></div><div class="min-w-0 flex-1"><div class="flex items-start justify-between gap-2"><div class="min-w-0"><p class="truncate text-xs font-semibold text-slate-700">{{ item.name || "Unnamed Access" }}</p><p class="mt-1 font-mono text-[9px] text-slate-400">{{ item.slug || "No slug" }}</p></div><span class="flex-shrink-0 text-xs font-bold text-slate-800">{{ formatPrice(item.price) }} {{ item.currency || "" }}</span></div><p class="mt-2 line-clamp-2 text-[10px] text-slate-500">{{ item.description || "No description" }}</p><div class="mt-3 flex items-center justify-between"><span class="text-[9px] text-slate-400">{{ getFiles(item).length }} file{{ getFiles(item).length === 1 ? "" : "s" }}</span><div class="flex gap-1.5"><button @click="viewItem(item)" class="h-7 border border-slate-200 px-2.5 text-[9px] font-semibold text-slate-500">View</button><button @click="editItem(item)" class="h-7 bg-primary px-2.5 text-[9px] font-semibold text-white">Edit</button></div></div></div></div>
+            <div class="flex gap-3"><div class="h-14 w-14 flex-shrink-0 overflow-hidden border border-slate-200 bg-slate-100"><img v-if="getThumbnailUrl(item)" :src="getThumbnailUrl(item)" :alt="item.name" class="h-full w-full object-cover"><div v-else class="flex h-full w-full items-center justify-center text-slate-300"><i class="fas fa-hand-holding-usd"></i></div></div><div class="min-w-0 flex-1"><div class="flex items-start justify-between gap-2"><div class="min-w-0"><p class="truncate text-xs font-semibold text-slate-700">{{ item.name || "Unnamed Access" }}</p><p class="mt-1 font-mono text-[9px] text-slate-400">{{ item.slug || "No slug" }}</p></div><span class="flex-shrink-0 text-xs font-bold text-slate-800">{{ formatPrice(item.price) }} {{ item.currency || "" }}</span></div><p class="mt-2 line-clamp-2 text-[10px] text-slate-500">{{ item.description || "No description" }}</p><div class="mt-3 flex items-center justify-between"><span class="text-[9px] text-slate-400">{{ getFiles(item).length }} file{{ getFiles(item).length === 1 ? "" : "s" }}</span><div class="flex gap-1.5"><button @click="viewItem(item)" class="h-7 border border-slate-200 px-2.5 text-[9px] font-semibold text-slate-500">View</button><button @click="addToCart(item)" class="h-7 border border-primary px-2.5 text-[9px] font-semibold text-primary">Add to cart</button><button @click="editItem(item)" class="h-7 bg-primary px-2.5 text-[9px] font-semibold text-white">Edit</button></div></div></div></div>
           </div>
           <div v-if="!loading && items.length === 0" class="px-4 py-10 text-center text-xs text-slate-500">No payment request items found.</div>
         </div>
@@ -61,6 +61,7 @@
 import Loading from "@/components/Loading.vue";
 import AddAccess from "./AddAccess.vue";
 import EditAccess from "./EditAccess.vue";
+import { useDigitalCart } from "@/utils/digitalCart";
 
 export default {
   name: "ViewAccess",
@@ -72,6 +73,11 @@ export default {
     availableTypes() { return [...new Set(this.items.map(item => item.type).filter(Boolean))]; },
   },
   methods: {
+    addToCart(item) {
+      const cart = useDigitalCart();
+      if (cart.add(item, "DIGITAL_ACCESS")) this.showToast("Added to digital cart", "success");
+      else this.showToast("This access item is missing an ID", "error");
+    },
     async fetchAccess(page = 1) {
       if (page < 1) return;
       this.loading = true;
