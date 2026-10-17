@@ -56,6 +56,7 @@ const routes = [
       { path: 'opportunities/:id', name: 'Opportunity-detail', component: () => import('../views/closed/Opportunities/DetailOpportunities.vue'), props: true },
       { path: 'growth', name: 'Growth-view', component: () => import('../views/closed/growth/ViewGrowth.vue') },
       { path: 'growth/:id', name: 'Growth-detail', component: () => import('../views/closed/growth/DetailGrowth.vue'), props: true },
+      { path: 'cart', name: 'Digital-cart', component: () => import('../views/closed/Orders/DigitalCart.vue') },
       { path: 'orders', name: 'Orders-view', component: () => import('../views/closed/Orders/ViewOrders.vue') },
       { path: 'orders/add', name: 'Orders-add', component: () => import('../views/closed/Orders/AddOrder.vue') },
       { path: 'orders/:id/edit', name: 'Orders-edit', component: () => import('../views/closed/Orders/EditOrder.vue'), props: true },
