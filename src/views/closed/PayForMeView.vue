@@ -14,6 +14,8 @@
     <!-- New request form -->
     <div v-if="showForm" class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
       <h3 class="font-black text-slate-800 text-sm">Submit a New Request</h3>
+      <p v-if="successMessage" class="border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{{ successMessage }}</p>
+      <p v-if="errorMessage" class="border border-red-200 bg-red-50 p-3 text-sm text-red-700">{{ errorMessage }}</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="field-label">Service Type *</label>
@@ -57,7 +59,8 @@
         <h3 class="text-sm font-black text-slate-800">My Requests</h3>
         <span class="text-[10px] font-bold text-slate-400">{{ requests.length }} total</span>
       </div>
-      <div class="divide-y divide-slate-50">
+      <div v-if="!requests.length" class="px-5 py-8 text-sm text-slate-500">Requests submitted through this form are sent to the Redmit team for review. Your request history will appear here when request tracking is connected.</div>
+      <div v-else class="divide-y divide-slate-50">
         <div v-for="r in requests" :key="r.id"
           class="flex items-center gap-4 px-5 py-4 hover:bg-slate-50/50 transition-colors">
           <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" :class="r.iconBg">
@@ -89,7 +92,8 @@ export default {
       errorMessage: '',
       form: { type: '', service: '', url: '', amount: '', notes: '' },
       serviceTypes: ['AI Subscription', 'Online Course', 'Domain & Hosting', 'Software Subscription', 'Exam Registration', 'Scholarship Fee', 'Other'],
-      requests: [],    };
+      requests: [],
+    };
   },
   mounted() {
     const service = this.$route.query.service;
