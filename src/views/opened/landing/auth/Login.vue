@@ -86,6 +86,12 @@ export default {
     };
   },
   methods: {
+    postLoginRoute() {
+      const redirect = this.$route.query.redirect;
+      return typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
+        ? redirect
+        : '/dashboard/first-dash';
+    },
     async handleLogin() {
       this.error = '';
       this.loading = true;
@@ -103,7 +109,7 @@ export default {
         localStorage.setItem('email', input.toLowerCase());
         localStorage.setItem('phone', '+1234567890');
         this.loading = false;
-        this.$router.push('/dashboard/first-dash');
+        this.$router.push(this.postLoginRoute());
         return;
       }
       if (input.toLowerCase() === 'user@gmail.com' && pass === '1234') {
@@ -115,7 +121,7 @@ export default {
         localStorage.setItem('email', input.toLowerCase());
         localStorage.setItem('phone', '+1234567890');
         this.loading = false;
-        this.$router.push('/dashboard/first-dash');
+        this.$router.push(this.postLoginRoute());
         return;
       }
 
@@ -152,7 +158,7 @@ export default {
           localStorage.setItem('phone', user.phone || '');
           localStorage.setItem('avatarUrl', user.avatarUrl || '');
 
-          this.$router.push('/dashboard/first-dash');
+          this.$router.push(this.postLoginRoute());
         } else {
           this.error = res.message || 'Login failed.';
         }
