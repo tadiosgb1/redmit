@@ -7,7 +7,7 @@ import OpportunitiesPage from '../views/opened/landing/Opportunities.vue';
 import ProductsPage from '../views/opened/landing/Products.vue';
 import AssetsPage from '../views/opened/landing/Assets.vue';
 import GrowthPage from '../views/opened/landing/Growth.vue';
-import PayForMePage from '../views/opened/landing/PayForMe.vue';
+import AccessPage from '../views/opened/landing/Access.vue';
 import Login from '../views/opened/landing/auth/Login.vue';
 import Register from '../views/opened/landing/auth/Register.vue';
 import ForgotPassword from '../views/opened/auth/forgotPassword.vue';
@@ -26,7 +26,7 @@ const routes = [
   { path: '/products', name: 'products', component: ProductsPage, meta: { requiresGuest: true } },
   { path: '/assets', name: 'assets', component: AssetsPage, meta: { requiresGuest: true } },
   { path: '/growth', name: 'growth', component: GrowthPage, meta: { requiresGuest: true } },
-  { path: '/pay-for-me', name: 'pay-for-me', component: PayForMePage, meta: { requiresGuest: true } },
+  { path: '/access', name: 'access', component: AccessPage, meta: { requiresGuest: true } },
   { path: '/login', name: 'login', component: Login, meta: { requiresGuest: true } },
   { path: '/register', name: 'register', component: Register, meta: { requiresGuest: true } },
   { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
@@ -48,7 +48,6 @@ const routes = [
       { path: 'access', name: 'Access-view', component: () => import('../views/closed/Access/ViewAccess.vue') },
       { path: 'access/:id', name: 'Access-detail', component: () => import('../views/closed/Access/DetailAccess.vue'), props: true },
       { path: 'access/add', name: 'Access-add', component: () => import('../views/closed/Access/ViewAccess.vue') },
-      { path: 'pay-for-me', name: 'PayForMe-view', component: () => import('../views/closed/PayForMeView.vue') },
       { path: 'assets', name: 'Assets-view', component: () => import('../views/closed/Assets/ViewAsset.vue') },
       { path: 'assets/:id', name: 'Assets-detail', component: () => import('../views/closed/Assets/DetailAsset.vue'), props: true },
       { path: 'bank-accounts', name: 'BankAccounts-view', component: () => import('../views/closed/BankAccounts/ViewBankAccount.vue') },
