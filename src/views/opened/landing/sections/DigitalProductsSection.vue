@@ -1,12 +1,12 @@
 <template>
   <section id="products" class="py-24 bg-slate-50">
     <div class="max-w-7xl mx-auto px-6">
-      <div class="text-center mb-14">
+      <div class="mb-10 max-w-3xl text-left">
         <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs font-bold text-blue-700 uppercase tracking-widest mb-4"><i class="fas fa-box-open text-[10px]"></i> Digital Products Marketplace</span>
-        <h2 class="text-4xl font-black text-slate-900 mb-4">Buy Downloadable Digital Goods</h2>
-        <p class="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">Browse digital products available on Redmit. Sign in to purchase and get instant access.</p>
+        <h2 class="text-3xl font-black tracking-tight text-slate-950 mb-4 sm:text-4xl">Buy Downloadable Digital Goods</h2>
+        <p class="max-w-2xl text-sm leading-7 text-slate-600">Browse digital products available on Redmit. Sign in to purchase and get instant access.</p>
       </div>
-      <div v-if="categories.length" class="flex flex-wrap gap-2 justify-center mb-10">
+      <div v-if="categories.length" class="mb-10 flex flex-wrap justify-start gap-2">
         <button type="button" @click="$emit('select-category', null)" class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition-all" :class="selectedCategoryId === null ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'"><i class="fas fa-th-large text-xs"></i>All</button>
         <button v-for="category in categories" :key="category.id" type="button" @click="$emit('select-category', category.id)" class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold border transition-all" :class="selectedCategoryId === category.id ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'"><i class="fas fa-tag text-xs"></i>{{ category.name }}</button>
       </div>
@@ -18,7 +18,7 @@
           <div class="p-4"><h4 class="font-black text-slate-800 text-sm mb-1 line-clamp-2 group-hover:text-primary transition-colors">{{ product.name }}</h4><p class="text-xs text-slate-400 mb-3 line-clamp-2 leading-relaxed">{{ product.shortDescription || product.description }}</p><div class="flex items-center justify-between"><div><p class="text-lg font-black text-slate-900">{{ formatPrice(product.price, product.currency) }}</p><p class="text-[10px] text-slate-400">{{ product.seller?.fullName || product.seller?.username || 'Redmit seller' }}</p></div><button @click="requireLogin" class="flex items-center gap-1.5 px-3.5 py-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-xl transition-all"><i class="fas fa-lock text-[10px]"></i> Buy</button></div></div>
         </div>
       </div>
-      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <div class="mt-12 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
         <router-link to="/products" class="inline-flex items-center gap-2 px-7 py-3.5 bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-700 font-bold text-sm rounded-xl transition-all shadow-sm"><i class="fas fa-grid-2 text-xs"></i> View All Products <i class="fas fa-arrow-right text-xs"></i></router-link>
         <router-link to="/register" class="inline-flex items-center gap-2 px-7 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold text-sm rounded-xl transition-all shadow-lg shadow-primary/20"><i class="fas fa-store text-xs"></i> Start Selling on Redmit</router-link>
       </div>
