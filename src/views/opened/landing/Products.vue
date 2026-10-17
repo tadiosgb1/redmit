@@ -4,7 +4,7 @@
     <section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-b border-slate-100">
       <div class="absolute -top-32 -right-20 w-96 h-96 rounded-full bg-blue-200/40 blur-3xl pointer-events-none"></div>
       <div class="absolute -bottom-40 -left-20 w-96 h-96 rounded-full bg-indigo-200/30 blur-3xl pointer-events-none"></div>
-      <div class="relative max-w-7xl mx-auto px-6 py-20 lg:py-24">
+      <div class="relative max-w-7xl mx-auto px-6 py-14 sm:py-16 lg:py-20">
         <div class="max-w-3xl">
           <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-blue-700 text-[11px] font-black uppercase tracking-[0.18em] shadow-sm"><i class="fas fa-box-open text-[10px]"></i> Digital Products</span>
           <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-950 leading-tight tracking-tight">Discover digital products <span class="text-blue-600">made to be useful.</span></h1>
@@ -15,9 +15,17 @@
 
     <section class="py-14 bg-slate-50">
       <div class="max-w-7xl mx-auto px-6">
-        <div v-if="categories.length" class="flex flex-wrap gap-2 justify-center mb-10">
+        <div class="mb-5 max-w-xl">
+          <label for="products-search" class="mb-2 block text-xs font-medium text-slate-600">Search digital products</label>
+          <div class="flex items-center gap-3 border border-slate-200 bg-white px-4 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10">
+            <i class="fas fa-search text-sm text-primary"></i>
+            <input id="products-search" v-model.trim="searchQuery" type="search" placeholder="Search templates, e-books, presets…" class="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400" aria-label="Search digital products" />
+            <button v-if="searchQuery" type="button" @click="searchQuery = ''" class="text-xs text-slate-500 hover:text-primary">Clear</button>
+          </div>
+        </div>
+        <div v-if="categories.length" class="flex flex-wrap gap-2 justify-start mb-8">
           <button type="button" @click="selectCategory(null)" class="px-3.5 py-2 rounded-md text-xs font-semibold border transition-colors" :class="selectedCategoryId === null ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'">All</button>
-          <button v-for="category in categories" :key="category.id" type="button" @click="selectCategory(category.id)" class="px-4 py-2 rounded-full text-xs font-bold border transition-all" :class="selectedCategoryId === category.id ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'">{{ category.name }}</button>
+          <button v-for="category in categories" :key="category.id" type="button" @click="selectCategory(category.id)" class="px-3.5 py-2 rounded-md text-xs font-semibold border transition-colors" :class="selectedCategoryId === category.id ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'">{{ category.name }}</button>
         </div>
         <div v-if="loading" class="py-20 text-center text-slate-400">Loading products...</div>
         <div v-else-if="!visibleProducts.length" class="py-16 text-left text-sm text-slate-500">{{ searchQuery ? 'No products match your search.' : 'No products available right now.' }}</div>
