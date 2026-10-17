@@ -36,44 +36,50 @@
       </div>
 
       <div class="relative mx-auto w-full max-w-xl lg:ml-auto">
-        <div class="absolute -inset-5 rounded-[2rem] bg-gradient-to-br from-blue-200/60 via-white/30 to-indigo-200/70 blur-xl"></div>
-        <div class="relative border border-white/80 bg-white/80 p-4 shadow-2xl shadow-blue-900/10 backdrop-blur sm:p-6">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-            <div>
-              <p class="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">The Redmit marketplace</p>
-              <p class="mt-1 text-base font-black text-slate-900">One place. More possibilities.</p>
-            </div>
-            <span class="flex h-8 w-8 items-center justify-center bg-blue-600 text-white"><i class="fas fa-sparkles"></i></span>
+        <div class="absolute -inset-4 bg-blue-200/40 blur-2xl"></div>
+        <div class="relative overflow-hidden border border-slate-200 bg-white shadow-xl shadow-blue-900/10">
+          <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+            <div><p class="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Discover digital goods</p><p class="mt-1 text-sm font-semibold text-slate-800">Find something worth downloading</p></div>
+            <router-link to="/products" class="text-xs font-medium text-primary hover:underline">Shop all <i class="fas fa-arrow-right ml-1"></i></router-link>
           </div>
-
-          <div class="mt-4 grid grid-cols-2 gap-3">
-            <div class="group border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4 transition-transform hover:-translate-y-1">
-              <div class="flex h-8 w-8 items-center justify-center bg-blue-600 text-white"><i class="fas fa-box-open"></i></div>
-              <p class="mt-5 text-sm font-black text-slate-900">Digital products</p>
-              <p class="mt-1 text-xs leading-5 text-slate-500">Useful downloads and digital goods.</p>
-              <router-link to="/products" class="mt-4 inline-flex items-center gap-2 text-xs font-black text-blue-700">Browse products <i class="fas fa-arrow-right"></i></router-link>
-            </div>
-            <div class="group border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-4 transition-transform hover:-translate-y-1">
-              <div class="flex h-8 w-8 items-center justify-center bg-indigo-600 text-white"><i class="fas fa-chart-line"></i></div>
-              <p class="mt-5 text-sm font-black text-slate-900">Digital assets</p>
-              <p class="mt-1 text-xs leading-5 text-slate-500">Explore accounts and online assets.</p>
-              <a href="#assets" class="mt-4 inline-flex items-center gap-2 text-xs font-black text-indigo-700">Explore assets <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <div class="col-span-2 flex items-center justify-between gap-4 border border-emerald-100 bg-gradient-to-r from-emerald-50 to-white p-4 sm:p-5">
-              <div class="flex items-center gap-3">
-                <div class="flex h-9 w-9 shrink-0 items-center justify-center bg-emerald-600 text-white"><i class="fas fa-compass"></i></div>
-                <div><p class="text-sm font-black text-slate-900">Opportunities worth exploring</p><p class="mt-1 text-xs leading-5 text-slate-500">Scholarships, grants, internships, and more.</p></div>
-              </div>
-              <router-link to="/opportunities" aria-label="Explore opportunities" class="flex h-9 w-9 shrink-0 items-center justify-center bg-white text-emerald-700 shadow-sm transition-transform hover:translate-x-1"><i class="fas fa-arrow-right"></i></router-link>
+          <router-link to="/products" class="mx-4 mt-4 flex items-center gap-3 border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-400 transition-colors hover:border-primary">
+            <i class="fas fa-search text-primary"></i><span>Search templates, ebooks, presets…</span><span class="ml-auto text-[10px] text-slate-400">Explore</span>
+          </router-link>
+          <div class="grid grid-cols-2 gap-3 p-4">
+            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
+              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-50"><i class="fas fa-file-alt text-3xl text-blue-600/80 transition-transform group-hover:scale-110"></i></div>
+              <p class="mt-3 text-xs font-semibold text-slate-800">Templates & planners</p><p class="mt-1 text-[11px] text-slate-500">Ready-to-use resources</p>
+            </router-link>
+            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
+              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-rose-100 to-orange-50"><i class="fas fa-book-open text-3xl text-rose-600/80 transition-transform group-hover:scale-110"></i></div>
+              <p class="mt-3 text-xs font-semibold text-slate-800">E-books & guides</p><p class="mt-1 text-[11px] text-slate-500">Ideas to learn from</p>
+            </router-link>
+            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
+              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-emerald-100 to-teal-50"><i class="fas fa-palette text-3xl text-emerald-700/80 transition-transform group-hover:scale-110"></i></div>
+              <p class="mt-3 text-xs font-semibold text-slate-800">Design assets</p><p class="mt-1 text-[11px] text-slate-500">Graphics and creative kits</p>
+            </router-link>
+            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
+              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-amber-100 to-yellow-50"><i class="fas fa-laptop-code text-3xl text-amber-700/80 transition-transform group-hover:scale-110"></i></div>
+              <p class="mt-3 text-xs font-semibold text-slate-800">Digital tools</p><p class="mt-1 text-[11px] text-slate-500">Tools for your workflow</p>
+            </router-link>
+          </div>
+          <div class="overflow-hidden border-t border-slate-100 bg-blue-50/70 py-2.5">
+            <div class="redmit-market-marquee flex w-max items-center gap-6 whitespace-nowrap text-[10px] font-medium text-blue-800">
+              <span>Templates</span><span>✳</span><span>E-books</span><span>✳</span><span>Design kits</span><span>✳</span><span>Presets</span><span>✳</span><span>Digital downloads</span><span>✳</span><span>Templates</span><span>✳</span><span>E-books</span><span>✳</span><span>Design kits</span><span>✳</span><span>Presets</span><span>✳</span><span>Digital downloads</span>
             </div>
           </div>
-          <div class="mt-4 flex items-center gap-2 px-1 text-xs font-semibold text-slate-500"><i class="fas fa-bolt text-amber-500"></i> Built to help you discover what’s next.</div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
   </section>
 </template>
 
 <script>
 export default { name: 'HeroSection' };
 </script>
+
+<style scoped>
+.redmit-market-marquee { animation: redmit-marquee 26s linear infinite; }
+.redmit-market-marquee:hover { animation-play-state: paused; }
+@keyframes redmit-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .redmit-market-marquee { animation: none; width: 100%; flex-wrap: wrap; white-space: normal; } }
+</style>
