@@ -12,7 +12,7 @@
       </div>
 
       <!-- Success State -->
-      <div v-if="success" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
+      <div v-if="success" class="bg-white border-y border-slate-200 shadow-none p-6 sm:p-8 text-center">
         <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
           <i class="fas fa-check-circle text-green-500 text-3xl"></i>
         </div>
@@ -25,9 +25,18 @@
       </div>
 
       <!-- Form Card -->
-      <div v-else class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
-        <form @submit.prevent="handleRegister" class="space-y-4">
+      <div v-else class="bg-white border-y border-slate-200 shadow-none p-6 sm:p-8">
+        <div class="mb-6">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-500">
+            <span>Step {{ currentStep }} of 3</span><span>{{ stepTitle }}</span>
+          </div>
+          <div class="mt-3 grid grid-cols-3 gap-2">
+            <div v-for="step in 3" :key="step" class="h-1.5" :class="step <= currentStep ? 'bg-primary' : 'bg-slate-200'"></div>
+          </div>
+        </div>
+        <form @submit.prevent="handleStepSubmit" class="space-y-4">
 
+          <div v-if="currentStep === 1" class="space-y-4">
           <!-- Full Name -->
           <div>
             <label class="field-label">Full Name</label>
@@ -68,6 +77,9 @@
             </div>
           </div>
 
+          </div>
+
+          <div v-if="currentStep === 2" class="space-y-4">
           <!-- Password -->
           <div>
             <label class="field-label">Password</label>
@@ -107,6 +119,18 @@
                    placeholder="Repeat password" class="field-input mt-1" />
           </div>
 
+          </div>
+
+          <div v-if="currentStep === 3" class="space-y-4">
+            <div class="border border-slate-200 bg-slate-50 p-4">
+              <h2 class="text-sm font-bold text-slate-800">Review your details</h2>
+              <dl class="mt-3 space-y-2 text-xs">
+                <div class="flex justify-between gap-4"><dt class="text-slate-500">Full name</dt><dd class="text-right font-semibold text-slate-800">{{ form.fullName }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-slate-500">Username</dt><dd class="text-right font-semibold text-slate-800">{{ form.username }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-slate-500">Email</dt><dd class="text-right font-semibold text-slate-800">{{ form.email }}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-slate-500">Phone</dt><dd class="text-right font-semibold text-slate-800">{{ form.phone }}</dd></div>
+              </dl>
+            </div>
           <!-- Terms -->
           <label class="flex items-start gap-2.5 cursor-pointer pt-1">
             <input v-model="form.agreed" type="checkbox" required
@@ -119,18 +143,27 @@
             </span>
           </label>
 
+          </div>
+
           <!-- Error -->
           <p v-if="error" class="text-xs text-red-600 font-semibold flex items-center gap-1.5">
             <i class="fas fa-exclamation-circle"></i> {{ error }}
           </p>
 
-          <!-- Submit -->
-          <button type="submit" :disabled="loading || !form.agreed"
-            class="w-full py-3.5 bg-secondary hover:bg-secondary-dark text-white font-bold text-sm rounded-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50">
-            <div v-if="loading"
-                 class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-            <span>{{ loading ? 'Creating account…' : 'Create Account' }}</span>
-          </button>
+          <!-- Step navigation -->
+          <div class="flex gap-3 pt-2">
+            <button v-if="currentStep > 1" type="button" @click="previousStep" :disabled="loading"
+              class="flex-1 border border-slate-200 bg-white py-3.5 text-sm font-bold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50">
+              <i class="fas fa-arrow-left mr-2"></i>Previous
+            </button>
+            <button type="submit" :disabled="loading || (currentStep === 3 && !form.agreed)"
+              class="flex-1 py-3.5 bg-secondary hover:bg-secondary-dark text-white font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50">
+              <div v-if="loading" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <span v-if="loading">Creating account…</span>
+              <span v-else-if="currentStep < 3">Next <i class="fas fa-arrow-right ml-2"></i></span>
+              <span v-else>Create Account</span>
+            </button>
+          </div>
 
         </form>
       </div>
@@ -161,6 +194,7 @@ export default {
     return {
       loading: false,
       success: false,
+      currentStep: 1,
       error: '',
       showPwd: false,
       avatarFile: null,
@@ -177,6 +211,9 @@ export default {
     };
   },
   computed: {
+    stepTitle() {
+      return ({ 1: 'Your information', 2: 'Secure your account', 3: 'Review & agree' })[this.currentStep];
+    },
     pwdRules() {
       const pwd = this.form.password;
       return {
@@ -192,6 +229,36 @@ export default {
     }
   },
   methods: {
+    previousStep() {
+      if (this.currentStep > 1) {
+        this.currentStep -= 1;
+        this.error = '';
+      }
+    },
+    handleStepSubmit() {
+      this.error = '';
+      if (this.currentStep === 1) {
+        if (!this.form.fullName.trim() || !this.form.username.trim() || !this.form.email.trim() || !this.form.phone.trim()) {
+          this.error = 'Please complete all required personal information.';
+          return;
+        }
+        this.currentStep = 2;
+        return;
+      }
+      if (this.currentStep === 2) {
+        if (!this.isPasswordValid) {
+          this.error = 'Password does not meet all security requirements.';
+          return;
+        }
+        if (this.form.password !== this.form.confirmPassword) {
+          this.error = 'Passwords do not match.';
+          return;
+        }
+        this.currentStep = 3;
+        return;
+      }
+      this.handleRegister();
+    },
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
