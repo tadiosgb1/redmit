@@ -90,7 +90,7 @@
                   <div><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Price</p><p class="text-base font-semibold text-slate-900">{{ formatPrice(asset.price, asset.currency) }}</p></div>
                   <div class="text-right"><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Seller</p><p class="text-[11px] font-medium text-slate-700">{{ asset.seller?.fullName || asset.seller?.username || 'Redmit seller' }}</p></div>
                 </div>
-                <button @click="requireLogin" :disabled="asset.isSold" class="w-full py-2.5 bg-white border border-primary text-primary hover:bg-primary hover:text-white disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
+                <button @click="requireLogin" :disabled="asset.isSold" class="w-full py-2.5 bg-primary text-white hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
                   <i class="fas fa-lock text-[10px]"></i>{{ asset.isSold ? 'Sold' : 'View & Buy — Sign In Required' }}
                 </button>
               </div>
@@ -169,7 +169,9 @@ export default {
       return ({ TIKTOK: 'fab fa-tiktok', INSTAGRAM: 'fab fa-instagram', YOUTUBE: 'fab fa-youtube', FACEBOOK: 'fab fa-facebook', TELEGRAM: 'fab fa-telegram' })[platform] || 'fas fa-globe';
     },
     requireLogin() {
-      this.$router.push('/login');
+      const target = '/dashboard/assets';
+      if (localStorage.getItem('token')) { this.$router.push(target); return; }
+      this.$router.push({ path: '/login', query: { redirect: target } });
     },
   },
 };
