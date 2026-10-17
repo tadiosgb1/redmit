@@ -32,7 +32,7 @@
           </article>
         </div>
         <div v-else class="border border-slate-200 bg-white p-6 text-sm text-slate-500">Listed Pay For Me services will appear here when available.</div>
-        <div class="mt-7 flex flex-wrap items-center gap-3"><router-link to="/pay-for-me" class="inline-flex items-center gap-2 bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-primary-dark">Explore all Pay For Me services <i class="fas fa-arrow-right text-xs"></i></router-link><button type="button" @click="startCustomPayRequest" class="inline-flex items-center gap-2 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">Request a service not listed <i class="fas fa-plus text-xs"></i></button></div>
+        <div class="mt-7 flex flex-wrap items-center gap-3"><router-link to="/access" class="inline-flex items-center gap-2 bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-primary-dark">Explore all Pay For Me services <i class="fas fa-arrow-right text-xs"></i></router-link><button type="button" @click="startCustomPayRequest" class="inline-flex items-center gap-2 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">Request a service not listed <i class="fas fa-plus text-xs"></i></button></div>
       </div>
     </section>
 
@@ -104,7 +104,7 @@ export default {
         { title: 'Digital Products', subtitle: 'Templates, tools and downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: false },
         { title: 'Creator Growth', subtitle: 'Monetization and promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: false },
         { title: 'Social Accounts', subtitle: 'Explore available platforms', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: false },
-        { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/pay-for-me', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: false },
+        { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: false },
       ],
       categories: [],
       selectedCategoryId: null,
@@ -121,7 +121,7 @@ export default {
         ...this.products.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending digital product', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: true })),
         ...this.growthServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending growth service', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: true })),
         ...this.assets.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending social account', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: true })),
-        ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/pay-for-me', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
+        ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
       ];
       return trends.length ? trends.slice(0, 4) : this.trendCategories;
     },
@@ -213,7 +213,7 @@ export default {
       }
     },
     startAccessService(service) {
-      const target = '/dashboard/pay-for-me?service=' + encodeURIComponent(service.slug || service.id);
+      const target = '/dashboard/access?service=' + encodeURIComponent(service.slug || service.id);
       if (localStorage.getItem('token')) { this.$router.push(target); return; }
       this.$router.push({ path: '/login', query: { redirect: target } });
     },
@@ -245,10 +245,10 @@ export default {
     },
     startCustomPayRequest() {
       if (localStorage.getItem('token')) {
-        this.$router.push('/dashboard/pay-for-me?new=1');
+        this.$router.push('/dashboard/access?new=1');
         return;
       }
-      this.$router.push({ path: '/login', query: { redirect: '/dashboard/pay-for-me?new=1' } });
+      this.$router.push({ path: '/login', query: { redirect: '/dashboard/access?new=1' } });
     },
     accessIcon(type) {
       const value = String(type || '').toUpperCase();
