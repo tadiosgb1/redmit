@@ -11,7 +11,7 @@
             <img
               src="@/assets/img/logo.jpg"
               alt="Redmit Market"
-              class="h-12 w-auto object-contain"
+              class="h-9 w-auto object-contain"
             />
           </div>
 
@@ -36,8 +36,8 @@
           <div class="flex gap-3">
             <a v-for="social in socials" :key="social.name" href="#"
               :aria-label="social.name"
-              class="w-9 h-9 rounded-xl bg-white/5 hover:bg-primary flex items-center justify-center transition-all duration-200 group">
-              <i :class="[social.icon, 'text-sm text-white/50 group-hover:text-white transition-colors']"></i>
+              class="w-8 h-8 rounded-lg bg-white/5 hover:bg-primary flex items-center justify-center transition-all duration-200 group">
+              <i :class="[social.icon, 'text-xs transition-colors', social.name === 'YouTube' ? 'text-red-500 group-hover:text-red-400' : social.name === 'Instagram' ? 'text-pink-400 group-hover:text-pink-300' : social.name === 'Facebook' ? 'text-blue-400 group-hover:text-blue-300' : social.name === 'Telegram' ? 'text-sky-400 group-hover:text-sky-300' : 'text-white/50 group-hover:text-white']"></i>
             </a>
           </div>
         </div>
@@ -71,9 +71,9 @@
           <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Terms of Use</a>
           <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Seller Guidelines</a>
         </div>
-        <a href="#top"
-          class="w-10 h-10 bg-white/5 hover:bg-primary border border-white/10 hover:border-primary rounded-xl flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-0.5"
-          title="Back to top">
+        <a href="#top" @click.prevent="scrollToTop"
+          class="w-9 h-9 bg-white/5 hover:bg-primary border border-white/10 hover:border-primary rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+          aria-label="Back to top" title="Back to top">
           <i class="fas fa-arrow-up text-xs"></i>
         </a>
       </div>
@@ -85,6 +85,13 @@
 <script>
 export default {
   name: 'SiteFooter',
+  methods: {
+    scrollToTop() {
+      const top = document.getElementById('top');
+      if (top) top.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+  },
   data() {
     return {
       socials: [
