@@ -71,6 +71,7 @@
                   <div class="flex items-center justify-center gap-1">
                     <button @click="viewItem(item)" title="View Product" class="flex h-7 w-7 items-center justify-center rounded-md text-primary transition hover:bg-primary/10"><i class="fas fa-eye text-[10px]"></i></button>
                     <button @click="editItem(item)" title="Edit Product" class="flex h-7 w-7 items-center justify-center rounded-md text-blue-500 transition hover:bg-blue-50 hover:text-blue-600"><i class="fas fa-edit text-[10px]"></i></button>
+                    <button @click="addToCart(item)" title="Add to cart" class="flex h-7 items-center gap-1 rounded-md border border-primary px-2 text-[10px] font-semibold text-primary hover:bg-primary/5"><i class="fas fa-cart-plus"></i> Add to cart</button>
                     <button @click="orderItem(item)" title="Order Product" class="flex h-7 items-center justify-center gap-1 rounded-md bg-secondary px-2.5 text-[10px] font-semibold text-white transition hover:bg-secondary-light"><i class="fas fa-shopping-cart"></i> Order</button>
                   </div>
                 </td>
@@ -110,6 +111,7 @@
           <div class="mt-3 flex items-center justify-end gap-1 border-t border-slate-100 pt-2.5">
             <button @click="viewItem(item)" class="flex h-7 items-center gap-1.5 rounded-md bg-primary/10 px-2.5 text-[10px] font-semibold text-primary"><i class="fas fa-eye text-[9px]"></i>View</button>
             <button @click="editItem(item)" class="flex h-7 items-center gap-1.5 rounded-md bg-blue-50 px-2.5 text-[10px] font-semibold text-blue-600"><i class="fas fa-edit text-[9px]"></i>Edit</button>
+            <button @click="addToCart(item)" class="flex h-7 items-center gap-1.5 rounded-md border border-primary px-2.5 text-[10px] font-semibold text-primary"><i class="fas fa-cart-plus text-[9px]"></i>Cart</button>
             <button @click="orderItem(item)" class="flex h-7 items-center gap-1.5 rounded-md bg-secondary px-2.5 text-[10px] font-semibold text-white"><i class="fas fa-shopping-cart text-[9px]"></i>Order</button>
           </div>
         </div>
@@ -134,6 +136,7 @@
 import AddProducts from "./AddProducts.vue";
 import EditProducts from "./EditProducts.vue";
 import Loading from "@/components/Loading.vue";
+import { useDigitalCart } from "@/utils/digitalCart";
 
 export default {
   name: "ViewProducts",
@@ -142,6 +145,11 @@ export default {
     return { items: [], count: 0, currentPage: 1, pageSize: 10, totalPages: 1, searchQuery: "", showModal: false, editMode: false, selectedItem: null, loading: false, searchTimer: null };
   },
   methods: {
+    addToCart(item) {
+      const cart = useDigitalCart();
+      if (cart.add(item, "DIGITAL_PRODUCT")) this.showToast("Added to digital cart", "success");
+      else this.showToast("This product is missing an ID", "error");
+    },
     async fetchItems(page = 1) {
       this.loading = true;
       this.currentPage = page;
