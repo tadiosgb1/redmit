@@ -140,7 +140,7 @@ export default {
       return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     },
     serviceIcon(type, service = {}) {
-      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      const value = [type, service.platform, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
       if (value.includes('ADOBE')) return 'fab fa-adobe';
       if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'fab fa-node-js';
       if (value.includes('TIKTOK')) return 'fab fa-tiktok';
@@ -154,7 +154,7 @@ export default {
       return 'fas fa-chart-line';
     },
     serviceIconStyle(type, service = {}) {
-      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      const value = [type, service.platform, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
       if (value.includes('ADOBE')) return 'bg-red-50 text-red-600';
       if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'bg-green-50 text-green-700';
       if (value.includes('TIKTOK')) return 'bg-slate-100 text-slate-900';
