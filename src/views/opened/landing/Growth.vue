@@ -49,8 +49,8 @@
         <div v-else-if="!filteredServices.length" class="border border-slate-200 bg-white px-6 py-16 text-center"><div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600"><i class="fas fa-search"></i></div><h3 class="mt-4 font-bold text-slate-900">No matching services</h3><p class="mt-1 text-sm text-slate-500">{{ searchQuery || activeType !== 'all' ? 'Try a different search or service type.' : 'New growth services will appear here when available.' }}</p><button v-if="searchQuery || activeType !== 'all'" @click="clearFilters" class="mt-4 text-sm font-semibold text-blue-700 hover:text-blue-900">Clear filters</button></div>
         <div v-else class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <article v-for="service in filteredServices" :key="service.id" class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg hover:shadow-slate-200/60">
-            <div class="flex items-start justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white px-5 py-4"><div class="flex h-11 w-11 items-center justify-center rounded-xl" :class="serviceIconStyle(service.type)"><i :class="[serviceIcon(service.type), 'text-lg']"></i></div><span class="max-w-[65%] rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500">{{ typeLabel(service.type) }}</span></div>
-            <div class="flex flex-1 flex-col p-5"><h3 class="text-base font-bold leading-snug text-slate-900 group-hover:text-blue-700">{{ service.name }}</h3><p class="mt-3 flex-1 text-sm leading-6 text-slate-600">{{ service.description || 'Professional support to help improve your social media presence.' }}</p><div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-2xl font-bold tracking-tight text-slate-950">{{ formatPrice(service.price, service.currency) }}</p><p class="mt-1 text-[10px] text-slate-400">Service scope confirmed after sign-in</p></div><div class="text-right"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Provider</p><p class="mt-1 text-xs font-semibold text-slate-700">{{ service.provider?.fullName || service.provider?.username || 'Redmit team' }}</p></div></div><button type="button" @click="startService(service)" class="mt-5 inline-flex w-full items-center justify-center gap-2 border border-primary bg-white px-4 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-white"><i :class="localIsAuthenticated ? 'fas fa-arrow-right' : 'fas fa-lock'" class="text-xs"></i>{{ localIsAuthenticated ? 'Contact us about this service' : 'Sign in to get started' }}</button></div>
+            <div class="flex items-start justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white px-5 py-4"><div class="flex h-11 w-11 items-center justify-center rounded-xl" :class="serviceIconStyle(service.type, service)"><i :class="[serviceIcon(service.type, service), 'text-lg']"></i></div><span class="max-w-[65%] rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500">{{ typeLabel(service.type) }}</span></div>
+            <div class="flex flex-1 flex-col p-5"><h3 class="text-base font-bold leading-snug text-slate-900 group-hover:text-blue-700">{{ service.name }}</h3><p class="mt-3 flex-1 text-sm leading-6 text-slate-600">{{ service.description || 'Professional support to help improve your social media presence.' }}</p><div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-2xl font-bold tracking-tight text-slate-950">{{ formatPrice(service.price, service.currency) }}</p><p class="mt-1 text-[10px] text-slate-400">Service scope confirmed after sign-in</p></div><div class="text-right"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Provider</p><p class="mt-1 text-xs font-semibold text-slate-700">{{ service.provider?.fullName || service.provider?.username || 'Redmit team' }}</p></div></div><button type="button" @click="startService(service)" class="mt-5 inline-flex w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark"><i :class="localIsAuthenticated ? 'fas fa-arrow-right' : 'fas fa-lock'" class="text-xs"></i>{{ localIsAuthenticated ? 'Contact us about this service' : 'Sign in to get started' }}</button></div>
           </article>
         </div>
 
@@ -132,18 +132,17 @@ export default {
       this.activeType = 'all';
     },
     startService(service) {
-      const serviceKey = service.slug || service.id;
-      if (localStorage.getItem('token')) {
-        this.$router.push({ path: '/contact-us', query: { service: serviceKey } });
-        return;
-      }
-      this.$router.push({ path: '/login', query: { redirect: `/contact-us?service=${serviceKey}` } });
+      const target = '/dashboard/growth?service=' + encodeURIComponent(service.slug || service.id);
+      if (localStorage.getItem('token')) { this.$router.push(target); return; }
+      this.$router.push({ path: '/login', query: { redirect: target } });
     },
     typeLabel(type) {
       return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     },
-    serviceIcon(type) {
-      const value = String(type || '').toUpperCase();
+    serviceIcon(type, service = {}) {
+      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      if (value.includes('ADOBE')) return 'fab fa-adobe';
+      if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'fab fa-node-js';
       if (value.includes('TIKTOK')) return 'fab fa-tiktok';
       if (value.includes('INSTAGRAM')) return 'fab fa-instagram';
       if (value.includes('YOUTUBE')) return 'fab fa-youtube';
@@ -154,8 +153,10 @@ export default {
       if (value.includes('ADS') || value.includes('PROMOTION')) return 'fas fa-bullhorn';
       return 'fas fa-chart-line';
     },
-    serviceIconStyle(type) {
-      const value = String(type || '').toUpperCase();
+    serviceIconStyle(type, service = {}) {
+      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      if (value.includes('ADOBE')) return 'bg-red-50 text-red-600';
+      if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'bg-green-50 text-green-700';
       if (value.includes('TIKTOK')) return 'bg-slate-100 text-slate-900';
       if (value.includes('INSTAGRAM')) return 'bg-pink-50 text-pink-600';
       if (value.includes('YOUTUBE')) return 'bg-red-50 text-red-600';
