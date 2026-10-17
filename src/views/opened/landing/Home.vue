@@ -7,7 +7,7 @@
       <div class="mx-auto max-w-7xl px-6">
         <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><span class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-rose-600"><i class="fas fa-fire"></i> Hot Trends</span><h2 class="mt-2 text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">What to explore on Redmit right now</h2></div><p class="max-w-xl text-sm leading-6 text-slate-500">Featured areas to discover across our marketplace and services.</p></div>
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <router-link v-for="trend in hotTrends" :key="trend.title" :to="trend.path" class="group flex items-center gap-3 border border-slate-200 bg-slate-50 p-4 transition hover:border-rose-200 hover:bg-white hover:shadow-sm"><div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" :class="trend.bg"><i :class="[trend.icon, trend.color, 'text-base']"></i></div><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><p class="text-sm font-bold text-slate-900 group-hover:text-primary">{{ trend.title }}</p><span class="bg-rose-50 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-rose-600">Hot</span></div><p class="mt-1 text-xs text-slate-500">{{ trend.subtitle }}</p></div><i class="fas fa-arrow-right text-[10px] text-slate-400 group-hover:text-primary"></i></router-link>
+          <router-link v-for="trend in hotTrends" :key="trend.title" :to="trend.path" class="group flex items-center gap-3 border border-slate-200 bg-slate-50 p-4 transition hover:border-rose-200 hover:bg-white hover:shadow-sm"><div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" :class="trend.bg"><i :class="[trend.icon, trend.color, 'text-base']"></i></div><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><p class="text-sm font-bold text-slate-900 group-hover:text-primary">{{ trend.title }}</p><span v-if="trend.isHot" class="bg-rose-50 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-rose-600">Hot</span><span v-else class="bg-slate-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">Explore</span></div><p class="mt-1 text-xs text-slate-500">{{ trend.subtitle }}</p></div><i class="fas fa-arrow-right text-[10px] text-slate-400 group-hover:text-primary"></i></router-link>
         </div>
       </div>
     </section>
@@ -100,11 +100,11 @@ export default {
       accessServices: [],
       accessLoading: false,
       localIsAuthenticated: !!localStorage.getItem('token'),
-      hotTrends: [
-        { title: 'Digital Products', subtitle: 'Templates, tools and downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600' },
-        { title: 'Creator Growth', subtitle: 'Monetization and promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600' },
-        { title: 'Social Accounts', subtitle: 'Explore available platforms', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600' },
-        { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/pay-for-me', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600' },
+      trendCategories: [
+        { title: 'Digital Products', subtitle: 'Templates, tools and downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: false },
+        { title: 'Creator Growth', subtitle: 'Monetization and promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: false },
+        { title: 'Social Accounts', subtitle: 'Explore available platforms', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: false },
+        { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/pay-for-me', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: false },
       ],
       categories: [],
       selectedCategoryId: null,
@@ -113,6 +113,18 @@ export default {
       categoriesLoading: false,
       sectionObserver: null,
     };
+  },
+  computed: {
+    hotTrends() {
+      const isHot = item => item.isHot === true || item.isTrending === true || item.isFeatured === true || item.trending === true;
+      const trends = [
+        ...this.products.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending digital product', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: true })),
+        ...this.growthServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending growth service', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: true })),
+        ...this.assets.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending social account', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: true })),
+        ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/pay-for-me', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
+      ];
+      return trends.length ? trends.slice(0, 4) : this.trendCategories;
+    },
   },
   async mounted() {
     await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets(), this.fetchGrowthServices(), this.fetchAccessServices()]);
