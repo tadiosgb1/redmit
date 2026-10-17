@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     addToCart() { const cart = useDigitalCart(); if (cart.add(this.access, "DIGITAL_ACCESS")) this.$router.push({ name: "Digital-cart" }); },
-    async fetchPay For Me() {
+    async fetchAccess() {
       const id = this.$route.params.id;
       if (!id) return;
       this.loading = true;
@@ -128,10 +128,10 @@ export default {
     },
     formatPrice(value) { const number = Number(value); return Number.isNaN(number) ? "0.00" : number.toFixed(2); },
     openEdit() { this.showEdit = true; },
-    async handleSaved() { this.showEdit = false; await this.fetchPay For Me(); },
+    async handleSaved() { this.showEdit = false; await this.fetchAccess(); },
     goBack() { this.$router.back(); },
     showToast(message,type) { if (this.$root.$refs.toast) this.$root.$refs.toast.showToast(message,type); },
   },
-  mounted() { this.fetchPay For Me(); },
+  mounted() { this.fetchAccess(); },
 };
 </script>
