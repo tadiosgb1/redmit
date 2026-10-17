@@ -13,6 +13,29 @@
     />
     <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
 
+    <section class="landing-section bg-white py-20">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr]">
+          <div>
+            <span class="inline-flex items-center gap-2 border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-emerald-700"><i class="fas fa-wallet"></i> Pay For Me</span>
+            <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Need us to pay for a digital service?</h2>
+            <p class="mt-3 max-w-xl text-sm leading-7 text-slate-600">Browse software subscriptions, online courses and other digital services we can help pay for. If your platform isn’t listed, sign in and submit a custom request for our team to review.</p>
+            <div class="mt-6 flex flex-wrap gap-3"><router-link to="/pay-for-me" class="inline-flex items-center gap-2 border border-emerald-600 bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">Explore Pay For Me <i class="fas fa-arrow-right text-xs"></i></router-link><button type="button" @click="startCustomPayRequest" class="inline-flex items-center gap-2 border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700">Request another service</button></div>
+          </div>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <article v-for="service in accessServices.slice(0, 2)" :key="service.id" class="flex flex-col border border-slate-200 bg-slate-50 p-5 transition hover:border-emerald-200 hover:bg-white hover:shadow-md">
+              <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><i :class="[accessIcon(service.type), 'text-base']"></i></div>
+              <h3 class="mt-4 text-base font-bold text-slate-900">{{ service.name }}</h3>
+              <p class="mt-2 flex-1 text-sm leading-6 text-slate-600 line-clamp-3">{{ service.description }}</p>
+              <div class="mt-4 border-t border-slate-200 pt-3"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-xl font-bold text-slate-950">{{ formatAccessPrice(service.price, service.currency) }}</p></div>
+            </article>
+            <div v-if="!accessLoading && !accessServices.length" class="border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600 sm:col-span-2">Our listed services will appear here when available. You can still submit a custom request after signing in.</div>
+            <div v-if="accessLoading" class="h-40 animate-pulse border border-slate-200 bg-slate-50 sm:col-span-2"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="landing-section bg-slate-50 py-20">
       <div class="max-w-7xl mx-auto px-6">
         <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -74,6 +97,8 @@ export default {
       assets: [],
       growthServices: [],
       growthLoading: false,
+      accessServices: [],
+      accessLoading: false,
       localIsAuthenticated: !!localStorage.getItem('token'),
       categories: [],
       selectedCategoryId: null,
@@ -84,7 +109,7 @@ export default {
     };
   },
   async mounted() {
-    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets(), this.fetchGrowthServices()]);
+    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets(), this.fetchGrowthServices(), this.fetchAccessServices()]);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.landing-section').forEach((section) => section.classList.add('is-visible'));
       return;
@@ -156,6 +181,39 @@ export default {
       } finally {
         this.assetsLoading = false;
       }
+    },
+    async fetchAccessServices() {
+      this.accessLoading = true;
+      try {
+        const response = await this.$apiGet('/access?page=1&limit=2');
+        this.accessServices = Array.isArray(response?.data) ? response.data.filter(service => service.isActive !== false) : [];
+      } catch (error) {
+        console.error('Failed to load Pay For Me services:', error);
+        this.accessServices = [];
+      } finally {
+        this.accessLoading = false;
+      }
+    },
+    startCustomPayRequest() {
+      if (localStorage.getItem('token')) {
+        this.$router.push('/dashboard/pay-for-me?new=1');
+        return;
+      }
+      this.$router.push({ path: '/login', query: { redirect: '/dashboard/pay-for-me?new=1' } });
+    },
+    accessIcon(type) {
+      const value = String(type || '').toUpperCase();
+      if (value.includes('SOFTWARE')) return 'fas fa-laptop-code';
+      if (value.includes('COURSE') || value.includes('EDUCATION')) return 'fas fa-graduation-cap';
+      if (value.includes('AI')) return 'fas fa-robot';
+      if (value.includes('SUBSCRIPTION')) return 'fas fa-credit-card';
+      return 'fas fa-wallet';
+    },
+    formatAccessPrice(price, currency) {
+      const amount = Number(price);
+      if (!Number.isFinite(amount)) return 'Ask for price';
+      try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD', maximumFractionDigits: 2 }).format(amount); }
+      catch (_error) { return `${currency || 'USD'} ${amount.toFixed(2)}`; }
     },
     async fetchGrowthServices() {
       this.growthLoading = true;
