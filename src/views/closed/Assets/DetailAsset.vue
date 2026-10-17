@@ -43,7 +43,8 @@
         </div>
 
 
-        <button
+        <button v-if="access" @click="addToCart" class="mr-2 h-9 border border-primary px-3 text-xs font-semibold text-primary"><i class="fas fa-cart-plus mr-1"></i>Add to cart</button>
+          <button
           v-if="access"
           type="button"
           @click="openEdit"
@@ -740,6 +741,7 @@
 <script>
 import Loading from "@/components/Loading.vue";
 import EditAsset from "./EditAsset.vue";
+import { useDigitalCart } from "@/utils/digitalCart";
 
 export default {
   name: "AccessDetails",
@@ -848,6 +850,7 @@ export default {
   },
 
   methods: {
+    addToCart() { const cart = useDigitalCart(); if (cart.add(this.access, "DIGITAL_ASSET")) this.$router.push({ name: "Digital-cart" }); },
     async fetchAccess() {
       const id =
         this.$route.params.id;
