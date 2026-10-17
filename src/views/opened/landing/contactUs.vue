@@ -56,6 +56,13 @@ import RegisterModal from '@/components/RegisterModal.vue';
 export default {
   name: 'ContactPage', components: { Header, Footer, LoginModal, RegisterModal },
   data() { return { showLogin: false, showRegister: false, loading: false, submitted: false, errorMessage: '', contactInfo: [{ label: 'Redmit HQ', value: 'Addis Ababa, Ethiopia', icon: 'fas fa-map-marker-alt' }, { label: 'Support Email', value: 'info@redmit.com', icon: 'fas fa-envelope' }, { label: 'Phone / Telegram', value: '+251 911 00 11 22', icon: 'fas fa-phone-alt' }], form: { fullName: '', email: '', phone: null, subject: '', message: '' } }; },
+  mounted() {
+    const service = this.$route.query.service;
+    if (typeof service === 'string' && service) {
+      this.form.subject = `Growth service inquiry: ${service}`;
+      this.form.message = `Hello Redmit team,\n\nI am interested in the "${service}" growth service. Please share the next steps and available payment options.\n\nThank you.`;
+    }
+  },
   methods: {
     async submitForm() {
       this.loading = true; this.submitted = false; this.errorMessage = '';
