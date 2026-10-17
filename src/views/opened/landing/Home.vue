@@ -49,7 +49,7 @@
         <div v-if="growthLoading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-48 animate-pulse border border-slate-200 bg-white"></div></div>
         <div v-else-if="growthServices.length" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <article v-for="service in growthServices.slice(0, 3)" :key="service.id" class="flex flex-col border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-lg">
-            <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg" :class="growthIconStyle(service.type)"><i :class="[growthIcon(service.type), 'text-base']"></i></div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ growthTypeLabel(service.type) }}</span></div>
+            <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg" :class="growthIconStyle(service.type, service)"><i :class="[growthIcon(service.type, service), 'text-base']"></i></div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ growthTypeLabel(service.type) }}</span></div>
             <h3 class="mt-4 text-base font-bold text-slate-900">{{ service.name }}</h3>
             <p class="mt-2 flex-1 text-sm leading-6 text-slate-600 line-clamp-3">{{ service.description }}</p>
             <div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-xl font-bold text-slate-950">{{ formatGrowthPrice(service.price, service.currency) }}</p></div><button type="button" @click="startGrowthService(service)" class="bg-primary px-3 py-2 text-xs font-semibold text-white hover:bg-primary-dark">{{ localIsAuthenticated ? 'Contact us' : 'Sign in' }} <i class="fas fa-arrow-right ml-1 text-[9px]"></i></button></div>
@@ -284,8 +284,10 @@ export default {
     growthTypeLabel(type) {
       return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     },
-    growthIcon(type) {
-      const value = String(type || '').toUpperCase();
+    growthIcon(type, service = {}) {
+      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      if (value.includes('ADOBE')) return 'fab fa-adobe';
+      if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'fab fa-node-js';
       if (value.includes('TIKTOK')) return 'fab fa-tiktok';
       if (value.includes('INSTAGRAM')) return 'fab fa-instagram';
       if (value.includes('YOUTUBE')) return 'fab fa-youtube';
@@ -296,8 +298,10 @@ export default {
       if (value.includes('ADS') || value.includes('PROMOTION')) return 'fas fa-bullhorn';
       return 'fas fa-chart-line';
     },
-    growthIconStyle(type) {
-      const value = String(type || '').toUpperCase();
+    growthIconStyle(type, service = {}) {
+      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      if (value.includes('ADOBE')) return 'bg-red-50 text-red-600';
+      if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'bg-green-50 text-green-700';
       if (value.includes('TIKTOK')) return 'bg-slate-100 text-slate-900';
       if (value.includes('INSTAGRAM')) return 'bg-pink-50 text-pink-600';
       if (value.includes('YOUTUBE')) return 'bg-red-50 text-red-600';
