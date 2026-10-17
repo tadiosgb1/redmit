@@ -33,8 +33,8 @@
         <div v-else-if="!filteredServices.length" class="border border-slate-200 bg-white px-6 py-16 text-left"><h3 class="font-bold text-slate-900">{{ searchQuery || activeType !== 'all' ? 'No matching services' : 'No listed services yet' }}</h3><p class="mt-1 text-sm text-slate-500">You can still sign in and tell us what you need paid for.</p><button type="button" @click="startCustomRequest" class="mt-4 border border-emerald-600 px-4 py-2.5 text-sm font-semibold text-emerald-700 hover:bg-emerald-50">Submit a custom request <i class="fas fa-arrow-right ml-1 text-xs"></i></button></div>
         <div v-else class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <article v-for="service in filteredServices" :key="service.id" class="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-lg hover:shadow-slate-200/60">
-            <div class="flex h-36 items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-blue-50"><img v-if="service.thumbnail?.url || service.thumbnail?.secureUrl" :src="service.thumbnail.url || service.thumbnail.secureUrl" :alt="service.name" class="h-full w-full object-cover" /><div v-else class="flex h-20 w-20 items-center justify-center rounded-2xl border border-emerald-100 bg-white text-emerald-600 shadow-sm"><i :class="[serviceIcon(service.type), 'text-3xl']"></i></div><span class="absolute sr-only">Listed service</span></div>
-            <div class="flex flex-1 flex-col p-5"><span class="self-start border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500">{{ typeLabel(service.type) }}</span><h3 class="mt-3 text-base font-bold leading-snug text-slate-900">{{ service.name }}</h3><p class="mt-2 flex-1 text-sm leading-6 text-slate-600">{{ service.description || 'Digital service available by request.' }}</p><div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-2xl font-bold tracking-tight text-slate-950">{{ formatPrice(service.price, service.currency) }}</p></div><div class="text-right"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Provider</p><p class="mt-1 text-xs font-semibold text-slate-700">{{ service.provider?.fullName || service.provider?.username || 'Redmit team' }}</p></div></div><button type="button" @click="requestListedService(service)" class="mt-5 inline-flex w-full items-center justify-center gap-2 border border-emerald-600 bg-white px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-600 hover:text-white"><i :class="localIsAuthenticated ? 'fas fa-arrow-right' : 'fas fa-lock'" class="text-xs"></i>{{ localIsAuthenticated ? 'Request this service' : 'Sign in to request' }}</button></div>
+            <div class="flex h-36 items-center justify-center bg-gradient-to-br from-emerald-50 via-white to-blue-50"><img v-if="service.thumbnail?.url || service.thumbnail?.secureUrl" :src="service.thumbnail.url || service.thumbnail.secureUrl" :alt="service.name" class="h-full w-full object-cover" /><div v-else class="flex h-20 w-20 items-center justify-center rounded-2xl border border-slate-100 bg-white shadow-sm" :class="serviceIconStyle(service)"><i :class="[serviceIcon(service.type, service), 'text-3xl']"></i></div><span class="absolute sr-only">Listed service</span></div>
+            <div class="flex flex-1 flex-col p-5"><span class="self-start border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500">{{ typeLabel(service.type) }}</span><h3 class="mt-3 text-base font-bold leading-snug text-slate-900">{{ service.name }}</h3><p class="mt-2 flex-1 text-sm leading-6 text-slate-600">{{ service.description || 'Digital service available by request.' }}</p><div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-2xl font-bold tracking-tight text-slate-950">{{ formatPrice(service.price, service.currency) }}</p></div><div class="text-right"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Provider</p><p class="mt-1 text-xs font-semibold text-slate-700">{{ service.provider?.fullName || service.provider?.username || 'Redmit team' }}</p></div></div><button type="button" @click="requestListedService(service)" class="mt-5 inline-flex w-full items-center justify-center gap-2 bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"><i :class="localIsAuthenticated ? 'fas fa-arrow-right' : 'fas fa-lock'" class="text-xs"></i>{{ localIsAuthenticated ? 'Request this service' : 'Sign in to request' }}</button></div>
           </article>
         </div>
         <div v-if="!loading && !error && pagination.totalPages > 1" class="mt-10 flex items-center justify-center gap-3"><button type="button" :disabled="page <= 1" @click="changePage(page - 1)" class="h-10 w-10 border border-slate-200 bg-white text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"><i class="fas fa-chevron-left text-xs"></i></button><span class="text-sm font-semibold text-slate-600">Page {{ page }} of {{ pagination.totalPages }}</span><button type="button" :disabled="page >= pagination.totalPages" @click="changePage(page + 1)" class="h-10 w-10 border border-slate-200 bg-white text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"><i class="fas fa-chevron-right text-xs"></i></button></div>
@@ -90,14 +90,33 @@ export default {
     },
     changePage(nextPage) { if (nextPage >= 1 && nextPage <= this.pagination.totalPages) this.$router.push({ path: '/pay-for-me', query: { page: String(nextPage) } }); },
     typeLabel(type) { return String(type || 'Digital service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); },
-    serviceIcon(type) {
-      const value = String(type || '').toUpperCase();
+    serviceIcon(type, service = {}) {
+      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      if (value.includes('ADOBE')) return 'fab fa-adobe';
+      if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'fab fa-node-js';
+      if (value.includes('YOUTUBE')) return 'fab fa-youtube';
+      if (value.includes('INSTAGRAM')) return 'fab fa-instagram';
+      if (value.includes('TIKTOK')) return 'fab fa-tiktok';
+      if (value.includes('FACEBOOK')) return 'fab fa-facebook';
+      if (value.includes('TELEGRAM')) return 'fab fa-telegram';
       if (value.includes('SOFTWARE')) return 'fas fa-laptop-code';
       if (value.includes('COURSE') || value.includes('EDUCATION')) return 'fas fa-graduation-cap';
       if (value.includes('AI')) return 'fas fa-robot';
       if (value.includes('DOMAIN') || value.includes('HOST')) return 'fas fa-server';
       if (value.includes('SUBSCRIPTION')) return 'fas fa-credit-card';
       return 'fas fa-wallet';
+    },
+    serviceIconStyle(service) {
+      const value = [service.name, service.slug, service.type, service.description].filter(Boolean).join(' ').toLowerCase();
+      if (value.includes('adobe')) return 'text-red-600';
+      if (value.includes('node.js') || value.includes('nodejs')) return 'text-green-700';
+      if (value.includes('youtube')) return 'text-red-600';
+      if (value.includes('instagram')) return 'text-pink-600';
+      if (value.includes('tiktok')) return 'text-slate-900';
+      if (value.includes('facebook')) return 'text-blue-700';
+      if (value.includes('telegram')) return 'text-sky-600';
+      if (value.includes('course') || value.includes('education')) return 'text-violet-600';
+      return 'text-emerald-700';
     },
     formatPrice(price, currency) {
       const amount = Number(price);
