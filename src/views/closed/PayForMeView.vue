@@ -129,7 +129,7 @@ export default {
           'Additional notes: ' + (this.form.notes || 'None'),
           '',
           'Please review this request and confirm availability, final cost and payment steps.'
-        ].join('\\n');
+        ].join('\n');
         await this.$apiPost('/contactMessage', {
           fullName: name,
           email,
