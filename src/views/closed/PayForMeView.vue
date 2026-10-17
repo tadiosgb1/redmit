@@ -40,9 +40,9 @@
         <textarea v-model="form.notes" rows="3" placeholder="Any extra details..." class="field-input mt-1 resize-none"></textarea>
       </div>
       <div class="flex gap-3 pt-2">
-        <button @click="submitRequest"
-          class="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-xl transition">
-          Submit Request
+        <button @click="submitRequest" :disabled="submitting"
+          class="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-xl transition disabled:opacity-60">
+          {{ submitting ? 'Sending…' : 'Submit Request' }}
         </button>
         <button @click="showForm = false"
           class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
@@ -84,22 +84,63 @@ export default {
   data() {
     return {
       showForm: false,
+      submitting: false,
+      successMessage: '',
+      errorMessage: '',
       form: { type: '', service: '', url: '', amount: '', notes: '' },
       serviceTypes: ['AI Subscription', 'Online Course', 'Domain & Hosting', 'Software Subscription', 'Exam Registration', 'Scholarship Fee', 'Other'],
-      requests: [
-        { id:1, service:'ChatGPT Plus — 1 month',      type:'AI Subscription',    date:'Today',      amount:'1,800 ETB', status:'Fulfilled', statusCls:'bg-green-100 text-green-700',   icon:'fas fa-robot',         iconBg:'bg-purple-50', iconColor:'text-purple-600', note:'' },
-        { id:2, service:'Udemy — Digital Marketing',   type:'Online Course',      date:'Aug 3',      amount:'1,200 ETB', status:'Processing',statusCls:'bg-blue-100 text-blue-700',    icon:'fas fa-graduation-cap',iconBg:'bg-blue-50',   iconColor:'text-blue-600',   note:'Course link sent' },
-        { id:3, service:'IELTS Registration — Oct 24', type:'Exam Registration',  date:'Jul 28',     amount:'8,500 ETB', status:'Pending',   statusCls:'bg-amber-100 text-amber-700',  icon:'fas fa-file-alt',      iconBg:'bg-amber-50',  iconColor:'text-amber-600',  note:'Awaiting payment confirmation' },
-        { id:4, service:'Hostinger — 1 Year Hosting',  type:'Domain & Hosting',   date:'Jul 20',     amount:'2,400 ETB', status:'Fulfilled', statusCls:'bg-green-100 text-green-700',   icon:'fas fa-server',        iconBg:'bg-emerald-50',iconColor:'text-emerald-600',note:'' },
-        { id:5, service:'Adobe Creative Cloud',        type:'Software Subscription',date:'Jul 10',   amount:'3,200 ETB', status:'Cancelled', statusCls:'bg-red-100 text-red-600',      icon:'fas fa-tools',         iconBg:'bg-orange-50', iconColor:'text-orange-600', note:'Payment failed — please retry' },
-      ],
-    };
+      requests: [],    };
+  },
+  mounted() {
+    const service = this.$route.query.service;
+    if (this.$route.query.new === '1' || typeof service === 'string') {
+      this.showForm = true;
+      if (typeof service === 'string' && service) {
+        this.form.service = service;
+        this.form.type = 'Other';
+        this.form.notes = 'Requested from the public Pay For Me service explorer. Please confirm availability and final cost.';
+      }
+    }
   },
   methods: {
-    submitRequest() {
-      if (!this.form.type || !this.form.service) return;
-      this.showForm = false;
-      this.form = { type: '', service: '', url: '', amount: '', notes: '' };
+    async submitRequest() {
+      this.errorMessage = '';
+      this.successMessage = '';
+      if (!this.form.type || !this.form.service || !this.form.url) {
+        this.errorMessage = 'Please provide the service type, service name and service URL.';
+        return;
+      }
+      this.submitting = true;
+      try {
+        const name = localStorage.getItem('name') || localStorage.getItem('username') || 'Redmit customer';
+        const email = localStorage.getItem('email') || '';
+        const phone = localStorage.getItem('phone') || '';
+        const message = [
+          'Pay For Me request',
+          '',
+          'Service type: ' + this.form.type,
+          'Service name: ' + this.form.service,
+          'Service URL: ' + this.form.url,
+          'Estimated cost: ' + (this.form.amount || 'Not provided'),
+          'Additional notes: ' + (this.form.notes || 'None'),
+          '',
+          'Please review this request and confirm availability, final cost and payment steps.'
+        ].join('\\n');
+        await this.$apiPost('/contactMessage', {
+          fullName: name,
+          email,
+          phone: Number(String(phone).replace(/[^0-9]/g, '')) || 0,
+          subject: 'Pay For Me request: ' + this.form.service,
+          message,
+        });
+        this.successMessage = 'Your request has been sent to the Redmit team. We will review the details and follow up.';
+        this.form = { type: '', service: '', url: '', amount: '', notes: '' };
+        this.showForm = false;
+      } catch (error) {
+        this.errorMessage = error?.response?.data?.message || 'Could not send your request. Please try again.';
+      } finally {
+        this.submitting = false;
+      }
     },
   },
 };
