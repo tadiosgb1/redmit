@@ -12,6 +12,9 @@
       @select-category="handleCategoryChange"
     />
     <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
+    <div class="landing-section mx-auto -mt-10 mb-12 w-full max-w-7xl px-6">
+      <router-link to="/assets" class="inline-flex items-center gap-2 rounded-md border border-primary bg-white px-5 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white"><i class="fas fa-layer-group text-xs"></i> View All Social Markets <i class="fas fa-arrow-right text-xs"></i></router-link>
+    </div>
 
     <section class="landing-section bg-slate-50 py-20">
       <div class="max-w-5xl mx-auto px-6">
