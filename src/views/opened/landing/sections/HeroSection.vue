@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="relative mx-auto w-[calc(100%+1rem)] max-w-xl -mx-2 sm:mx-auto sm:w-full lg:ml-auto">
+      <div class="relative mx-auto w-[calc(100%+1rem)] max-w-xl sm:w-full lg:ml-auto">
         <div class="pointer-events-none absolute inset-10 rounded-full bg-blue-100/70 blur-3xl"></div>
         <div class="relative">
           <svg class="redmit-sketch h-auto w-full overflow-visible" viewBox="0 0 560 470" role="img" aria-labelledby="redmit-sketch-title redmit-sketch-desc" xmlns="http://www.w3.org/2000/svg">
