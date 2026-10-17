@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-white font-sans text-gray-800 antialiased landing-page">
+  <div id="top" class="min-h-screen bg-white font-sans text-gray-800 antialiased landing-page">
     <Header />
 
     <HeroSection class="landing-section" />
