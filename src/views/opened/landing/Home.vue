@@ -44,7 +44,7 @@
             <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Grow your audience. Build your brand.</h2>
             <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600">From monetization setup to targeted promotion and content support, explore services that help your social channels move forward.</p>
           </div>
-          <router-link to="/growth" class="inline-flex items-center gap-2 self-start border border-primary bg-white px-5 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-white sm:self-auto">View All Growth Services <i class="fas fa-arrow-right text-xs"></i></router-link>
+          <router-link to="/growth" class="inline-flex items-center gap-2 self-start bg-primary px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark sm:self-auto">View All Growth Services <i class="fas fa-arrow-right text-xs"></i></router-link>
         </div>
         <div v-if="growthLoading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-48 animate-pulse border border-slate-200 bg-white"></div></div>
         <div v-else-if="growthServices.length" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
