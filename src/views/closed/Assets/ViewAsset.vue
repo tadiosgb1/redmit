@@ -674,6 +674,7 @@
 import Loading from "@/components/Loading.vue";
 import AddAsset from "./AddAsset.vue"; 
 import EditAsset from "./EditAsset.vue";
+import { useDigitalCart } from "@/utils/digitalCart";
 
 export default {
   name: "ViewAsset",
@@ -705,6 +706,11 @@ export default {
   },
 
   methods: {
+    addToCart(item) {
+      const cart = useDigitalCart();
+      if (cart.add(item, "DIGITAL_ASSET")) this.showToast("Added to digital cart", "success");
+      else this.showToast("This asset is missing an ID", "error");
+    },
     async fetchItems(page = 1) {
       if (page < 1) {
         return;
