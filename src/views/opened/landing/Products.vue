@@ -7,27 +7,27 @@
       <div class="relative max-w-7xl mx-auto px-6 py-20 lg:py-24">
         <div class="max-w-3xl">
           <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-blue-700 text-[11px] font-black uppercase tracking-[0.18em] shadow-sm"><i class="fas fa-box-open text-[10px]"></i> Digital Products</span>
-          <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 leading-tight tracking-tight">Discover digital products <span class="text-blue-600">made to be useful.</span></h1>
-          <p class="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">Browse the full collection of downloadable digital products available on Redmit.</p>
+          <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-950 leading-tight tracking-tight">Discover digital products <span class="text-blue-600">made to be useful.</span></h1>
+          <p class="mt-4 text-base text-slate-600 leading-7 max-w-2xl">Browse the full collection of downloadable digital products available on Redmit.</p>
         </div>
       </div>
     </section>
 
-    <section class="py-16 bg-slate-50">
+    <section class="py-14 bg-slate-50">
       <div class="max-w-7xl mx-auto px-6">
         <div v-if="categories.length" class="flex flex-wrap gap-2 justify-center mb-10">
-          <button type="button" @click="selectCategory(null)" class="px-4 py-2 rounded-full text-xs font-bold border transition-all" :class="selectedCategoryId === null ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'">All</button>
+          <button type="button" @click="selectCategory(null)" class="px-3.5 py-2 rounded-md text-xs font-semibold border transition-colors" :class="selectedCategoryId === null ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'">All</button>
           <button v-for="category in categories" :key="category.id" type="button" @click="selectCategory(category.id)" class="px-4 py-2 rounded-full text-xs font-bold border transition-all" :class="selectedCategoryId === category.id ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'">{{ category.name }}</button>
         </div>
         <div v-if="loading" class="py-20 text-center text-slate-400">Loading products...</div>
-        <div v-else-if="!products.length" class="py-20 text-center text-slate-400">No products available right now.</div>
+        <div v-else-if="!visibleProducts.length" class="py-16 text-left text-sm text-slate-500">{{ searchQuery ? 'No products match your search.' : 'No products available right now.' }}</div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <article v-for="product in products" :key="product.id" class="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <div class="relative h-44 flex items-center justify-center overflow-hidden bg-blue-50"><i class="fas fa-box-open text-5xl text-blue-400/50"></i><span class="absolute top-3 left-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">{{ product.category?.name || 'Digital Product' }}</span><span v-if="product.isActive" class="absolute top-3 right-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-green-100 text-green-700">Available</span></div>
-            <div class="p-5"><h2 class="font-black text-slate-800 text-sm mb-2 line-clamp-2">{{ product.name }}</h2><p class="text-xs text-slate-400 mb-5 line-clamp-3 leading-relaxed">{{ product.shortDescription || product.description }}</p><div class="flex items-end justify-between gap-3"><div><p class="text-lg font-black text-slate-900">{{ formatPrice(product.price, product.currency) }}</p><p class="text-[10px] text-slate-400 mt-1">{{ product.seller?.fullName || product.seller?.username || 'Redmit seller' }}</p></div><button @click="requireLogin" class="px-3.5 py-2 bg-primary hover:bg-primary-dark text-white text-xs font-bold rounded-xl">Buy</button></div></div>
+          <article v-for="product in visibleProducts" :key="product.id" class="group bg-white border border-slate-200 rounded-md overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300">
+            <div class="relative h-40 flex items-center justify-center overflow-hidden bg-blue-50"><i class="fas fa-box-open text-5xl text-blue-400/50"></i><span class="absolute top-3 left-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">{{ product.category?.name || 'Digital Product' }}</span><span v-if="product.isActive" class="absolute top-3 right-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-green-100 text-green-700">Available</span></div>
+            <div class="p-4"><h2 class="font-semibold text-slate-800 text-[13px] leading-5 mb-1 line-clamp-2">{{ product.name }}</h2><p class="text-[11px] text-slate-500 mb-3 line-clamp-2 leading-5">{{ product.shortDescription || product.description }}</p><div class="flex items-end justify-between gap-3"><div><p class="text-base font-semibold text-slate-900">{{ formatPrice(product.price, product.currency) }}</p><p class="text-[10px] text-slate-400 mt-1">{{ product.seller?.fullName || product.seller?.username || 'Redmit seller' }}</p></div><button @click="requireLogin" class="px-3.5 py-2 bg-white border border-primary text-primary hover:bg-primary hover:text-white text-xs font-semibold rounded-md transition-colors">Buy</button></div></div>
           </article>
         </div>
-        <div class="mt-12 text-center"><router-link to="/register" class="inline-flex items-center gap-2 px-7 py-3.5 bg-secondary hover:bg-secondary-dark text-white font-bold text-sm rounded-xl shadow-lg shadow-secondary/20"><i class="fas fa-store text-xs"></i> Start Selling on Redmit</router-link></div>
+        <div class="mt-12 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap"><router-link to="/register" class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-secondary text-secondary hover:bg-secondary hover:text-white font-semibold text-sm rounded-md transition-colors"><i class="fas fa-store text-xs"></i> Start Selling on Redmit</router-link></div>
       </div>
     </section>
     <Footer />
@@ -40,8 +40,18 @@ import Footer from './footer.vue';
 export default {
   name: 'ProductsPage',
   components: { Header, Footer },
-  data() { return { products: [], categories: [], selectedCategoryId: null, loading: false }; },
+  data() { return { products: [], categories: [], selectedCategoryId: null, searchQuery: '', loading: false }; },
   async mounted() { await Promise.all([this.fetchCategories(), this.fetchProducts()]); },
+  computed: {
+    visibleProducts() {
+      const query = this.searchQuery.toLowerCase();
+      return this.products.filter((product) => {
+        const categoryMatches = this.selectedCategoryId === null || this.selectedCategoryId === undefined || product.category?.id === this.selectedCategoryId;
+        const text = [product.name, product.shortDescription, product.description, product.category?.name, product.seller?.fullName, product.seller?.username].filter(Boolean).join(' ').toLowerCase();
+        return categoryMatches && (!query || text.includes(query));
+      });
+    },
+  },
   methods: {
     async fetchCategories() { try { const response = await this.$apiGet('/categories'); this.categories = Array.isArray(response?.data) ? response.data : []; } catch (error) { this.categories = []; } },
     async fetchProducts() { this.loading = true; try { const response = this.selectedCategoryId ? await this.$apiGet('/products', { category_id: this.selectedCategoryId }) : await this.$apiGet('/products'); this.products = Array.isArray(response?.data) ? response.data : []; } catch (error) { this.products = []; } finally { this.loading = false; } },
