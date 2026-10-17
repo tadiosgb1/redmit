@@ -6,26 +6,14 @@
       </router-link>
 
       <nav class="hidden lg:flex items-center gap-0.5">
-        <router-link v-for="nav in navLinks" :key="nav.path" :to="nav.path"
-          class="px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-600 hover:text-primary hover:bg-primary-lighter rounded-lg transition-all"
-          active-class="text-primary bg-primary-lighter">
-          {{ nav.name }}
-        </router-link>
-
+        <router-link to="/" class="px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-600 hover:text-primary hover:bg-primary-lighter rounded-lg transition-all" active-class="text-primary bg-primary-lighter">Home</router-link>
         <div class="relative" @mouseenter="servicesOpen = true" @mouseleave="servicesOpen = false">
-          <button class="px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-600 hover:text-primary hover:bg-primary-lighter rounded-lg transition-all flex items-center gap-1.5">
-            Services
-            <i class="fas fa-chevron-down text-[9px] transition-transform duration-200" :class="servicesOpen ? 'rotate-180' : ''"></i>
-          </button>
-          <transition name="dropdown">
-            <div v-if="servicesOpen" class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden z-50 py-2">
-              <router-link v-for="s in serviceLinks" :key="s.label" :to="s.path" @click="servicesOpen = false" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors group">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" :class="s.bg"><i :class="[s.icon, s.color, 'text-sm']"></i></div>
-                <div><p class="text-xs font-bold text-slate-800 group-hover:text-primary transition-colors">{{ s.label }}</p><p class="text-[10px] text-slate-400">{{ s.desc }}</p></div>
-              </router-link>
-            </div>
-          </transition>
+          <button class="px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-600 hover:text-primary hover:bg-primary-lighter rounded-lg transition-all flex items-center gap-1.5">Services <i class="fas fa-chevron-down text-[9px] transition-transform duration-200" :class="servicesOpen ? 'rotate-180' : ''"></i></button>
+          <transition name="dropdown"><div v-if="servicesOpen" class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden z-50 py-2">
+            <router-link v-for="s in serviceLinks" :key="s.label" :to="s.path" @click="servicesOpen = false" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors group"><div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" :class="s.bg"><i :class="[s.icon, s.color, 'text-sm']"></i></div><div><p class="text-xs font-bold text-slate-800 group-hover:text-primary transition-colors">{{ s.label }}</p><p class="text-[10px] text-slate-400">{{ s.desc }}</p></div></router-link>
+          </div></transition>
         </div>
+        <router-link v-for="nav in otherNavLinks" :key="nav.path" :to="nav.path" class="px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-600 hover:text-primary hover:bg-primary-lighter rounded-lg transition-all" active-class="text-primary bg-primary-lighter">{{ nav.name }}</router-link>
       </nav>
 
       <div class="hidden md:flex items-center gap-3 shrink-0">
@@ -41,17 +29,9 @@
     <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 -translate-y-2" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-2">
       <div v-if="mobileOpen" class="lg:hidden bg-white border-t border-slate-100 px-4 pb-5 pt-2 shadow-lg">
         <nav class="space-y-1 mb-4">
-          <router-link v-for="nav in navLinks" :key="nav.path" :to="nav.path" @click="mobileOpen = false" class="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:text-primary hover:bg-primary-lighter transition">
-            {{ nav.name }} <i class="fas fa-chevron-right text-[10px] text-slate-300"></i>
-          </router-link>
-          <div class="px-4 pt-2">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Services</p>
-            <div class="grid grid-cols-2 gap-2">
-              <router-link v-for="s in serviceLinks" :key="s.label" :to="s.path" @click="mobileOpen = false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 transition">
-                <i :class="[s.icon, s.color, 'text-xs']"></i><span class="text-xs font-semibold text-slate-700">{{ s.label }}</span>
-              </router-link>
-            </div>
-          </div>
+          <router-link to="/" @click="mobileOpen = false" class="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:text-primary hover:bg-primary-lighter transition">Home <i class="fas fa-chevron-right text-[10px] text-slate-300"></i></router-link>
+          <div class="px-4 pt-2 pb-2"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Services</p><div class="grid grid-cols-2 gap-2"><router-link v-for="s in serviceLinks" :key="s.label" :to="s.path" @click="mobileOpen = false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-50 transition"><i :class="[s.icon, s.color, 'text-xs']"></i><span class="text-xs font-semibold text-slate-700">{{ s.label }}</span></router-link></div></div>
+          <router-link v-for="nav in otherNavLinks" :key="nav.path" :to="nav.path" @click="mobileOpen = false" class="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:text-primary hover:bg-primary-lighter transition">{{ nav.name }} <i class="fas fa-chevron-right text-[10px] text-slate-300"></i></router-link>
         </nav>
         <div class="flex flex-col gap-2 pt-3 border-t border-slate-100">
           <router-link to="/login" @click="mobileOpen = false" class="w-full py-3 text-center text-sm font-bold text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50 transition">Sign In</router-link>
@@ -84,6 +64,7 @@ export default {
       ],
     };
   },
+  computed: { otherNavLinks() { return this.navLinks.filter(nav => nav.path !== '/'); } },
   watch: {
     $route() { this.mobileOpen = false; },
   },
