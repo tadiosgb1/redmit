@@ -3,6 +3,14 @@
     <Header />
 
     <HeroSection class="landing-section" />
+    <section class="landing-section border-y border-slate-100 bg-white py-10 sm:py-12">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><span class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-rose-600"><i class="fas fa-fire"></i> Hot Trends</span><h2 class="mt-2 text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">What to explore on Redmit right now</h2></div><p class="max-w-xl text-sm leading-6 text-slate-500">Featured areas to discover across our marketplace and services.</p></div>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <router-link v-for="trend in hotTrends" :key="trend.title" :to="trend.path" class="group flex items-center gap-3 border border-slate-200 bg-slate-50 p-4 transition hover:border-rose-200 hover:bg-white hover:shadow-sm"><div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" :class="trend.bg"><i :class="[trend.icon, trend.color, 'text-base']"></i></div><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><p class="text-sm font-bold text-slate-900 group-hover:text-primary">{{ trend.title }}</p><span class="bg-rose-50 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-rose-600">Hot</span></div><p class="mt-1 text-xs text-slate-500">{{ trend.subtitle }}</p></div><i class="fas fa-arrow-right text-[10px] text-slate-400 group-hover:text-primary"></i></router-link>
+        </div>
+      </div>
+    </section>
     <DigitalProductsSection
       class="landing-section"
       :products="products"
@@ -13,26 +21,18 @@
     />
     <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
 
-    <section class="landing-section bg-white py-20">
+    <section class="landing-section bg-slate-50 py-20">
       <div class="mx-auto max-w-7xl px-6">
-        <div class="grid items-center gap-10 lg:grid-cols-[.9fr_1.1fr]">
-          <div>
-            <span class="inline-flex items-center gap-2 border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-emerald-700"><i class="fas fa-wallet"></i> Pay For Me</span>
-            <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Need us to pay for a digital service?</h2>
-            <p class="mt-3 max-w-xl text-sm leading-7 text-slate-600">Browse software subscriptions, online courses and other digital services we can help pay for. If your platform isn’t listed, sign in and submit a custom request for our team to review.</p>
-            <div class="mt-6 flex flex-wrap gap-3"><router-link to="/pay-for-me" class="inline-flex items-center gap-2 border border-emerald-600 bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700">Explore Pay For Me <i class="fas fa-arrow-right text-xs"></i></router-link><button type="button" @click="startCustomPayRequest" class="inline-flex items-center gap-2 border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700">Request another service</button></div>
-          </div>
-          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <article v-for="service in accessServices.slice(0, 2)" :key="service.id" class="flex flex-col border border-slate-200 bg-slate-50 p-5 transition hover:border-emerald-200 hover:bg-white hover:shadow-md">
-              <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><i :class="[accessIcon(service.type), 'text-base']"></i></div>
-              <h3 class="mt-4 text-base font-bold text-slate-900">{{ service.name }}</h3>
-              <p class="mt-2 flex-1 text-sm leading-6 text-slate-600 line-clamp-3">{{ service.description }}</p>
-              <div class="mt-4 border-t border-slate-200 pt-3"><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-xl font-bold text-slate-950">{{ formatAccessPrice(service.price, service.currency) }}</p></div>
-            </article>
-            <div v-if="!accessLoading && !accessServices.length" class="border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600 sm:col-span-2">Our listed services will appear here when available. You can still submit a custom request after signing in.</div>
-            <div v-if="accessLoading" class="h-40 animate-pulse border border-slate-200 bg-slate-50 sm:col-span-2"></div>
-          </div>
+        <div class="mb-8 max-w-3xl text-left"><span class="inline-flex items-center gap-2 border border-emerald-200 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-700"><i class="fas fa-wallet text-[10px]"></i> Pay For Me</span><h2 class="mt-4 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">Digital services, paid for you</h2><p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600">Explore the services listed on Redmit. Need something else? Sign in and submit a custom payment request for our team to review.</p></div>
+        <div v-if="accessLoading" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-64 animate-pulse border border-slate-200 bg-white"></div></div>
+        <div v-else-if="accessServices.length" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <article v-for="service in accessServices.slice(0, 3)" :key="service.id" class="flex flex-col overflow-hidden border border-slate-200 bg-white transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-lg">
+            <div class="flex items-start justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white px-5 py-4"><div class="flex h-11 w-11 items-center justify-center rounded-lg" :class="accessIconStyle(service)"><i :class="[accessIcon(service), 'text-lg']"></i></div><span class="max-w-[65%] bg-slate-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500">{{ typeLabel(service.type) }}</span></div>
+            <div class="flex flex-1 flex-col p-5"><h3 class="text-base font-bold leading-snug text-slate-900">{{ service.name }}</h3><p class="mt-3 flex-1 text-sm leading-6 text-slate-600 line-clamp-3">{{ service.description || 'Digital service available by request.' }}</p><div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-xl font-bold text-slate-950">{{ formatAccessPrice(service.price, service.currency) }}</p></div><button type="button" @click="startAccessService(service)" class="bg-primary px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-primary-dark">{{ localIsAuthenticated ? 'Request service' : 'Sign in to request' }} <i class="fas fa-arrow-right ml-1 text-[9px]"></i></button></div></div>
+          </article>
         </div>
+        <div v-else class="border border-slate-200 bg-white p-6 text-sm text-slate-500">Listed Pay For Me services will appear here when available.</div>
+        <div class="mt-7 flex flex-wrap items-center gap-3"><router-link to="/pay-for-me" class="inline-flex items-center gap-2 bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-primary-dark">Explore all Pay For Me services <i class="fas fa-arrow-right text-xs"></i></router-link><button type="button" @click="startCustomPayRequest" class="inline-flex items-center gap-2 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100">Request a service not listed <i class="fas fa-plus text-xs"></i></button></div>
       </div>
     </section>
 
@@ -100,6 +100,12 @@ export default {
       accessServices: [],
       accessLoading: false,
       localIsAuthenticated: !!localStorage.getItem('token'),
+      hotTrends: [
+        { title: 'Digital Products', subtitle: 'Templates, tools and downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600' },
+        { title: 'Creator Growth', subtitle: 'Monetization and promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600' },
+        { title: 'Social Accounts', subtitle: 'Explore available platforms', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600' },
+        { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/pay-for-me', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600' },
+      ],
       categories: [],
       selectedCategoryId: null,
       productsLoading: false,
@@ -193,6 +199,37 @@ export default {
       } finally {
         this.accessLoading = false;
       }
+    },
+    startAccessService(service) {
+      const target = '/dashboard/pay-for-me?service=' + encodeURIComponent(service.slug || service.id);
+      if (localStorage.getItem('token')) { this.$router.push(target); return; }
+      this.$router.push({ path: '/login', query: { redirect: target } });
+    },
+    typeLabel(type) { return String(type || 'Digital service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); },
+    accessIcon(service) {
+      const value = [service.name, service.slug, service.type, service.description].filter(Boolean).join(' ').toLowerCase();
+      if (value.includes('adobe')) return 'fab fa-adobe';
+      if (value.includes('node.js') || value.includes('nodejs')) return 'fab fa-node-js';
+      if (value.includes('youtube')) return 'fab fa-youtube';
+      if (value.includes('instagram')) return 'fab fa-instagram';
+      if (value.includes('tiktok')) return 'fab fa-tiktok';
+      if (value.includes('facebook')) return 'fab fa-facebook';
+      if (value.includes('telegram')) return 'fab fa-telegram';
+      if (value.includes('course') || value.includes('education')) return 'fas fa-graduation-cap';
+      if (value.includes('software')) return 'fas fa-laptop-code';
+      return 'fas fa-wallet';
+    },
+    accessIconStyle(service) {
+      const value = [service.name, service.slug, service.type, service.description].filter(Boolean).join(' ').toLowerCase();
+      if (value.includes('adobe')) return 'bg-red-50 text-red-600';
+      if (value.includes('node.js') || value.includes('nodejs')) return 'bg-green-50 text-green-700';
+      if (value.includes('youtube')) return 'bg-red-50 text-red-600';
+      if (value.includes('instagram')) return 'bg-pink-50 text-pink-600';
+      if (value.includes('tiktok')) return 'bg-slate-100 text-slate-900';
+      if (value.includes('facebook')) return 'bg-blue-50 text-blue-700';
+      if (value.includes('telegram')) return 'bg-sky-50 text-sky-600';
+      if (value.includes('course') || value.includes('education')) return 'bg-violet-50 text-violet-600';
+      return 'bg-emerald-50 text-emerald-700';
     },
     startCustomPayRequest() {
       if (localStorage.getItem('token')) {
