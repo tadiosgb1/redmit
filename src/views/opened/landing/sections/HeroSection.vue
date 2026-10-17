@@ -40,7 +40,7 @@
         <div class="relative">
           <svg class="redmit-sketch h-auto w-full overflow-visible" viewBox="0 0 560 470" role="img" aria-labelledby="redmit-sketch-title redmit-sketch-desc" xmlns="http://www.w3.org/2000/svg">
             <title id="redmit-sketch-title">A hand-drawn sketch of Redmit services</title>
-            <desc id="redmit-sketch-desc">A laptop surrounded by four simple doodles representing social media marketing, online course access, digital growth, and guided form filling.</desc>
+            <desc id="redmit-sketch-desc">A laptop surrounded by five simple doodles representing digital products, social media marketing, online course access, digital growth, and DV form-filling help.</desc>
             <defs>
               <linearGradient id="screenWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbeafe"/><stop offset="1" stop-color="#eef2ff"/></linearGradient>
             </defs>
@@ -86,12 +86,20 @@
               <circle cx="438" cy="316" r="3" fill="#15803d"/><circle cx="452" cy="302" r="3" fill="#15803d"/><circle cx="464" cy="308" r="3" fill="#15803d"/>
               <text x="430" y="351" fill="#475569" font-size="11" font-weight="600">Digital growth</text>
             </g>
-            <!-- guided form filling: a clipboard and check marks -->
+            <!-- DV form filling: a clipboard and check marks -->
             <g class="redmit-sketch-float">
               <path d="M73 283 L125 283 L130 292 L130 351 L77 354 L73 347Z" fill="#fff" stroke="#b45309" stroke-width="2.2" stroke-linejoin="round"/>
               <path d="M88 283 L89 275 L113 274 L116 283" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
               <path d="M85 303 L91 309 L100 298 M105 305 L119 305 M85 324 L91 330 L100 319 M105 326 L119 326 M85 344 L91 349 L99 339" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <text x="62" y="376" fill="#475569" font-size="11" font-weight="600">Form-filling help</text>
+              <text x="62" y="376" fill="#475569" font-size="11" font-weight="600">DV Form filling</text>
+            </g>
+            <!-- digital products: a small package and downloadable file -->
+            <g class="redmit-sketch-float redmit-sketch-delay">
+              <path d="M164 354 L188 343 L211 354 L188 366Z" fill="#dbeafe" stroke="#2563eb" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M164 354 L164 380 L188 392 L188 366Z" fill="#fff" stroke="#2563eb" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M188 366 L211 354 L211 380 L188 392Z" fill="#bfdbfe" stroke="#2563eb" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M181 347 L204 359 M188 366 L188 392" fill="none" stroke="#2563eb" stroke-width="1.6" stroke-linecap="round"/>
+              <text x="151" y="411" fill="#475569" font-size="11" font-weight="600">Digital products</text>
             </g>
             <!-- light connector doodles keep the scene unified without clutter -->
             <path d="M155 143 Q169 153 184 169 M387 151 Q398 140 405 132 M389 282 Q406 285 421 293 M133 301 Q145 291 153 280" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 5" stroke-linecap="round"/>
