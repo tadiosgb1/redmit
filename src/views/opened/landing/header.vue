@@ -79,6 +79,7 @@ export default {
       serviceLinks: [
         { label: 'Digital Products', desc: 'Buy & sell downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600' },
         { label: 'Social Media Marketing', desc: 'Grow your social presence', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600' },
+        { label: 'Growth Services', desc: 'Monetization & promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600' },
       ],
     };
   },
