@@ -1,12 +1,12 @@
 <template>
   <section id="assets" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-6">
-      <div class="text-center mb-16">
+      <div class="mb-10 max-w-3xl text-left">
         <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 border border-indigo-200 rounded-full text-xs font-bold text-indigo-700 uppercase tracking-widest mb-4"><i class="fas fa-exchange-alt text-[10px]"></i> Digital Assets Marketplace</span>
-        <h2 class="text-4xl font-black text-slate-900 mb-4">Buy & Sell Social Media Accounts</h2>
-        <p class="text-slate-500 text-sm max-w-xl mx-auto leading-relaxed">Browse social media accounts currently available on Redmit. Click to buy — or list your own.</p>
+        <h2 class="text-3xl font-black tracking-tight text-slate-950 mb-4 sm:text-4xl">Buy & Sell Social Media Accounts</h2>
+        <p class="max-w-2xl text-sm leading-7 text-slate-600">Browse social media accounts currently available on Redmit. Click to buy — or list your own.</p>
       </div>
-      <div class="flex flex-wrap gap-2 justify-center mb-10">
+      <div class="mb-10 flex flex-wrap justify-start gap-2">
         <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value" class="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all border" :class="activeTab === tab.value ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'"><i :class="tab.icon" class="text-sm"></i>{{ tab.label }}</button>
       </div>
       <div v-if="loading" class="py-16 text-center text-slate-400">Loading digital assets...</div>
@@ -18,7 +18,7 @@
           <div class="px-5 pb-5"><div class="flex items-center justify-between mb-3"><div><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Price</p><p class="text-xl font-black text-slate-900">{{ formatPrice(asset.price, asset.currency) }}</p></div><div class="text-right"><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Seller</p><p class="text-xs font-bold text-slate-700">{{ asset.seller?.fullName || asset.seller?.username || 'Redmit seller' }}</p></div></div><button @click="requireLogin" :disabled="asset.isSold" class="w-full py-2.5 bg-slate-900 hover:bg-primary disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2"><i class="fas fa-lock text-[10px]"></i>{{ asset.isSold ? 'Sold' : 'View & Buy — Sign In Required' }}</button></div>
         </div>
       </div>
-      <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <div class="mt-12 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
         <router-link to="/products" class="inline-flex items-center gap-2 px-7 py-3.5 bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-700 font-bold text-sm rounded-xl transition-all shadow-sm"><i class="fas fa-arrow-left text-xs"></i> Browse Products</router-link>
         <router-link to="/register" class="inline-flex items-center gap-2 px-7 py-3.5 bg-secondary hover:bg-secondary-dark text-white font-black text-sm rounded-xl transition-all"><i class="fas fa-plus-circle text-xs"></i> List Your Asset</router-link>
       </div>
