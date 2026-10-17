@@ -90,7 +90,7 @@ export default {
       const redirect = this.$route.query.redirect;
       return typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//')
         ? redirect
-        : '/dashboard/first-dash';
+        : '/dashboard/products';
     },
     async handleLogin() {
       this.error = '';
