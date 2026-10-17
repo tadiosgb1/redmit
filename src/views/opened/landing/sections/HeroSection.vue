@@ -39,57 +39,64 @@
         <div class="pointer-events-none absolute inset-10 rounded-full bg-blue-100/70 blur-3xl"></div>
         <div class="relative">
           <svg class="redmit-sketch h-auto w-full overflow-visible" viewBox="0 0 560 470" role="img" aria-labelledby="redmit-sketch-title redmit-sketch-desc" xmlns="http://www.w3.org/2000/svg">
-            <title id="redmit-sketch-title">A hand-drawn illustration of a digital marketplace</title>
-            <desc id="redmit-sketch-desc">Sketches of a laptop, downloadable files, creative tools, and connected ideas floating around a shared digital space.</desc>
+            <title id="redmit-sketch-title">A hand-drawn sketch of Redmit services</title>
+            <desc id="redmit-sketch-desc">A laptop surrounded by four simple doodles representing social media marketing, online course access, digital growth, and guided form filling.</desc>
             <defs>
               <linearGradient id="screenWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbeafe"/><stop offset="1" stop-color="#eef2ff"/></linearGradient>
             </defs>
-            <!-- loose orbit strokes -->
-            <path d="M55 248 C38 153 118 70 235 59 C360 45 475 113 497 214 C520 309 431 384 315 397 C199 411 79 359 55 248Z" fill="none" stroke="#93b4ed" stroke-width="1.5" stroke-dasharray="3 8" stroke-linecap="round"/>
-            <path d="M75 250 C55 168 130 88 236 76 C349 63 453 123 477 216" fill="none" stroke="#bfdbfe" stroke-width="2" stroke-linecap="round"/>
-            <!-- central laptop, deliberately hand drawn -->
+            <path d="M63 246 C44 153 121 73 237 60 C355 47 468 112 495 211 C520 306 432 382 315 397 C199 411 83 356 63 246Z" fill="none" stroke="#93b4ed" stroke-width="1.5" stroke-dasharray="3 8" stroke-linecap="round"/>
+            <!-- central laptop: one simple platform connecting the services -->
             <g class="redmit-sketch-float">
-              <path d="M147 151 Q147 143 157 143 L376 143 Q385 144 385 154 L385 294 Q384 303 375 303 L157 303 Q147 302 147 293Z" fill="#fff" stroke="#334155" stroke-width="2.8" stroke-linejoin="round"/>
-              <path d="M153 151 Q153 149 160 149 L371 149 Q378 150 378 156 L378 286 Q377 294 370 294 L161 294 Q153 292 153 286Z" fill="url(#screenWash)" stroke="#64748b" stroke-width="1.3"/>
-              <path d="M140 306 Q144 301 154 301 L378 301 Q388 302 397 310 L414 324 Q418 329 407 331 L127 331 Q117 329 123 323Z" fill="#f8fafc" stroke="#334155" stroke-width="2.6" stroke-linejoin="round"/>
-              <path d="M219 309 L321 309 L330 319 L209 319Z" fill="#dbeafe" stroke="#94a3b8" stroke-width="1.2"/>
-              <!-- simple screen content: a file, not a UI card -->
-              <path d="M205 180 L265 180 L282 197 L282 262 L205 262Z" fill="#fff" stroke="#2563eb" stroke-width="2.2" stroke-linejoin="round"/>
-              <path d="M265 180 L265 197 L282 197" fill="none" stroke="#2563eb" stroke-width="2"/>
-              <path d="M218 214 L267 214 M218 225 L259 225 M218 236 L249 236" fill="none" stroke="#93b4ed" stroke-width="3" stroke-linecap="round"/>
-              <path d="M302 198 C316 183 344 190 345 211 C345 228 328 237 312 229 C297 222 293 210 302 198Z" fill="#bfdbfe" stroke="#2563eb" stroke-width="2.2"/>
-              <path d="M310 211 L319 219 L335 202" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M300 249 L350 249 M300 258 L336 258" fill="none" stroke="#a5b4fc" stroke-width="3" stroke-linecap="round"/>
+              <path d="M151 157 Q151 149 161 149 L376 149 Q385 150 385 160 L385 291 Q384 300 375 300 L161 300 Q151 299 151 290Z" fill="#fff" stroke="#334155" stroke-width="2.8" stroke-linejoin="round"/>
+              <path d="M158 159 Q158 155 165 155 L370 155 Q378 156 378 162 L378 284 Q377 292 370 292 L166 292 Q158 290 158 284Z" fill="url(#screenWash)" stroke="#64748b" stroke-width="1.3"/>
+              <path d="M143 303 Q148 298 158 298 L378 298 Q388 299 397 307 L412 320 Q417 326 406 328 L129 328 Q118 326 125 319Z" fill="#f8fafc" stroke="#334155" stroke-width="2.6" stroke-linejoin="round"/>
+              <path d="M219 306 L320 306 L329 316 L210 316Z" fill="#dbeafe" stroke="#94a3b8" stroke-width="1.2"/>
+              <path d="M217 190 Q217 184 224 184 L302 184 Q309 184 309 191 L309 257 Q309 263 302 263 L224 263 Q217 263 217 257Z" fill="#fff" stroke="#2563eb" stroke-width="2"/>
+              <path d="M231 203 L293 203 M231 215 L281 215" stroke="#93b4ed" stroke-width="3" stroke-linecap="round"/>
+              <path d="M234 237 L247 249 L273 224" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M326 201 L350 201 M326 212 L357 212 M326 223 L346 223" stroke="#818cf8" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="339" cy="251" r="17" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+              <path d="M330 251 L337 258 L349 244" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </g>
-            <!-- floating sketch: digital file -->
-            <g class="redmit-sketch-float redmit-sketch-delay">
-              <path d="M73 123 L119 119 L136 136 L139 191 L78 195Z" fill="#fff" stroke="#2563eb" stroke-width="2.3" stroke-linejoin="round"/>
-              <path d="M119 119 L118 137 L136 136" fill="none" stroke="#2563eb" stroke-width="2"/>
-              <path d="M89 151 L122 149 M89 162 L123 160 M89 173 L113 172" stroke="#93b4ed" stroke-width="3" stroke-linecap="round"/>
-              <path d="M87 108 Q103 99 119 107" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+            <!-- social media marketing: connected channels -->
+            <g class="redmit-sketch-float redmit-sketch-delay" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M120 112 L144 130 L120 148 M144 130 L164 112" stroke="#64748b" stroke-width="1.8" stroke-dasharray="3 4"/>
+              <circle cx="106" cy="102" r="17" fill="#dbeafe" stroke="#2563eb" stroke-width="2.2"/>
+              <path d="M101 111 L101 94 L111 94 L111 111 M97 99 L115 99" stroke="#2563eb" stroke-width="2.2"/>
+              <circle cx="158" cy="101" r="15" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.2"/>
+              <path d="M153 95 L164 101 L153 107Z" fill="#b91c1c" stroke="#b91c1c" stroke-width="1.5"/>
+              <text x="79" y="76" fill="#475569" stroke="none" font-size="11" font-weight="600">Social media</text>
             </g>
-            <!-- floating sketch: creative spark -->
+            <!-- online course access: open book and graduation cap -->
             <g class="redmit-sketch-float">
-              <path d="M430 108 L436 126 L454 132 L436 138 L430 156 L424 138 L406 132 L424 126Z" fill="#fef3c7" stroke="#d97706" stroke-width="2.2" stroke-linejoin="round"/>
-              <path d="M467 164 L470 173 L480 176 L470 179 L467 189 L464 179 L454 176 L464 173Z" fill="#fff" stroke="#d97706" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M391 102 Q414 91 433 105 L433 143 Q413 131 391 142Z" fill="#fff" stroke="#2563eb" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M433 105 Q452 91 472 102 L472 142 Q452 131 433 143Z" fill="#dbeafe" stroke="#2563eb" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M400 112 Q415 108 424 115 M400 122 Q414 118 424 125 M442 115 Q454 108 463 112 M442 125 Q454 118 463 122" fill="none" stroke="#93b4ed" stroke-width="2" stroke-linecap="round"/>
+              <path d="M397 86 L431 73 L466 86 L431 99Z" fill="#fef3c7" stroke="#b45309" stroke-width="2.1" stroke-linejoin="round"/>
+              <path d="M451 92 L451 105 Q431 117 411 105 L411 92" fill="none" stroke="#b45309" stroke-width="2"/>
+              <path d="M466 86 L466 103" stroke="#b45309" stroke-width="2"/>
+              <circle cx="466" cy="107" r="3" fill="#b45309"/>
+              <text x="397" y="59" fill="#475569" font-size="11" font-weight="600">Course access</text>
             </g>
-            <!-- floating sketch: creator tools -->
+            <!-- digital growth: a simple rising chart -->
             <g class="redmit-sketch-float redmit-sketch-delay">
-              <circle cx="443" cy="286" r="34" fill="#dcfce7" fill-opacity=".8" stroke="#15803d" stroke-width="2.2" stroke-dasharray="4 4"/>
-              <path d="M429 297 L449 270 L458 278 L438 305 L426 309Z" fill="#fff" stroke="#15803d" stroke-width="2.1" stroke-linejoin="round"/>
-              <path d="M449 270 L455 263 L464 272 L458 278" fill="none" stroke="#15803d" stroke-width="2.1" stroke-linejoin="round"/>
+              <path d="M429 275 L429 329 L488 329" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+              <path d="M438 316 L452 302 L464 308 L482 282" fill="none" stroke="#15803d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M472 282 L482 282 L482 292" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="438" cy="316" r="3" fill="#15803d"/><circle cx="452" cy="302" r="3" fill="#15803d"/><circle cx="464" cy="308" r="3" fill="#15803d"/>
+              <text x="430" y="351" fill="#475569" font-size="11" font-weight="600">Digital growth</text>
             </g>
-            <!-- small connection doodles -->
-            <path d="M127 226 Q105 240 96 261 M390 174 Q407 162 420 158 M390 276 Q411 278 416 281" fill="none" stroke="#64748b" stroke-width="1.7" stroke-dasharray="3 5" stroke-linecap="round"/>
-            <circle cx="97" cy="264" r="5" fill="#2563eb"/>
-            <circle cx="391" cy="174" r="4" fill="#6366f1"/>
-            <path d="M109 343 C130 354 149 359 167 357" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
-            <path d="M164 350 L171 357 L163 363" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M365 364 C390 358 405 346 415 331" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
-            <path d="M405 334 L415 330 L417 341" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <!-- a little handwritten-style motion trail -->
-            <path d="M184 91 Q214 78 244 83 M190 99 Q214 90 233 93" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" opacity=".65"/>
-            <path d="M316 382 Q342 384 361 374 M320 389 Q341 391 352 386" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" opacity=".65"/>
+            <!-- guided form filling: a clipboard and check marks -->
+            <g class="redmit-sketch-float">
+              <path d="M73 283 L125 283 L130 292 L130 351 L77 354 L73 347Z" fill="#fff" stroke="#b45309" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M88 283 L89 275 L113 274 L116 283" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+              <path d="M85 303 L91 309 L100 298 M105 305 L119 305 M85 324 L91 330 L100 319 M105 326 L119 326 M85 344 L91 349 L99 339" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="62" y="376" fill="#475569" font-size="11" font-weight="600">Form-filling help</text>
+            </g>
+            <!-- light connector doodles keep the scene unified without clutter -->
+            <path d="M155 143 Q169 153 184 169 M387 151 Q398 140 405 132 M389 282 Q406 285 421 293 M133 301 Q145 291 153 280" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3 5" stroke-linecap="round"/>
+            <path d="M184 82 Q213 70 241 77 M320 381 Q344 382 361 373" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" opacity=".6"/>
+            <path d="M235 67 L239 76 L248 79 L239 82 L235 91 L232 82 L223 79 L232 76Z" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" stroke-linejoin="round"/>
           </svg>
           <div class="mt-1 overflow-hidden py-2">
             <div class="redmit-sketch-marquee flex w-max items-center gap-5 whitespace-nowrap text-[11px] font-medium tracking-wide text-slate-500">
