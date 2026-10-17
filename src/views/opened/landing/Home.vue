@@ -29,7 +29,7 @@
             <div class="flex items-center gap-3"><div class="flex h-10 w-10 items-center justify-center rounded-lg" :class="growthIconStyle(service.type)"><i :class="[growthIcon(service.type), 'text-base']"></i></div><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">{{ growthTypeLabel(service.type) }}</span></div>
             <h3 class="mt-4 text-base font-bold text-slate-900">{{ service.name }}</h3>
             <p class="mt-2 flex-1 text-sm leading-6 text-slate-600 line-clamp-3">{{ service.description }}</p>
-            <div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-xl font-bold text-slate-950">{{ formatGrowthPrice(service.price, service.currency) }}</p></div><router-link :to="{ path: '/login', query: { redirect: '/growth', service: service.slug || service.id } }" class="border border-primary px-3 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-white">Get started <i class="fas fa-arrow-right ml-1 text-[9px]"></i></router-link></div>
+            <div class="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-4"><div><p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Listed price</p><p class="mt-1 text-xl font-bold text-slate-950">{{ formatGrowthPrice(service.price, service.currency) }}</p></div><button type="button" @click="startGrowthService(service)" class="border border-primary px-3 py-2 text-xs font-semibold text-primary hover:bg-primary hover:text-white">{{ localIsAuthenticated ? 'Contact us' : 'Sign in' }} <i class="fas fa-arrow-right ml-1 text-[9px]"></i></button></div>
           </article>
         </div>
         <div v-else class="border border-slate-200 bg-white p-6 text-sm text-slate-500">Growth services will be listed here as they become available. <router-link to="/growth" class="font-semibold text-primary hover:underline">Explore the growth page</router-link></div>
@@ -74,6 +74,7 @@ export default {
       assets: [],
       growthServices: [],
       growthLoading: false,
+      localIsAuthenticated: !!localStorage.getItem('token'),
       categories: [],
       selectedCategoryId: null,
       productsLoading: false,
@@ -167,6 +168,14 @@ export default {
       } finally {
         this.growthLoading = false;
       }
+    },
+    startGrowthService(service) {
+      const serviceKey = service.slug || service.id;
+      if (localStorage.getItem('token')) {
+        this.$router.push({ path: '/contact-us', query: { service: serviceKey } });
+        return;
+      }
+      this.$router.push({ path: '/login', query: { redirect: `/contact-us?service=${serviceKey}` } });
     },
     growthTypeLabel(type) {
       return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
