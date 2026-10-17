@@ -7,7 +7,7 @@
           <button @click="goBack" class="flex h-8 w-8 items-center justify-center border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"><i class="fas fa-arrow-left text-[10px]"></i></button>
           <div><p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Pay For Me Details</p><h1 class="mt-0.5 text-base font-bold text-slate-800">{{ access?.name || "Pay For Me" }}</h1></div>
         </div>
-        <button @click="openEdit" class="inline-flex h-9 items-center justify-center gap-2 bg-primary px-3.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"><i class="fas fa-edit text-[10px]"></i>Edit Pay For Me</button>
+        <button v-if="access" @click="addToCart" class="inline-flex h-9 items-center justify-center gap-2 border border-primary px-3.5 text-xs font-semibold text-primary hover:bg-primary/5"><i class="fas fa-cart-plus text-[10px]"></i>Add to cart</button><button @click="openEdit" class="inline-flex h-9 items-center justify-center gap-2 bg-primary px-3.5 text-xs font-semibold text-white shadow-sm hover:opacity-90"><i class="fas fa-edit text-[10px]"></i>Edit Pay For Me</button>
       </div>
 
       <div v-if="access">
@@ -70,6 +70,7 @@
 <script>
 import Loading from "@/components/Loading.vue";
 import EditAccess from "./EditAccess.vue";
+import { useDigitalCart } from "@/utils/digitalCart";
 
 export default {
   name: "DetailAccess",
@@ -81,6 +82,7 @@ export default {
     details() { return this.normalizeDetails(this.access?.details); },
   },
   methods: {
+    addToCart() { const cart = useDigitalCart(); if (cart.add(this.access, "DIGITAL_ACCESS")) this.$router.push({ name: "Digital-cart" }); },
     async fetchPay For Me() {
       const id = this.$route.params.id;
       if (!id) return;
