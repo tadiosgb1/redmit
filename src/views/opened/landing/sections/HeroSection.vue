@@ -107,8 +107,11 @@ export default { name: 'HeroSection' };
 </script>
 
 <style scoped>
-.redmit-sketch-float { transform-box: fill-box; transform-origin: center; animation: redmit-sketch-drift 5.5s ease-in-out infinite; }\n.redmit-sketch-delay { animation-delay: -2.5s; }\n.redmit-sketch-marquee { animation: redmit-marquee 32s linear infinite; }
+.redmit-sketch-float { transform-box: fill-box; transform-origin: center; animation: redmit-sketch-drift 5.5s ease-in-out infinite; }
+.redmit-sketch-delay { animation-delay: -2.5s; }
+.redmit-sketch-marquee { animation: redmit-marquee 32s linear infinite; }
 .redmit-sketch-marquee:hover { animation-play-state: paused; }
-@keyframes redmit-sketch-drift { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(-1deg); } }\n@keyframes redmit-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes redmit-sketch-drift { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(-1deg); } }
+@keyframes redmit-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .redmit-sketch-float, .redmit-sketch-marquee { animation: none; } .redmit-sketch-marquee { width: 100%; flex-wrap: wrap; white-space: normal; } }
 </style>
