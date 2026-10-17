@@ -91,7 +91,7 @@ export default {
     changePage(nextPage) { if (nextPage >= 1 && nextPage <= this.pagination.totalPages) this.$router.push({ path: '/pay-for-me', query: { page: String(nextPage) } }); },
     typeLabel(type) { return String(type || 'Digital service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); },
     serviceIcon(type, service = {}) {
-      const value = [type, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
+      const value = [type, service.platform, service.name, service.slug, service.description].filter(Boolean).join(' ').toUpperCase();
       if (value.includes('ADOBE')) return 'fab fa-adobe';
       if (value.includes('NODE.JS') || value.includes('NODEJS')) return 'fab fa-node-js';
       if (value.includes('YOUTUBE')) return 'fab fa-youtube';
@@ -107,7 +107,7 @@ export default {
       return 'fas fa-wallet';
     },
     serviceIconStyle(service) {
-      const value = [service.name, service.slug, service.type, service.description].filter(Boolean).join(' ').toLowerCase();
+      const value = [service.platform, service.name, service.slug, service.type, service.description].filter(Boolean).join(' ').toLowerCase();
       if (value.includes('adobe')) return 'text-red-600';
       if (value.includes('node.js') || value.includes('nodejs')) return 'text-green-700';
       if (value.includes('youtube')) return 'text-red-600';
