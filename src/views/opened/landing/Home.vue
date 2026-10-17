@@ -169,7 +169,7 @@ export default {
       }
     },
     growthTypeLabel(type) {
-      return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().replace(/\\b\\w/g, char => char.toUpperCase());
+      return String(type || 'Growth service').replace(/_/g, ' ').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     },
     growthIcon(type) {
       const value = String(type || '').toUpperCase();
