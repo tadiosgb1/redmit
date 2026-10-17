@@ -61,7 +61,7 @@
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <article v-for="product in visibleProducts" :key="product.id" class="group bg-white border border-slate-200 rounded-md overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300">
             <div class="relative h-40 flex items-center justify-center overflow-hidden bg-blue-50"><i class="fas fa-box-open text-5xl text-blue-400/50"></i><span class="absolute top-3 left-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">{{ product.category?.name || 'Digital Product' }}</span><span v-if="product.isActive" class="absolute top-3 right-3 text-[10px] font-black px-2.5 py-1 rounded-full bg-green-100 text-green-700">Available</span></div>
-            <div class="p-4"><h2 class="font-semibold text-slate-800 text-[13px] leading-5 mb-1 line-clamp-2">{{ product.name }}</h2><p class="text-[11px] text-slate-500 mb-3 line-clamp-2 leading-5">{{ product.shortDescription || product.description }}</p><div class="flex items-end justify-between gap-3"><div><p class="text-base font-semibold text-slate-900">{{ formatPrice(product.price, product.currency) }}</p><p class="text-[10px] text-slate-400 mt-1">{{ product.seller?.fullName || product.seller?.username || 'Redmit seller' }}</p></div><button @click="requireLogin" class="px-3.5 py-2 bg-white border border-primary text-primary hover:bg-primary hover:text-white text-xs font-semibold rounded-md transition-colors">Buy</button></div></div>
+            <div class="p-4"><h2 class="font-semibold text-slate-800 text-[13px] leading-5 mb-1 line-clamp-2">{{ product.name }}</h2><p class="text-[11px] text-slate-500 mb-3 line-clamp-2 leading-5">{{ product.shortDescription || product.description }}</p><div class="flex items-end justify-between gap-3"><div><p class="text-base font-semibold text-slate-900">{{ formatPrice(product.price, product.currency) }}</p><p class="text-[10px] text-slate-400 mt-1">{{ product.seller?.fullName || product.seller?.username || 'Redmit seller' }}</p></div><button @click="requireLogin" class="px-3.5 py-2 bg-primary text-white hover:bg-primary-dark text-xs font-semibold rounded-md transition-colors">Buy</button></div></div>
           </article>
         </div>
         <div class="mt-12 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap"><router-link to="/register" class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-secondary text-secondary hover:bg-secondary hover:text-white font-semibold text-sm rounded-md transition-colors"><i class="fas fa-store text-xs"></i> Start Selling on Redmit</router-link></div>
@@ -94,7 +94,11 @@ export default {
     async fetchProducts() { this.loading = true; try { const response = this.selectedCategoryId ? await this.$apiGet('/products', { category_id: this.selectedCategoryId }) : await this.$apiGet('/products'); this.products = Array.isArray(response?.data) ? response.data : []; } catch (error) { this.products = []; } finally { this.loading = false; } },
     async selectCategory(categoryId) { this.selectedCategoryId = categoryId || null; await this.fetchProducts(); },
     formatPrice(price, currency) { return `${currency || 'USD'} ${Number(price || 0).toFixed(2)}`; },
-    requireLogin() { this.$router.push('/login'); },
+    requireLogin() {
+      const target = '/dashboard/products';
+      if (localStorage.getItem('token')) { this.$router.push(target); return; }
+      this.$router.push({ path: '/login', query: { redirect: target } });
+    },
   },
 };
 </script>
