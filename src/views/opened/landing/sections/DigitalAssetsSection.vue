@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="mt-12 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
-        <router-link to="/products" class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm rounded-md transition-colors duration-200"><i class="fas fa-arrow-left text-xs"></i> Browse Products</router-link>
+        <router-link to="/assets" class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-primary text-primary hover:bg-primary hover:text-white font-semibold text-sm rounded-md transition-colors duration-200"><i class="fas fa-layer-group text-xs"></i> View All Social Markets <i class="fas fa-arrow-right text-xs"></i></router-link>
         <router-link to="/register" class="inline-flex items-center gap-2 px-5 py-3 bg-white border border-secondary text-secondary hover:bg-secondary hover:text-white font-semibold text-sm rounded-md transition-colors duration-200"><i class="fas fa-plus-circle text-xs"></i> List Your Asset</router-link>
       </div>
     </div>
