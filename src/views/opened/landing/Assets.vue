@@ -11,20 +11,28 @@
             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-indigo-100 text-indigo-700 text-[11px] font-black uppercase tracking-[0.18em] shadow-sm">
               <i class="fas fa-bullhorn text-[10px]"></i> Social Media Marketing
             </span>
-            <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 leading-tight tracking-tight">
+            <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-950 leading-tight tracking-tight">
               Find social media accounts <span class="text-indigo-600">ready to grow.</span>
             </h1>
-            <p class="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
+            <p class="mt-4 text-base text-slate-600 leading-7 max-w-2xl">
               Browse available social media accounts on Redmit. Compare platforms, audiences, followers, engagement and pricing in one place.
             </p>
           </div>
         </div>
       </section>
 
-      <section class="py-16 sm:py-20 bg-slate-50">
+      <section class="py-14 sm:py-16 bg-slate-50">
         <div class="max-w-7xl mx-auto px-6">
-          <div class="flex flex-wrap gap-2 justify-center mb-10">
-            <button v-for="tab in tabs" :key="tab.value" type="button" @click="activeTab = tab.value" class="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all border" :class="activeTab === tab.value ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'">
+          <div class="mb-5 max-w-xl">
+            <label for="assets-search" class="mb-2 block text-xs font-medium text-slate-600">Search social media accounts</label>
+            <div class="flex items-center gap-3 border border-slate-200 bg-white px-4 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10">
+              <i class="fas fa-search text-sm text-primary"></i>
+              <input id="assets-search" v-model.trim="searchQuery" type="search" placeholder="Search by name, platform, niche…" class="w-full bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400" aria-label="Search social media accounts" />
+              <button v-if="searchQuery" type="button" @click="searchQuery = ''" class="text-xs text-slate-500 hover:text-primary">Clear</button>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 justify-start mb-8">
+            <button v-for="tab in tabs" :key="tab.value" type="button" @click="activeTab = tab.value" class="flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-colors border" :class="activeTab === tab.value ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'">
               <i :class="tab.icon" class="text-sm"></i>{{ tab.label }}
             </button>
           </div>
@@ -32,7 +40,7 @@
           <div v-if="loading" class="py-20 text-center text-slate-400">Loading social media accounts...</div>
           <div v-else-if="!filteredAssets.length" class="py-20 text-center text-slate-400">No social media accounts available right now.</div>
           <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            <article v-for="asset in filteredAssets" :key="asset.id" class="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-slate-200/60 hover:-translate-y-1 transition-all duration-300">
+            <article v-for="asset in filteredAssets" :key="asset.id" class="group bg-white border border-slate-200 rounded-md overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-slate-200/50 transition-all duration-300">
               <div class="px-5 py-4 flex items-center justify-between border-b border-slate-100 bg-slate-50">
                 <div class="flex items-center gap-2.5">
                   <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-slate-900"><i :class="[platformIcon(asset.socialMediaDetails?.platform), 'text-white text-lg']"></i></div>
@@ -42,10 +50,10 @@
               </div>
 
               <div class="px-5 py-4 space-y-3">
-                <h2 class="font-black text-slate-800 text-sm line-clamp-2">{{ asset.name }}</h2>
-                <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">{{ asset.description }}</p>
+                <h2 class="font-semibold text-slate-800 text-[13px] leading-5 line-clamp-2">{{ asset.name }}</h2>
+                <p class="text-[11px] text-slate-500 line-clamp-2 leading-5">{{ asset.description }}</p>
                 <div class="grid grid-cols-3 gap-2 text-center">
-                  <div><p class="text-sm font-black text-slate-900">{{ formatNumber(asset.socialMediaDetails?.followers) }}</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">Followers</p></div>
+                  <div><p class="text-sm font-semibold text-slate-900">{{ formatNumber(asset.socialMediaDetails?.followers) }}</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">Followers</p></div>
                   <div><p class="text-sm font-black text-slate-900">{{ asset.socialMediaDetails?.engagementRate ? `${asset.socialMediaDetails.engagementRate}%` : '—' }}</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">Eng. Rate</p></div>
                   <div><p class="text-sm font-black text-slate-900">{{ formatNumber(asset.socialMediaDetails?.views || asset.socialMediaDetails?.posts) }}</p><p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ asset.socialMediaDetails?.views ? 'Views' : 'Posts' }}</p></div>
                 </div>
@@ -57,10 +65,10 @@
 
               <div class="px-5 pb-5">
                 <div class="flex items-center justify-between mb-3">
-                  <div><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Price</p><p class="text-xl font-black text-slate-900">{{ formatPrice(asset.price, asset.currency) }}</p></div>
-                  <div class="text-right"><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Seller</p><p class="text-xs font-bold text-slate-700">{{ asset.seller?.fullName || asset.seller?.username || 'Redmit seller' }}</p></div>
+                  <div><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Price</p><p class="text-base font-semibold text-slate-900">{{ formatPrice(asset.price, asset.currency) }}</p></div>
+                  <div class="text-right"><p class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Seller</p><p class="text-[11px] font-medium text-slate-700">{{ asset.seller?.fullName || asset.seller?.username || 'Redmit seller' }}</p></div>
                 </div>
-                <button @click="requireLogin" :disabled="asset.isSold" class="w-full py-2.5 bg-slate-900 hover:bg-primary disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                <button @click="requireLogin" :disabled="asset.isSold" class="w-full py-2.5 bg-white border border-primary text-primary hover:bg-primary hover:text-white disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold rounded-md transition-colors duration-200 flex items-center justify-center gap-2">
                   <i class="fas fa-lock text-[10px]"></i>{{ asset.isSold ? 'Sold' : 'View & Buy — Sign In Required' }}
                 </button>
               </div>
@@ -85,6 +93,7 @@ export default {
     return {
       assets: [],
       loading: false,
+      searchQuery: '',
       activeTab: 'all',
       tabs: [
         { value: 'all', label: 'All', icon: 'fas fa-th-large' },
@@ -98,7 +107,12 @@ export default {
   },
   computed: {
     filteredAssets() {
-      return this.activeTab === 'all' ? this.assets : this.assets.filter((asset) => asset.socialMediaDetails?.platform === this.activeTab);
+      const query = this.searchQuery.toLowerCase();
+      return this.assets.filter((asset) => {
+        const platformMatches = this.activeTab === 'all' || asset.socialMediaDetails?.platform === this.activeTab;
+        const text = [asset.name, asset.description, asset.socialMediaDetails?.platform, asset.socialMediaDetails?.niche, asset.socialMediaDetails?.username, asset.socialMediaDetails?.country, asset.seller?.fullName, asset.seller?.username].filter(Boolean).join(' ').toLowerCase();
+        return platformMatches && (!query || text.includes(query));
+      });
     },
   },
   async mounted() {
