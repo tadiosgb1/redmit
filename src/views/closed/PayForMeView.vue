@@ -14,7 +14,6 @@
     <!-- New request form -->
     <div v-if="showForm" class="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
       <h3 class="font-black text-slate-800 text-sm">Submit a New Request</h3>
-      <p v-if="successMessage" class="border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{{ successMessage }}</p>
       <p v-if="errorMessage" class="border border-red-200 bg-red-50 p-3 text-sm text-red-700">{{ errorMessage }}</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
@@ -52,6 +51,8 @@
         </button>
       </div>
     </div>
+
+    <p v-if="successMessage" class="border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{{ successMessage }}</p>
 
     <!-- Requests table -->
     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
