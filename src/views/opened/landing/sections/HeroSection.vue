@@ -1,5 +1,5 @@
 <template>
-  <section class="relative isolate overflow-hidden border-b border-slate-100 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+  <section id="top" class="relative isolate overflow-hidden border-b border-slate-100 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
     <div class="pointer-events-none absolute -right-24 -top-28 h-96 w-96 rounded-full bg-blue-200/50 blur-3xl"></div>
     <div class="pointer-events-none absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-indigo-200/40 blur-3xl"></div>
 
@@ -10,12 +10,12 @@
           Welcome to Redmit
         </span>
 
-        <h1 class="mt-7 text-5xl font-black leading-[1.04] tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
+        <h1 class="mt-7 text-4xl font-black leading-[1.08] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
           Your digital world,
           <span class="mt-1 block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">all in one place.</span>
         </h1>
 
-        <p class="mt-6 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+        <p class="mt-5 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">
           Discover digital products, social media assets, and real opportunities—all through one marketplace built to help you move forward.
         </p>
 
@@ -41,27 +41,27 @@
           <div class="flex items-center justify-between border-b border-slate-100 pb-4">
             <div>
               <p class="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">The Redmit marketplace</p>
-              <p class="mt-1 text-lg font-black text-slate-900">One place. More possibilities.</p>
+              <p class="mt-1 text-base font-black text-slate-900">One place. More possibilities.</p>
             </div>
-            <span class="flex h-10 w-10 items-center justify-center bg-blue-600 text-white"><i class="fas fa-sparkles"></i></span>
+            <span class="flex h-8 w-8 items-center justify-center bg-blue-600 text-white"><i class="fas fa-sparkles"></i></span>
           </div>
 
           <div class="mt-4 grid grid-cols-2 gap-3">
             <div class="group border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4 transition-transform hover:-translate-y-1">
-              <div class="flex h-10 w-10 items-center justify-center bg-blue-600 text-white"><i class="fas fa-box-open"></i></div>
+              <div class="flex h-8 w-8 items-center justify-center bg-blue-600 text-white"><i class="fas fa-box-open"></i></div>
               <p class="mt-5 text-sm font-black text-slate-900">Digital products</p>
               <p class="mt-1 text-xs leading-5 text-slate-500">Useful downloads and digital goods.</p>
               <router-link to="/products" class="mt-4 inline-flex items-center gap-2 text-xs font-black text-blue-700">Browse products <i class="fas fa-arrow-right"></i></router-link>
             </div>
             <div class="group border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-4 transition-transform hover:-translate-y-1">
-              <div class="flex h-10 w-10 items-center justify-center bg-indigo-600 text-white"><i class="fas fa-chart-line"></i></div>
+              <div class="flex h-8 w-8 items-center justify-center bg-indigo-600 text-white"><i class="fas fa-chart-line"></i></div>
               <p class="mt-5 text-sm font-black text-slate-900">Digital assets</p>
               <p class="mt-1 text-xs leading-5 text-slate-500">Explore accounts and online assets.</p>
               <a href="#assets" class="mt-4 inline-flex items-center gap-2 text-xs font-black text-indigo-700">Explore assets <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="col-span-2 flex items-center justify-between gap-4 border border-emerald-100 bg-gradient-to-r from-emerald-50 to-white p-4 sm:p-5">
               <div class="flex items-center gap-3">
-                <div class="flex h-11 w-11 shrink-0 items-center justify-center bg-emerald-600 text-white"><i class="fas fa-compass"></i></div>
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center bg-emerald-600 text-white"><i class="fas fa-compass"></i></div>
                 <div><p class="text-sm font-black text-slate-900">Opportunities worth exploring</p><p class="mt-1 text-xs leading-5 text-slate-500">Scholarships, grants, internships, and more.</p></div>
               </div>
               <router-link to="/opportunities" aria-label="Explore opportunities" class="flex h-9 w-9 shrink-0 items-center justify-center bg-white text-emerald-700 shadow-sm transition-transform hover:translate-x-1"><i class="fas fa-arrow-right"></i></router-link>
