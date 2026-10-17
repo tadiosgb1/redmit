@@ -36,36 +36,64 @@
       </div>
 
       <div class="relative mx-auto w-full max-w-xl lg:ml-auto">
-        <div class="absolute -inset-4 bg-blue-200/40 blur-2xl"></div>
-        <div class="relative overflow-hidden border border-slate-200 bg-white shadow-xl shadow-blue-900/10">
-          <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-            <div><p class="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Discover digital goods</p><p class="mt-1 text-sm font-semibold text-slate-800">Find something worth downloading</p></div>
-            <router-link to="/products" class="text-xs font-medium text-primary hover:underline">Shop all <i class="fas fa-arrow-right ml-1"></i></router-link>
-          </div>
-          <router-link to="/products" class="mx-4 mt-4 flex items-center gap-3 border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-400 transition-colors hover:border-primary">
-            <i class="fas fa-search text-primary"></i><span>Search templates, ebooks, presets…</span><span class="ml-auto text-[10px] text-slate-400">Explore</span>
-          </router-link>
-          <div class="grid grid-cols-2 gap-3 p-4">
-            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
-              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-50"><i class="fas fa-file-alt text-3xl text-blue-600/80 transition-transform group-hover:scale-110"></i></div>
-              <p class="mt-3 text-xs font-semibold text-slate-800">Templates & planners</p><p class="mt-1 text-[11px] text-slate-500">Ready-to-use resources</p>
-            </router-link>
-            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
-              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-rose-100 to-orange-50"><i class="fas fa-book-open text-3xl text-rose-600/80 transition-transform group-hover:scale-110"></i></div>
-              <p class="mt-3 text-xs font-semibold text-slate-800">E-books & guides</p><p class="mt-1 text-[11px] text-slate-500">Ideas to learn from</p>
-            </router-link>
-            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
-              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-emerald-100 to-teal-50"><i class="fas fa-palette text-3xl text-emerald-700/80 transition-transform group-hover:scale-110"></i></div>
-              <p class="mt-3 text-xs font-semibold text-slate-800">Design assets</p><p class="mt-1 text-[11px] text-slate-500">Graphics and creative kits</p>
-            </router-link>
-            <router-link to="/products" class="group border border-slate-200 p-3 transition-colors hover:border-primary">
-              <div class="flex h-24 items-center justify-center bg-gradient-to-br from-amber-100 to-yellow-50"><i class="fas fa-laptop-code text-3xl text-amber-700/80 transition-transform group-hover:scale-110"></i></div>
-              <p class="mt-3 text-xs font-semibold text-slate-800">Digital tools</p><p class="mt-1 text-[11px] text-slate-500">Tools for your workflow</p>
-            </router-link>
-          </div>
-          <div class="overflow-hidden border-t border-slate-100 bg-blue-50/70 py-2.5">
-            <div class="redmit-market-marquee flex w-max items-center gap-6 whitespace-nowrap text-[10px] font-medium text-blue-800">
-              <span>Templates</span><span>✳</span><span>E-books</span><span>✳</span><span>Design kits</span><span>✳</span><span>Presets</span><span>✳</span><span>Digital downloads</span><span>✳</span><span>Templates</span><span>✳</span><span>E-books</span><span>✳</span><span>Design kits</span><span>✳</span><span>Presets</span><span>✳</span><span>Digital downloads</span>
+        <div class="pointer-events-none absolute inset-10 rounded-full bg-blue-100/70 blur-3xl"></div>
+        <div class="relative">
+          <svg class="redmit-sketch h-auto w-full overflow-visible" viewBox="0 0 560 470" role="img" aria-labelledby="redmit-sketch-title redmit-sketch-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="redmit-sketch-title">A hand-drawn illustration of a digital marketplace</title>
+            <desc id="redmit-sketch-desc">Sketches of a laptop, downloadable files, creative tools, and connected ideas floating around a shared digital space.</desc>
+            <defs>
+              <linearGradient id="screenWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbeafe"/><stop offset="1" stop-color="#eef2ff"/></linearGradient>
+            </defs>
+            <!-- loose orbit strokes -->
+            <path d="M55 248 C38 153 118 70 235 59 C360 45 475 113 497 214 C520 309 431 384 315 397 C199 411 79 359 55 248Z" fill="none" stroke="#93b4ed" stroke-width="1.5" stroke-dasharray="3 8" stroke-linecap="round"/>
+            <path d="M75 250 C55 168 130 88 236 76 C349 63 453 123 477 216" fill="none" stroke="#bfdbfe" stroke-width="2" stroke-linecap="round"/>
+            <!-- central laptop, deliberately hand drawn -->
+            <g class="redmit-sketch-float">
+              <path d="M147 151 Q147 143 157 143 L376 143 Q385 144 385 154 L385 294 Q384 303 375 303 L157 303 Q147 302 147 293Z" fill="#fff" stroke="#334155" stroke-width="2.8" stroke-linejoin="round"/>
+              <path d="M153 151 Q153 149 160 149 L371 149 Q378 150 378 156 L378 286 Q377 294 370 294 L161 294 Q153 292 153 286Z" fill="url(#screenWash)" stroke="#64748b" stroke-width="1.3"/>
+              <path d="M140 306 Q144 301 154 301 L378 301 Q388 302 397 310 L414 324 Q418 329 407 331 L127 331 Q117 329 123 323Z" fill="#f8fafc" stroke="#334155" stroke-width="2.6" stroke-linejoin="round"/>
+              <path d="M219 309 L321 309 L330 319 L209 319Z" fill="#dbeafe" stroke="#94a3b8" stroke-width="1.2"/>
+              <!-- simple screen content: a file, not a UI card -->
+              <path d="M205 180 L265 180 L282 197 L282 262 L205 262Z" fill="#fff" stroke="#2563eb" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M265 180 L265 197 L282 197" fill="none" stroke="#2563eb" stroke-width="2"/>
+              <path d="M218 214 L267 214 M218 225 L259 225 M218 236 L249 236" fill="none" stroke="#93b4ed" stroke-width="3" stroke-linecap="round"/>
+              <path d="M302 198 C316 183 344 190 345 211 C345 228 328 237 312 229 C297 222 293 210 302 198Z" fill="#bfdbfe" stroke="#2563eb" stroke-width="2.2"/>
+              <path d="M310 211 L319 219 L335 202" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M300 249 L350 249 M300 258 L336 258" fill="none" stroke="#a5b4fc" stroke-width="3" stroke-linecap="round"/>
+            </g>
+            <!-- floating sketch: digital file -->
+            <g class="redmit-sketch-float redmit-sketch-delay">
+              <path d="M73 123 L119 119 L136 136 L139 191 L78 195Z" fill="#fff" stroke="#2563eb" stroke-width="2.3" stroke-linejoin="round"/>
+              <path d="M119 119 L118 137 L136 136" fill="none" stroke="#2563eb" stroke-width="2"/>
+              <path d="M89 151 L122 149 M89 162 L123 160 M89 173 L113 172" stroke="#93b4ed" stroke-width="3" stroke-linecap="round"/>
+              <path d="M87 108 Q103 99 119 107" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+            </g>
+            <!-- floating sketch: creative spark -->
+            <g class="redmit-sketch-float">
+              <path d="M430 108 L436 126 L454 132 L436 138 L430 156 L424 138 L406 132 L424 126Z" fill="#fef3c7" stroke="#d97706" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M467 164 L470 173 L480 176 L470 179 L467 189 L464 179 L454 176 L464 173Z" fill="#fff" stroke="#d97706" stroke-width="1.7" stroke-linejoin="round"/>
+            </g>
+            <!-- floating sketch: creator tools -->
+            <g class="redmit-sketch-float redmit-sketch-delay">
+              <circle cx="443" cy="286" r="34" fill="#dcfce7" fill-opacity=".8" stroke="#15803d" stroke-width="2.2" stroke-dasharray="4 4"/>
+              <path d="M429 297 L449 270 L458 278 L438 305 L426 309Z" fill="#fff" stroke="#15803d" stroke-width="2.1" stroke-linejoin="round"/>
+              <path d="M449 270 L455 263 L464 272 L458 278" fill="none" stroke="#15803d" stroke-width="2.1" stroke-linejoin="round"/>
+            </g>
+            <!-- small connection doodles -->
+            <path d="M127 226 Q105 240 96 261 M390 174 Q407 162 420 158 M390 276 Q411 278 416 281" fill="none" stroke="#64748b" stroke-width="1.7" stroke-dasharray="3 5" stroke-linecap="round"/>
+            <circle cx="97" cy="264" r="5" fill="#2563eb"/>
+            <circle cx="391" cy="174" r="4" fill="#6366f1"/>
+            <path d="M109 343 C130 354 149 359 167 357" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+            <path d="M164 350 L171 357 L163 363" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M365 364 C390 358 405 346 415 331" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
+            <path d="M405 334 L415 330 L417 341" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- a little handwritten-style motion trail -->
+            <path d="M184 91 Q214 78 244 83 M190 99 Q214 90 233 93" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" opacity=".65"/>
+            <path d="M316 382 Q342 384 361 374 M320 389 Q341 391 352 386" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" opacity=".65"/>
+          </svg>
+          <div class="mt-1 overflow-hidden py-2">
+            <div class="redmit-sketch-marquee flex w-max items-center gap-5 whitespace-nowrap text-[11px] font-medium tracking-wide text-slate-500">
+              <span>Ideas become digital goods</span><span class="text-primary">✳</span><span>Made to discover</span><span class="text-primary">✳</span><span>One marketplace, more possibilities</span><span class="text-primary">✳</span><span>Ideas become digital goods</span><span class="text-primary">✳</span><span>Made to discover</span><span class="text-primary">✳</span><span>One marketplace, more possibilities</span>
             </div>
           </div>
         </div>
@@ -79,8 +107,8 @@ export default { name: 'HeroSection' };
 </script>
 
 <style scoped>
-.redmit-market-marquee { animation: redmit-marquee 26s linear infinite; }
-.redmit-market-marquee:hover { animation-play-state: paused; }
-@keyframes redmit-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .redmit-market-marquee { animation: none; width: 100%; flex-wrap: wrap; white-space: normal; } }
+.redmit-sketch-float { transform-box: fill-box; transform-origin: center; animation: redmit-sketch-drift 5.5s ease-in-out infinite; }\n.redmit-sketch-delay { animation-delay: -2.5s; }\n.redmit-sketch-marquee { animation: redmit-marquee 32s linear infinite; }
+.redmit-sketch-marquee:hover { animation-play-state: paused; }
+@keyframes redmit-sketch-drift { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(-1deg); } }\n@keyframes redmit-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .redmit-sketch-float, .redmit-sketch-marquee { animation: none; } .redmit-sketch-marquee { width: 100%; flex-wrap: wrap; white-space: normal; } }
 </style>
