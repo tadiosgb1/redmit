@@ -12,7 +12,7 @@
       </div>
 
       <!-- Form Card -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+      <div class="bg-white border-y border-slate-200 shadow-none p-6 sm:p-8">
         <form @submit.prevent="handleLogin" class="space-y-5">
 
           <div>
