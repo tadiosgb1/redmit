@@ -26,7 +26,7 @@
         <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3"><div><h2 class="text-sm font-bold text-slate-900">DV service listings</h2><p class="mt-0.5 text-[10px] text-slate-400">{{ items.length }} listing(s) · endpoint: /dv-applications</p></div><button @click="fetchItems" class="h-8 border border-slate-200 px-3 text-[10px] font-bold text-slate-600 hover:bg-slate-50"><i class="fas fa-sync-alt mr-1"></i>Refresh</button></div>
         <div v-if="loading" class="p-10 text-center text-xs text-slate-400">Loading DV listings…</div>
         <div v-else-if="!items.length" class="p-10 text-center"><i class="fas fa-passport text-2xl text-amber-500"></i><p class="mt-2 text-sm font-bold text-slate-700">No DV listings yet</p><p class="mt-1 text-xs text-slate-400">Create a service listing to promote it on the landing page.</p></div>
-        <div v-else class="overflow-x-auto"><table class="min-w-full"><thead class="bg-slate-50 text-left text-[10px] font-bold uppercase tracking-wide text-slate-400"><tr><th class="px-4 py-3">Service</th><th class="px-4 py-3">DV year</th><th class="px-4 py-3">Price</th><th class="px-4 py-3">Service fee</th><th class="px-4 py-3">Provider</th><th class="px-4 py-3">Actions</th></tr></thead><tbody class="divide-y divide-slate-100"><tr v-for="item in items" :key="item.id || item.name" class="hover:bg-slate-50"><td class="px-4 py-3"><div class="flex items-center gap-3"><img v-if="thumbnailUrl(item)" :src="thumbnailUrl(item)" alt="" class="h-10 w-10 object-cover"><div v-else class="flex h-10 w-10 items-center justify-center bg-amber-50 text-amber-700"><i class="fas fa-passport"></i></div><div><p class="text-xs font-bold text-slate-800">{{ item.name }}</p><p class="mt-0.5 max-w-sm text-[10px] text-slate-400">{{ item.description || 'No description' }}</p></div></div></td><td class="px-4 py-3 text-xs">{{ item.dvYear || '—' }}</td><td class="px-4 py-3 text-xs font-bold">{{ formatPrice(item.price, item.currency) }}</td><td class="px-4 py-3 text-xs">{{ formatPrice(item.serviceFee, item.currency) }}</td><td class="px-4 py-3 text-[10px] text-slate-500">{{ item.providerId || item.provider?.id || '—' }}</td><td class="px-4 py-3"><button @click="editItem(item)" class="h-7 border border-slate-200 px-2 text-[10px] font-semibold text-primary"><i class="fas fa-edit mr-1"></i>Edit</button></td></tr></tbody></table></div>
+        <div v-else class="overflow-x-auto"><table class="min-w-full"><thead class="bg-slate-50 text-left text-[10px] font-bold uppercase tracking-wide text-slate-400"><tr><th class="px-4 py-3">Service</th><th class="px-4 py-3">DV year</th><th class="px-4 py-3">Price</th><th class="px-4 py-3">Service fee</th><th class="px-4 py-3">Provider</th><th class="px-4 py-3">Actions</th></tr></thead><tbody class="divide-y divide-slate-100"><tr v-for="item in items" :key="item.id || item.name" class="hover:bg-slate-50"><td class="px-4 py-3"><div class="flex items-center gap-3"><img v-if="thumbnailUrl(item)" :src="thumbnailUrl(item)" alt="" class="h-10 w-10 object-cover"><div v-else class="flex h-10 w-10 items-center justify-center bg-amber-50 text-amber-700"><i class="fas fa-passport"></i></div><div><p class="text-xs font-bold text-slate-800">{{ item.name }}</p><p class="mt-0.5 max-w-sm text-[10px] text-slate-400">{{ item.description || 'No description' }}</p></div></div></td><td class="px-4 py-3 text-xs">{{ item.dvYear || '—' }}</td><td class="px-4 py-3 text-xs font-bold">{{ formatPrice(item.price, item.currency) }}</td><td class="px-4 py-3 text-xs">{{ formatPrice(item.serviceFee, item.currency) }}</td><td class="px-4 py-3 text-[10px] text-slate-500">{{ item.providerId || item.provider?.id || '—' }}</td><td class="px-4 py-3"><div class="flex gap-1.5"><button @click="addToCart(item)" class="h-7 border border-emerald-200 px-2 text-[10px] font-semibold text-emerald-700"><i class="fas fa-cart-plus mr-1"></i>Order</button><button @click="editItem(item)" class="h-7 border border-slate-200 px-2 text-[10px] font-semibold text-primary"><i class="fas fa-edit mr-1"></i>Edit</button></div></td></tr></tbody></table></div>
       </div>
     </div>
   </div>
@@ -54,6 +54,15 @@ export default {
       finally { this.loading = false; }
     },
     onThumbnailChange(event) { this.thumbnail = event.target.files?.[0] || null; },
+    addToCart(item) {
+      const cart = useDigitalCart();
+      if (!cart.add(item, 'DIGITAL_DV_APPLICATION')) { this.formError = 'This listing cannot be ordered because it has no ID.'; return; }
+      window.alert('DV assistance added to your digital cart.');
+    },
+    addToCartById(id) {
+      const item = this.items.find(entry => String(entry.id) === String(id));
+      if (item) this.addToCart(item);
+    },
     async submitService() {
       this.formError = '';
       let details;
