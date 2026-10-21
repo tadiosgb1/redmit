@@ -214,9 +214,9 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
 
         <!-- My Orders -->
-        <div class="bg-white rounded-none border border-slate-200 p-3">
-          <h3 class="text-sm font-black text-slate-800 mb-4">My Recent Orders</h3>
-          <div class="space-y-2.5">
+        <div class="bg-white rounded-none border border-slate-200 p-2.5">
+          <h3 class="text-sm font-bold text-slate-800 mb-2">My Recent Orders</h3>
+          <div class="space-y-1">
             <div v-for="o in myOrders" :key="o.id"
               class="flex items-center gap-2 px-1.5 py-1 rounded-none hover:bg-slate-50 transition-colors">
               <div class="w-7 h-7 rounded-md flex items-center justify-center shrink-0" :class="o.iconBg">
