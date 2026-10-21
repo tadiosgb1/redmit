@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3 space-y-4 bg-white min-h-full font-sans">
+  <div class="p-3 space-y-4 bg-slate-50 min-h-full font-sans">
 
     <!-- Page header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -20,7 +20,7 @@
     <template v-if="isAdmin">
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div v-for="s in adminStats" :key="s.label"
-          class="bg-white rounded-none border border-slate-200 p-3 flex flex-col gap-3">
+          class="bg-white rounded-none border border-slate-200 p-2.5 flex flex-col gap-2">
           <div class="w-7 h-7 rounded-md flex items-center justify-center" :class="s.iconBg">
             <i :class="[s.icon, s.iconColor, 'text-sm']"></i>
           </div>
@@ -199,7 +199,7 @@
         <h3 class="text-sm font-bold text-slate-800 mb-2">Quick Actions</h3>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <router-link v-for="a in quickActions" :key="a.label" :to="{ name: a.route }"
-            class="group flex flex-col items-center gap-3 p-3 bg-white border-2 border-slate-200 rounded-none
+            class="group flex flex-col items-center gap-2 p-3 bg-white border border-slate-200 rounded-none
                    hover:border-primary hover:shadow-md hover:shadow-primary/10 transition-all duration-200 text-center">
             <div class="w-8 h-8 rounded-none flex items-center justify-center transition-all group-hover:scale-110"
                  :class="a.iconBg">
