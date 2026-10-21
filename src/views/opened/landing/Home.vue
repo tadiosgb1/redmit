@@ -21,6 +21,21 @@
     />
     <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
 
+
+    <section class="landing-section border-y border-amber-100 bg-gradient-to-br from-amber-50 via-white to-rose-50 py-14 sm:py-16">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div class="max-w-2xl"><span class="inline-flex items-center gap-2 bg-rose-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white"><i class="fas fa-fire"></i> Hot service</span><h2 class="mt-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">American Diversity Visa (DV) assistance</h2><p class="mt-2 text-sm leading-6 text-slate-600">Get help preparing your Diversity Visa entry and understanding the information needed. Official U.S. government entry is separate; assistance does not guarantee selection or a visa.</p></div>
+          <button type="button" @click="startDvApplication()" class="inline-flex shrink-0 items-center justify-center gap-2 bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-rose-700">{{ localIsAuthenticated ? 'Explore DV assistance' : 'Sign in to get started' }} <i class="fas fa-arrow-right text-xs"></i></button>
+        </div>
+        <div v-if="dvLoading" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-28 animate-pulse border border-amber-100 bg-white"></div></div>
+        <div v-else-if="dvServices.length" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <article v-for="service in dvServices.slice(0, 3)" :key="service.id || service.name" class="border border-amber-100 bg-white p-4 transition hover:border-amber-300 hover:shadow-md"><h3 class="text-sm font-bold text-slate-900"><i class="fas fa-passport mr-2 text-amber-600"></i>{{ service.name || 'DV Application Assistance' }}</h3><p class="mt-2 text-xs leading-5 text-slate-500">{{ service.description || 'Guidance for preparing your Diversity Visa entry.' }}</p><div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3"><span class="text-sm font-black text-slate-900">{{ formatDvPrice(service.price, service.currency) }}</span><button type="button" @click="startDvApplication(service)" class="text-xs font-bold text-rose-700 hover:underline">{{ localIsAuthenticated ? 'Continue' : 'Sign in to continue' }} <i class="fas fa-arrow-right ml-1"></i></button></div><p v-if="service.dvYear" class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">DV year {{ service.dvYear }}</p></article>
+        </div>
+        <div v-else class="border border-amber-100 bg-white p-4 text-xs text-slate-500">DV assistance options will appear here as they are published.</div>
+      </div>
+    </section>
+
     <section class="landing-section bg-slate-50 py-20">
       <div class="mx-auto max-w-7xl px-6">
         <div class="mb-8 max-w-3xl text-left"><span class="inline-flex items-center gap-2 border border-emerald-200 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-700"><i class="fas fa-wallet text-[10px]"></i> Pay For Me</span><h2 class="mt-4 text-2xl font-extrabold tracking-tight text-slate-950 sm:text-3xl">Digital services, paid for you</h2><p class="mt-3 max-w-2xl text-sm leading-7 text-slate-600">Explore the services listed on Redmit. Need something else? Sign in and submit a custom payment request for our team to review.</p></div>
@@ -127,7 +142,9 @@ export default {
         ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
         { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dv-application', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
       ];
-      return trends.length ? trends.slice(0, 4) : this.trendCategories;
+      const dvTrend = this.trendCategories.find(item => item.title === 'American DV');
+      const otherTrends = trends.filter(item => !String(item.title || '').toLowerCase().includes('diversity visa'));
+      return [dvTrend, ...otherTrends].filter(Boolean).slice(0, 5);
     },
   },
   async mounted() {
