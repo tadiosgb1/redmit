@@ -1,8 +1,8 @@
 <template>
-  <div class="p-6 space-y-6 bg-white min-h-full font-sans">
+  <div class="p-3 space-y-4 bg-white min-h-full font-sans">
 
     <!-- Page header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
         <h1 class="text-xl font-black text-slate-900">
           {{ isAdmin ? 'Admin Dashboard' : 'My Dashboard' }}
@@ -18,14 +18,14 @@
 
     <!-- ── ADMIN STATS ── -->
     <template v-if="isAdmin">
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div v-for="s in adminStats" :key="s.label"
-          class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col gap-3">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center" :class="s.iconBg">
+          class="bg-white rounded-none border border-slate-200 p-3 flex flex-col gap-3">
+          <div class="w-7 h-7 rounded-md flex items-center justify-center" :class="s.iconBg">
             <i :class="[s.icon, s.iconColor, 'text-sm']"></i>
           </div>
           <div>
-            <p class="text-xl font-black text-slate-900 leading-none">{{ s.value }}</p>
+            <p class="text-lg font-bold text-slate-900 leading-none">{{ s.value }}</p>
             <p class="text-xs text-slate-500 mt-1">{{ s.label }}</p>
           </div>
           <p v-if="s.sub" class="text-[11px] font-semibold" :class="s.subColor">{{ s.sub }}</p>
@@ -33,10 +33,10 @@
       </div>
 
       <!-- Revenue + Recent orders -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
 
         <!-- Revenue chart placeholder -->
-        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="lg:col-span-5 bg-white rounded-none border border-slate-200 p-3">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-sm font-black text-slate-800">Revenue Overview</h3>
             <span class="text-[10px] text-slate-400 font-bold uppercase">This Year</span>
@@ -55,7 +55,7 @@
         </div>
 
         <!-- Service breakdown -->
-        <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="lg:col-span-3 bg-white rounded-none border border-slate-200 p-3">
           <h3 class="text-sm font-black text-slate-800 mb-4">Orders by Service</h3>
           <div class="space-y-3">
             <div v-for="s in serviceBreakdown" :key="s.name">
@@ -74,15 +74,15 @@
         </div>
 
         <!-- Recent orders table -->
-        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="lg:col-span-4 bg-white rounded-none border border-slate-200 p-3">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-sm font-black text-slate-800">Recent Orders</h3>
             <span class="text-[10px] text-primary font-bold cursor-pointer hover:underline">View All</span>
           </div>
           <div class="space-y-2.5">
             <div v-for="o in recentOrders" :key="o.id"
-              class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors">
-              <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" :class="o.iconBg">
+              class="flex items-center gap-3 p-2.5 rounded-md hover:bg-slate-50 transition-colors">
+              <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" :class="o.iconBg">
                 <i :class="[o.icon, o.iconColor, 'text-xs']"></i>
               </div>
               <div class="flex-1 min-w-0">
@@ -101,10 +101,10 @@
       </div>
 
       <!-- Pending requests + Inbox + Top products -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
         <!-- Pending requests -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="bg-white rounded-none border border-slate-200 p-3">
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-sm font-black text-slate-800">Pending Requests</h3>
             <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
@@ -113,8 +113,8 @@
           </div>
           <div class="space-y-2.5">
             <div v-for="r in pendingRequests" :key="r.id"
-              class="flex items-center gap-3 p-2.5 rounded-xl border border-slate-100 hover:border-primary/20 transition-colors">
-              <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" :class="r.iconBg">
+              class="flex items-center gap-3 p-2.5 rounded-md border border-slate-100 hover:border-primary/20 transition-colors">
+              <div class="w-8 h-8 rounded-md flex items-center justify-center shrink-0" :class="r.iconBg">
                 <i :class="[r.icon, r.iconColor, 'text-xs']"></i>
               </div>
               <div class="flex-1 min-w-0">
@@ -134,14 +134,14 @@
         </div>
 
         <!-- Inbox -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="bg-white rounded-none border border-slate-200 p-3">
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-sm font-black text-slate-800">Inbox</h3>
             <span class="text-[10px] text-primary font-bold cursor-pointer hover:underline">View All</span>
           </div>
           <div class="space-y-2.5">
             <div v-for="msg in inbox" :key="msg.id"
-              class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer">
+              class="flex items-start gap-3 p-2.5 rounded-md hover:bg-slate-50 transition-colors cursor-pointer">
               <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                 <span class="text-primary font-black text-xs">{{ msg.initials }}</span>
               </div>
@@ -156,7 +156,7 @@
         </div>
 
         <!-- Top selling products -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="bg-white rounded-none border border-slate-200 p-3">
           <h3 class="text-sm font-black text-slate-800 mb-3">Top Products</h3>
           <div class="space-y-2.5">
             <div v-for="(p, i) in topProducts" :key="p.title"
@@ -181,14 +181,14 @@
     <template v-else>
 
       <!-- User stats -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <div v-for="s in userStats" :key="s.label"
-          class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col gap-3">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center" :class="s.iconBg">
+          class="bg-white rounded-none border border-slate-200 p-3 flex flex-col gap-3">
+          <div class="w-7 h-7 rounded-md flex items-center justify-center" :class="s.iconBg">
             <i :class="[s.icon, s.iconColor, 'text-sm']"></i>
           </div>
           <div>
-            <p class="text-xl font-black text-slate-900 leading-none">{{ s.value }}</p>
+            <p class="text-lg font-bold text-slate-900 leading-none">{{ s.value }}</p>
             <p class="text-xs text-slate-500 mt-1">{{ s.label }}</p>
           </div>
         </div>
@@ -196,12 +196,12 @@
 
       <!-- Quick actions -->
       <div>
-        <h3 class="text-sm font-black text-slate-800 mb-3">Quick Actions</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <h3 class="text-sm font-bold text-slate-800 mb-2">Quick Actions</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <router-link v-for="a in quickActions" :key="a.label" :to="{ name: a.route }"
-            class="group flex flex-col items-center gap-3 p-5 bg-white border-2 border-slate-200 rounded-2xl
+            class="group flex flex-col items-center gap-3 p-3 bg-white border-2 border-slate-200 rounded-none
                    hover:border-primary hover:shadow-md hover:shadow-primary/10 transition-all duration-200 text-center">
-            <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110"
+            <div class="w-8 h-8 rounded-none flex items-center justify-center transition-all group-hover:scale-110"
                  :class="a.iconBg">
               <i :class="[a.icon, a.iconColor, 'text-xl']"></i>
             </div>
@@ -211,15 +211,15 @@
       </div>
 
       <!-- My orders / requests -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
 
         <!-- My Orders -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="bg-white rounded-none border border-slate-200 p-3">
           <h3 class="text-sm font-black text-slate-800 mb-4">My Recent Orders</h3>
           <div class="space-y-2.5">
             <div v-for="o in myOrders" :key="o.id"
-              class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" :class="o.iconBg">
+              class="flex items-center gap-3 p-3 rounded-md hover:bg-slate-50 transition-colors">
+              <div class="w-7 h-7 rounded-md flex items-center justify-center shrink-0" :class="o.iconBg">
                 <i :class="[o.icon, o.iconColor, 'text-sm']"></i>
               </div>
               <div class="flex-1 min-w-0">
@@ -234,7 +234,7 @@
         </div>
 
         <!-- My listings / products -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="bg-white rounded-none border border-slate-200 p-3">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-sm font-black text-slate-800">My Listings</h3>
             <router-link :to="{ name: 'Products-add' }"
@@ -244,8 +244,8 @@
           </div>
           <div class="space-y-2.5">
             <div v-for="l in myListings" :key="l.id"
-              class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" :class="l.iconBg">
+              class="flex items-center gap-3 p-3 rounded-md hover:bg-slate-50 transition-colors">
+              <div class="w-7 h-7 rounded-md flex items-center justify-center shrink-0" :class="l.iconBg">
                 <i :class="[l.icon, l.iconColor, 'text-sm']"></i>
               </div>
               <div class="flex-1 min-w-0">
@@ -344,8 +344,8 @@ export default {
 
       quickActions: [
         { label:'Buy Products',    route:'Products-view',   icon:'fas fa-shopping-bag', iconBg:'bg-blue-50',    iconColor:'text-blue-500' },
-        { label:'Sell / List',     route:'Products-add',    icon:'fas fa-store',        iconBg:'bg-indigo-50',  iconColor:'text-indigo-500' },
-        { label:'Pay For Me',      route:'PayForMe-view',   icon:'fas fa-hand-holding-usd', iconBg:'bg-red-50', iconColor:'text-red-500' },
+        { label:'Sell / List',     route:'Products-view',    icon:'fas fa-store',        iconBg:'bg-indigo-50',  iconColor:'text-indigo-500' },
+        { label:'Pay For Me',      route:'Access-view',   icon:'fas fa-hand-holding-usd', iconBg:'bg-red-50', iconColor:'text-red-500' },
         { label:'Grow & Advertise',route:'Growth-view',     icon:'fas fa-chart-line',   iconBg:'bg-emerald-50', iconColor:'text-emerald-500' },
       ],
 
