@@ -66,8 +66,8 @@ export default {
         const payload = new FormData();
         Object.entries({ ...this.form, details: JSON.stringify(details) }).forEach(([key, value]) => payload.append(key, String(value ?? '')));
         if (this.thumbnail) payload.append('thumbnail', this.thumbnail);
-        if (this.editingId) await this.$apiPut('/dv-applications/' + encodeURIComponent(this.editingId), payload);
-        else await this.$apiPost('/dv-applications', payload);
+        if (this.editingId) await this.$apiPut('/dv-applications', this.editingId, payload, { 'Content-Type': 'multipart/form-data' });
+        else await this.$apiPost('/dv-applications', payload, { 'Content-Type': 'multipart/form-data' });
         await this.fetchItems();
         this.resetForm();
       } catch (error) { console.error('Failed to save DV service:', error); this.formError = error?.response?.data?.message || error?.message || 'Could not save the DV listing. Verify the endpoint and required fields.'; }
