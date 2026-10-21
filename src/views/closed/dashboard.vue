@@ -59,6 +59,13 @@
         <!-- Right -->
         <div class="flex items-center gap-1">
 
+          <!-- Digital cart shortcut -->
+          <router-link :to="{ name: 'Digital-cart' }" aria-label="Open digital cart" title="Digital Cart"
+                       class="relative inline-flex h-9 items-center gap-2 border border-slate-200 px-3 text-slate-600 transition hover:border-primary hover:bg-primary/5 hover:text-primary">
+            <i class="fas fa-shopping-cart text-sm"></i>
+            <span class="hidden sm:inline text-xs font-semibold">Cart</span>
+          </router-link>
+
           <!-- Notification bell -->
           <div class="relative" @click.stop="notifOpen = !notifOpen">
             <button class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 transition relative">
