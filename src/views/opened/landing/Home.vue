@@ -6,7 +6,7 @@
     <section class="landing-section border-y border-slate-100 bg-white py-10 sm:py-12">
       <div class="mx-auto max-w-7xl px-6">
         <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><span class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-rose-600"><i class="fas fa-fire"></i> Hot Trends</span><h2 class="mt-2 text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">What to explore on Redmit right now</h2></div><p class="max-w-xl text-sm leading-6 text-slate-500">Featured areas to discover across our marketplace and services.</p></div>
-        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <router-link v-for="trend in hotTrends" :key="trend.title" :to="trend.path" class="group flex items-center gap-3 border border-slate-200 bg-slate-50 p-4 transition hover:border-rose-200 hover:bg-white hover:shadow-sm"><div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" :class="trend.bg"><i :class="[trend.icon, trend.color, 'text-base']"></i></div><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><p class="text-sm font-bold text-slate-900 group-hover:text-primary">{{ trend.title }}</p><span v-if="trend.isHot" class="bg-rose-50 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-rose-600">Hot</span><span v-else class="bg-slate-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-500">Explore</span></div><p class="mt-1 text-xs text-slate-500">{{ trend.subtitle }}</p></div><i class="fas fa-arrow-right text-[10px] text-slate-400 group-hover:text-primary"></i></router-link>
         </div>
       </div>
@@ -99,12 +99,15 @@ export default {
       growthLoading: false,
       accessServices: [],
       accessLoading: false,
+      dvServices: [],
+      dvLoading: false,
       localIsAuthenticated: !!localStorage.getItem('token'),
       trendCategories: [
         { title: 'Digital Products', subtitle: 'Templates, tools and downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: false },
         { title: 'Creator Growth', subtitle: 'Monetization and promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: false },
         { title: 'Social Accounts', subtitle: 'Explore available platforms', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: false },
         { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: false },
+        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dv-application', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
       ],
       categories: [],
       selectedCategoryId: null,
@@ -122,12 +125,13 @@ export default {
         ...this.growthServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending growth service', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: true })),
         ...this.assets.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending social account', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: true })),
         ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
+        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dv-application', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
       ];
       return trends.length ? trends.slice(0, 4) : this.trendCategories;
     },
   },
   async mounted() {
-    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets(), this.fetchGrowthServices(), this.fetchAccessServices()]);
+    await Promise.all([this.fetchCategories(), this.fetchProducts(), this.fetchAssets(), this.fetchGrowthServices(), this.fetchAccessServices(), this.fetchDvServices()]);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.querySelectorAll('.landing-section').forEach((section) => section.classList.add('is-visible'));
       return;
@@ -149,6 +153,26 @@ export default {
     }
   },
   methods: {
+    async fetchDvServices() {
+      this.dvLoading = true;
+      try {
+        const response = await this.$apiGet('/dv-applications?page=1&limit=3');
+        const records = Array.isArray(response?.data) ? response.data : Array.isArray(response?.dvApplications) ? response.dvApplications : Array.isArray(response?.data?.dvApplications) ? response.data.dvApplications : [];
+        this.dvServices = records.filter(item => item.isActive !== false);
+      } catch (error) { console.error('Failed to load DV assistance services:', error); this.dvServices = []; }
+      finally { this.dvLoading = false; }
+    },
+    startDvApplication(service) {
+      const target = '/dashboard/dv-applications' + (service?.id ? '?apply=' + encodeURIComponent(service.id) : '');
+      if (localStorage.getItem('token')) { this.$router.push(target); return; }
+      this.$router.push({ path: '/login', query: { redirect: target } });
+    },
+    formatDvPrice(price, currency) {
+      const amount = Number(price);
+      if (!Number.isFinite(amount)) return 'Contact us';
+      try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD', maximumFractionDigits: 2 }).format(amount); }
+      catch (_error) { return (currency || 'USD') + ' ' + amount.toFixed(2); }
+    },
     async fetchCategories() {
       this.categoriesLoading = true;
       try {
