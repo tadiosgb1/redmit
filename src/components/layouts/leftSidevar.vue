@@ -77,6 +77,7 @@ export default {
         ]},
         { id: "admin-services", spacing: true, items: [
           { key: "admin-pay-for-me", label: "Pay For Me", route: "Access-view", icon: "fa-hand-holding-usd", badge: "New" },
+          { key: "admin-dv", label: "American DV", route: "DvApplications-view", icon: "fa-passport", badge: "HOT" },
           { key: "admin-growth", label: "Channel Growth", route: "Growth-view", icon: "fa-chart-line" },
         ]},
         { id: "admin-administration", spacing: true, items: [
@@ -101,6 +102,7 @@ export default {
         ]},
         { id: "user-services", spacing: true, items: [
           { key: "user-pay-for-me", label: "Pay For Me", route: "Access-view", icon: "fa-hand-holding-usd", badge: "New" },
+          { key: "user-dv", label: "American DV", route: "DvApplications-view", icon: "fa-passport", badge: "HOT" },
           { key: "user-growth", label: "Channel Growth", route: "Growth-view", icon: "fa-chart-line" },
         ]},
         { id: "user-activity", spacing: true, items: [
@@ -141,7 +143,7 @@ export default {
     },
     submenuButtonClass(item) { return ["flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 w-full cursor-pointer", this.isOpen(item.key) ? "bg-slate-100 text-slate-900" : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"]; },
     subLinkClass(item) { return ["flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer", this.isRouteActive(item.route) ? (this.isAdmin ? "bg-primary/5 font-bold text-primary" : "bg-blue-50 font-bold text-blue-600") : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"]; },
-    badgeClass(badge) { return badge === "New" ? (this.isAdmin ? "ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-black text-white" : "ml-auto rounded-full bg-red-100 px-1.5 py-0.5 text-[9px] font-black text-red-600") : "ml-auto rounded-full bg-slate-100 px-1.5 py-0.5 text-[9px] font-bold text-slate-500"; },
+    badgeClass(badge) { if (badge === "HOT") return "ml-auto bg-rose-600 px-1.5 py-0.5 text-[9px] font-black tracking-wide text-white animate-pulse"; return badge === "New" ? (this.isAdmin ? "ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-black text-white" : "ml-auto rounded-full bg-red-100 px-1.5 py-0.5 text-[9px] font-black text-red-600") : "ml-auto rounded-full bg-slate-100 px-1.5 py-0.5 text-[9px] font-bold text-slate-500"; },
     logout() { localStorage.clear(); this.$router.push("/"); },
   },
 };
