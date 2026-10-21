@@ -63,6 +63,7 @@ const routes = [
       { path: 'orders/:id', name: 'Orders-detail', component: () => import('../views/closed/Orders/DetailOrder.vue'), props: true },
       { path: 'payments', name: 'Payments-view', component: () => import('../views/closed/payments/ViewPayments.vue') },
       { path: 'pay-for-me', name: 'PayForMe-view', component: () => import('../views/closed/payments/ViewPayments.vue') },
+      { path: 'dv-applications', name: 'DvApplications-view', component: () => import('../views/closed/DvApplications/ViewDvApplications.vue') },
       { path: 'payments/add', name: 'Payments-add', component: () => import('../views/closed/payments/AddPayment.vue') },
       { path: 'settings', name: 'Settings-view', component: () => import('../views/closed/SettingsView.vue') },
       { path: 'users', name: 'Users-view', component: () => import('../views/closed/users/UsersView.vue') },
