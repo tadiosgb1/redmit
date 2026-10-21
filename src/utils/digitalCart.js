@@ -18,7 +18,7 @@ export function useDigitalCart() {
     const id = item?.id;
     if (!id) return false;
     const normalizedType = type || item.cartType;
-    if (!["DIGITAL_PRODUCT", "DIGITAL_ACCESS", "DIGITAL_ASSET", "DIGITAL_GROWTH"].includes(normalizedType)) return false;
+    if (!["DIGITAL_PRODUCT", "DIGITAL_ACCESS", "DIGITAL_ASSET", "DIGITAL_GROWTH", "DIGITAL_DV_APPLICATION"].includes(normalizedType)) return false;
     const existing = state.items.find(entry => entry.id === String(id) && entry.type === normalizedType);
     if (existing) existing.quantity += 1;
     else state.items.push({
