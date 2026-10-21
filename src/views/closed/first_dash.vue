@@ -21,12 +21,12 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         <div v-for="s in adminStats" :key="s.label"
           class="bg-white rounded-none border border-slate-200 p-2.5 flex flex-col gap-2">
-          <div class="w-7 h-7 rounded-md flex items-center justify-center" :class="s.iconBg">
+          <div class="w-7 h-7 rounded-none flex items-center justify-center shrink-0" :class="s.iconBg">
             <i :class="[s.icon, s.iconColor, 'text-sm']"></i>
           </div>
           <div>
-            <p class="text-lg font-bold text-slate-900 leading-none">{{ s.value }}</p>
-            <p class="text-xs text-slate-500 mt-1">{{ s.label }}</p>
+            <p class="text-base font-bold text-slate-900 leading-none">{{ s.value }}</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">{{ s.label }}</p>
           </div>
           <p v-if="s.sub" class="text-[11px] font-semibold" :class="s.subColor">{{ s.sub }}</p>
         </div>
@@ -183,13 +183,13 @@
       <!-- User stats -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <div v-for="s in userStats" :key="s.label"
-          class="bg-white rounded-none border border-slate-200 p-3 flex flex-col gap-3">
-          <div class="w-7 h-7 rounded-md flex items-center justify-center" :class="s.iconBg">
+          class="bg-white rounded-none border border-slate-200 px-2.5 py-2 flex flex-row items-center gap-2">
+          <div class="w-7 h-7 rounded-none flex items-center justify-center shrink-0" :class="s.iconBg">
             <i :class="[s.icon, s.iconColor, 'text-sm']"></i>
           </div>
           <div>
-            <p class="text-lg font-bold text-slate-900 leading-none">{{ s.value }}</p>
-            <p class="text-xs text-slate-500 mt-1">{{ s.label }}</p>
+            <p class="text-base font-bold text-slate-900 leading-none">{{ s.value }}</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">{{ s.label }}</p>
           </div>
         </div>
       </div>
@@ -199,13 +199,13 @@
         <h3 class="text-sm font-bold text-slate-800 mb-2">Quick Actions</h3>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <router-link v-for="a in quickActions" :key="a.label" :to="{ name: a.route }"
-            class="group flex flex-col items-center gap-2 p-3 bg-white border border-slate-200 rounded-none
+            class="group flex flex-row items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-none
                    hover:border-primary hover:shadow-md hover:shadow-primary/10 transition-all duration-200 text-center">
-            <div class="w-8 h-8 rounded-none flex items-center justify-center transition-all group-hover:scale-110"
+            <div class="w-6 h-6 shrink-0 rounded-none flex items-center justify-center transition-all"
                  :class="a.iconBg">
-              <i :class="[a.icon, a.iconColor, 'text-xl']"></i>
+              <i :class="[a.icon, a.iconColor, 'text-sm']"></i>
             </div>
-            <span class="text-xs font-bold text-slate-700 group-hover:text-primary transition-colors">{{ a.label }}</span>
+            <span class="text-[11px] font-semibold text-slate-700 group-hover:text-primary transition-colors">{{ a.label }}</span>
           </router-link>
         </div>
       </div>
@@ -218,7 +218,7 @@
           <h3 class="text-sm font-black text-slate-800 mb-4">My Recent Orders</h3>
           <div class="space-y-2.5">
             <div v-for="o in myOrders" :key="o.id"
-              class="flex items-center gap-3 p-3 rounded-md hover:bg-slate-50 transition-colors">
+              class="flex items-center gap-2 px-1.5 py-1 rounded-none hover:bg-slate-50 transition-colors">
               <div class="w-7 h-7 rounded-md flex items-center justify-center shrink-0" :class="o.iconBg">
                 <i :class="[o.icon, o.iconColor, 'text-sm']"></i>
               </div>
@@ -244,7 +244,7 @@
           </div>
           <div class="space-y-2.5">
             <div v-for="l in myListings" :key="l.id"
-              class="flex items-center gap-3 p-3 rounded-md hover:bg-slate-50 transition-colors">
+              class="flex items-center gap-2 px-1.5 py-1 rounded-none hover:bg-slate-50 transition-colors">
               <div class="w-7 h-7 rounded-md flex items-center justify-center shrink-0" :class="l.iconBg">
                 <i :class="[l.icon, l.iconColor, 'text-sm']"></i>
               </div>
