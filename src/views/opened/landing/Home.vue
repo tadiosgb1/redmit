@@ -136,16 +136,26 @@ export default {
   computed: {
     hotTrends() {
       const isHot = item => item.isHot === true || item.isTrending === true || item.isFeatured === true || item.trending === true;
+      const featured = [
+        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dashboard/dv-applications', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
+        { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true },
+      ];
       const trends = [
         ...this.products.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending digital product', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: true })),
         ...this.growthServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending growth service', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: true })),
         ...this.assets.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending social account', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: true })),
         ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
-        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dashboard/dv-applications', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
       ];
-      const dvTrend = this.trendCategories.find(item => item.title === 'American DV');
-      const otherTrends = trends.filter(item => !String(item.title || '').toLowerCase().includes('diversity visa'));
-      return [dvTrend, ...otherTrends].filter(Boolean).slice(0, 5);
+      const featuredTitles = new Set(featured.map(item => item.title.toLowerCase()));
+      const remaining = trends.filter(item => !featuredTitles.has(String(item.title || '').toLowerCase()));
+      const seen = new Set(featuredTitles);
+      const uniqueRemaining = remaining.filter(item => {
+        const key = String(item.title || '').trim().toLowerCase();
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return [...featured, ...uniqueRemaining].slice(0, 5);
     },
   },
   async mounted() {
