@@ -122,7 +122,7 @@ export default {
         { title: 'Creator Growth', subtitle: 'Monetization and promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: false },
         { title: 'Social Accounts', subtitle: 'Explore available platforms', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: false },
         { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: false },
-        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dv-application', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
+        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dashboard/dv-applications', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
       ],
       categories: [],
       selectedCategoryId: null,
