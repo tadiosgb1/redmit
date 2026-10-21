@@ -50,6 +50,7 @@ export default {
       try {
         const response = await this.$apiGet('/dv-applications');
         this.items = Array.isArray(response?.data) ? response.data : Array.isArray(response?.dvApplications) ? response.dvApplications : Array.isArray(response?.data?.dvApplications) ? response.data.dvApplications : [];
+        if (this.$route.query.cart) this.addToCartById(this.$route.query.cart);
       } catch (error) { console.error('Failed to load DV applications:', error); this.items = []; }
       finally { this.loading = false; }
     },
