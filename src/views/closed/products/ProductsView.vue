@@ -157,7 +157,7 @@ export default {
       if (this.searchQuery.trim()) params.search = this.searchQuery.trim();
 
       try {
-        const response = await this.$apiGet("/products", params);
+        const response = await this.$apiGet((localStorage.getItem("role") || "").toUpperCase() === "ADMIN" ? "/products" : "/products/my", params);
         this.items = response?.data || [];
         this.count = response?.pagination?.total || 0;
         this.currentPage = response?.pagination?.page || page;
