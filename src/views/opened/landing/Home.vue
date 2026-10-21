@@ -30,7 +30,7 @@
         </div>
         <div v-if="dvLoading" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-28 animate-pulse border border-amber-100 bg-white"></div></div>
         <div v-else-if="dvServices.length" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <article v-for="service in dvServices.slice(0, 3)" :key="service.id || service.name" class="border border-amber-100 bg-white p-4 transition hover:border-amber-300 hover:shadow-md"><h3 class="text-sm font-bold text-slate-900"><i class="fas fa-passport mr-2 text-amber-600"></i>{{ service.name || 'DV Application Assistance' }}</h3><p class="mt-2 text-xs leading-5 text-slate-500">{{ service.description || 'Guidance for preparing your Diversity Visa entry.' }}</p><div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3"><span class="text-sm font-black text-slate-900">{{ formatDvPrice(service.price, service.currency) }}</span><button type="button" @click="startDvApplication(service)" class="text-xs font-bold text-rose-700 hover:underline">{{ localIsAuthenticated ? 'Continue' : 'Sign in to continue' }} <i class="fas fa-arrow-right ml-1"></i></button></div><p v-if="service.dvYear" class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">DV year {{ service.dvYear }}</p></article>
+          <article v-for="service in dvServices.slice(0, 3)" :key="service.id || service.name" class="border border-amber-100 bg-white p-4 transition hover:border-amber-300 hover:shadow-md"><h3 class="text-sm font-bold text-slate-900"><i class="fas fa-passport mr-2 text-amber-600"></i>{{ service.name || 'DV Application Assistance' }}</h3><p class="mt-2 text-xs leading-5 text-slate-500">{{ service.description || 'Guidance for preparing your Diversity Visa entry.' }}</p><div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3"><span class="text-sm font-black text-slate-900">{{ formatDvPrice(service.price, service.currency) }}</span><div class="flex items-center gap-3"><button type="button" @click="addDvToCart(service)" class="text-xs font-bold text-emerald-700 hover:underline"><i class="fas fa-cart-plus mr-1"></i>Add to cart</button><button type="button" @click="startDvApplication(service)" class="text-xs font-bold text-rose-700 hover:underline">{{ localIsAuthenticated ? 'Submit details' : 'Sign in to submit' }} <i class="fas fa-arrow-right ml-1"></i></button></div></div><p v-if="service.dvYear" class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">DV year {{ service.dvYear }}</p></article>
         </div>
         <div v-else class="border border-amber-100 bg-white p-4 text-xs text-slate-500">DV assistance options will appear here as they are published.</div>
       </div>
@@ -102,6 +102,7 @@ import Footer from './footer.vue';
 import HeroSection from './sections/HeroSection.vue';
 import DigitalProductsSection from './sections/DigitalProductsSection.vue';
 import DigitalAssetsSection from './sections/DigitalAssetsSection.vue';
+import { useDigitalCart } from '@/utils/digitalCart';
 
 export default {
   name: 'HomePage',
@@ -178,6 +179,16 @@ export default {
         this.dvServices = records.filter(item => item.isActive !== false);
       } catch (error) { console.error('Failed to load DV assistance services:', error); this.dvServices = []; }
       finally { this.dvLoading = false; }
+    },
+    addDvToCart(service) {
+      if (!localStorage.getItem('token')) {
+        const target = '/dashboard/dv-applications' + (service?.id ? '?cart=' + encodeURIComponent(service.id) : '');
+        this.$router.push({ path: '/login', query: { redirect: target } });
+        return;
+      }
+      const cart = useDigitalCart();
+      if (!cart.add(service, 'DIGITAL_DV_APPLICATION')) window.alert('This DV service cannot be added to the cart because it has no listing ID.');
+      else window.alert('DV assistance added to your cart.');
     },
     startDvApplication(service) {
       const target = '/dashboard/dv-applications' + (service?.id ? '?apply=' + encodeURIComponent(service.id) : '');
