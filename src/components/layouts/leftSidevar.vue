@@ -80,7 +80,6 @@ export default {
           { key: "admin-growth", label: "Channel Growth", route: "Growth-view", icon: "fa-chart-line" },
         ]},
         { id: "admin-administration", spacing: true, items: [
-          { key: "admin-cart", label: "Digital Cart", route: "Digital-cart", icon: "fa-shopping-cart" },
           { key: "admin-orders", label: "Orders", route: "Orders-view", icon: "fa-shopping-cart" },
           { key: "admin-payments", label: "Payments", route: "Payments-view", icon: "fa-credit-card" },
           { key: "admin-users", label: "Users", route: "Users-view", icon: "fa-users" },
@@ -105,7 +104,6 @@ export default {
           { key: "user-growth", label: "Channel Growth", route: "Growth-view", icon: "fa-chart-line" },
         ]},
         { id: "user-activity", spacing: true, items: [
-          { key: "user-cart", label: "Digital Cart", route: "Digital-cart", icon: "fa-shopping-cart" },
           { key: "user-orders", label: "My Orders", route: "Orders-view", icon: "fa-shopping-bag" },
           { key: "user-payments", label: "My Payments", route: "Payments-view", icon: "fa-receipt" },
         ]},
