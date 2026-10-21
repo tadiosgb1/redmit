@@ -85,7 +85,7 @@ export default {
         const params = { page, limit: this.pageSize };
         if (this.search.trim()) params.search = this.search.trim();
         if (this.typeFilter) params.type = this.typeFilter;
-        const response = await this.$apiGet("/access", params);
+        const response = await this.$apiGet((localStorage.getItem("role") || "").toUpperCase() === "ADMIN" ? "/access" : "/access/my", params);
         const payload = response?.data || response;
         this.items = Array.isArray(payload) ? payload : payload?.items || payload?.data || payload?.results || [];
         this.count = payload?.pagination?.total || response?.pagination?.total || payload?.total || this.items.length;
