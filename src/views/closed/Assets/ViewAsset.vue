@@ -749,7 +749,7 @@ export default {
 
       try {
         const response = await this.$apiGet(
-          "/assets",
+          (localStorage.getItem("role") || "").toUpperCase() === "ADMIN" ? "/assets" : "/assets/my",
           params
         );
 
