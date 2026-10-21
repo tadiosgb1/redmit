@@ -140,7 +140,7 @@ export default {
         ...this.growthServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending growth service', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: true })),
         ...this.assets.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending social account', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: true })),
         ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
-        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dv-application', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
+        { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dashboard/dv-applications', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
       ];
       const dvTrend = this.trendCategories.find(item => item.title === 'American DV');
       const otherTrends = trends.filter(item => !String(item.title || '').toLowerCase().includes('diversity visa'));
