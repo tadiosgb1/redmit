@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-slate-50 p-4 text-slate-700 sm:p-5">
     <div class="mx-auto max-w-[1600px]">
       <div class="mb-4 flex items-center justify-between border-b border-slate-200 pb-4">
-        <div><h1 class="text-base font-bold text-slate-800">Payments</h1><p class="text-[11px] text-slate-400">View submitted order payments.</p></div>
+        <div><h1 class="text-base font-bold text-slate-800">Payments</h1><p class="text-[11px] text-slate-400">View your submitted order payments and payment status.</p></div>
       </div>
       <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
@@ -41,7 +41,8 @@ export default {
     async fetchPayments() {
       this.loading = true;
       try {
-        const response = await this.$apiGet('/payments');
+        const endpoint = (localStorage.getItem('role') || '').toUpperCase() === 'ADMIN' ? '/payments' : '/payments/my';
+        const response = await this.$apiGet(endpoint);
         this.payments = response?.payments || response?.data?.payments || response?.data || [];
       } catch (error) { console.error('Error loading payments:', error); this.payments = []; }
       finally { this.loading = false; }
