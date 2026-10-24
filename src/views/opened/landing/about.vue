@@ -1,65 +1,121 @@
 <template>
-  <div class="min-h-screen bg-white font-sans text-gray-800">
+  <div class="min-h-screen bg-white pt-16 font-sans text-slate-800 antialiased">
     <Header />
 
-    <section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-b border-slate-100">
-      <div class="absolute -top-32 -right-20 w-96 h-96 rounded-full bg-blue-200/40 blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-40 -left-20 w-96 h-96 rounded-full bg-indigo-200/30 blur-3xl pointer-events-none"></div>
-      <div class="relative max-w-7xl mx-auto px-6 py-20 lg:py-24">
-        <div class="max-w-3xl">
-          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-blue-100 text-blue-700 text-[11px] font-black uppercase tracking-[0.18em] shadow-sm">
-            <i class="fas fa-info-circle text-[10px]"></i> About Redmit
+    <section class="relative isolate overflow-hidden border-b border-slate-100 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-blue-200/40 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-32 left-1/4 h-72 w-72 rounded-full bg-indigo-200/30 blur-3xl"></div>
+      <div class="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-5 py-14 sm:px-6 sm:py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
+        <div class="max-w-2xl">
+          <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/90 px-3.5 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-blue-700 shadow-sm">
+            <i class="fas fa-compass"></i> Get to know us
           </span>
-          <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-black text-slate-950 leading-tight tracking-tight">
-            Built for a more <span class="text-blue-600">connected digital life.</span>
+          <h1 class="mt-5 text-4xl font-black leading-[1.12] tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+            A simpler way to navigate your <span class="text-blue-600">digital world.</span>
           </h1>
-          <p class="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-            Redmit brings useful digital experiences together in one trusted place, helping people discover, exchange and make better use of opportunities online.
+          <p class="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+            Redmit brings useful digital products, services and opportunities together, helping people discover what they need and take their next step with confidence.
           </p>
+          <div class="mt-7 flex flex-wrap gap-2">
+            <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-2 text-xs font-semibold text-slate-700"><i class="fas fa-compass text-blue-600"></i> Discover</span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-2 text-xs font-semibold text-slate-700"><i class="fas fa-link text-indigo-600"></i> Connect</span>
+            <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-2 text-xs font-semibold text-slate-700"><i class="fas fa-arrow-trend-up text-blue-600"></i> Grow</span>
+          </div>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <router-link to="/opportunities" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700">Explore opportunities <i class="fas fa-arrow-right text-xs"></i></router-link>
+            <router-link to="/contact-us" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-bold text-slate-700 transition hover:border-blue-200 hover:text-blue-700"><i class="far fa-envelope"></i> Contact our team</router-link>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <section class="py-20 bg-white relative overflow-hidden">
-      <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-        <div>
-          <span class="text-xs font-bold tracking-[0.2em] text-primary uppercase">Our Mission</span>
-          <h2 class="text-3xl font-black text-gray-900 mt-3 mb-6 leading-tight">Making digital access simpler and more useful.</h2>
-          <p class="text-gray-500 leading-relaxed mb-4 text-sm">Redmit is designed around a simple idea: digital products, assets and opportunities should be easier to discover, understand and access.</p>
-          <p class="text-gray-500 leading-relaxed text-sm">We are building an experience that connects people with useful digital resources while keeping the journey straightforward, transparent and easy to navigate.</p>
-        </div>
-        <div class="rounded-3xl bg-slate-50 border border-slate-200 p-8 lg:p-10">
-          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6"><i class="fas fa-compass"></i></div>
-          <h3 class="text-xl font-black text-slate-900 mb-3">A platform that grows with its community.</h3>
-          <p class="text-sm text-slate-500 leading-relaxed">From discovering something you need to finding an opportunity worth pursuing, Redmit is focused on making every interaction clear and valuable.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-20 bg-slate-50 relative overflow-hidden">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="max-w-2xl mb-12">
-          <span class="text-xs font-bold tracking-[0.2em] text-primary uppercase">What matters to us</span>
-          <h2 class="text-3xl font-black text-gray-900 mt-3">Simple principles behind Redmit.</h2>
-          <p class="text-gray-500 mt-3 text-sm leading-relaxed">We keep the experience practical, trustworthy and centered on the people using it.</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div v-for="val in values" :key="val.title" class="bg-white border border-slate-200 rounded-2xl p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-            <i :class="[val.icon, 'text-primary text-xl mb-4 block']"></i>
-            <h3 class="font-bold text-slate-900 mb-2">{{ val.title }}</h3>
-            <p class="text-sm text-slate-500 leading-relaxed">{{ val.desc }}</p>
+        <div class="relative mx-auto w-full max-w-lg">
+          <div class="absolute inset-5 rounded-[2rem] bg-blue-200/40 blur-2xl"></div>
+          <div class="relative rounded-3xl border border-white bg-white/90 p-5 shadow-xl shadow-slate-200/70 backdrop-blur sm:p-7">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-5">
+              <div class="flex items-center gap-3">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600"><i class="fas fa-layer-group text-lg"></i></div>
+                <div><p class="text-sm font-extrabold text-slate-900">The Redmit experience</p><p class="mt-0.5 text-xs text-slate-500">Useful things, brought together</p></div>
+              </div>
+              <span class="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-700">Explore</span>
+            </div>
+            <div class="space-y-3 pt-5">
+              <div class="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm"><i class="fas fa-box-open"></i></div>
+                <div class="min-w-0 flex-1"><p class="text-sm font-bold text-slate-900">Digital products</p><p class="mt-1 text-xs leading-5 text-slate-500">Find practical resources for your next idea.</p></div>
+                <i class="fas fa-arrow-up-right-from-square text-xs text-slate-400"></i>
+              </div>
+              <div class="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-indigo-600 shadow-sm"><i class="fas fa-bullseye"></i></div>
+                <div class="min-w-0 flex-1"><p class="text-sm font-bold text-slate-900">Growth services</p><p class="mt-1 text-xs leading-5 text-slate-500">Explore services designed to help you move forward.</p></div>
+                <i class="fas fa-arrow-up-right-from-square text-xs text-slate-400"></i>
+              </div>
+              <div class="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-violet-600 shadow-sm"><i class="fas fa-lightbulb"></i></div>
+                <div class="min-w-0 flex-1"><p class="text-sm font-bold text-slate-900">Opportunities</p><p class="mt-1 text-xs leading-5 text-slate-500">Discover possibilities worth exploring.</p></div>
+                <i class="fas fa-arrow-up-right-from-square text-xs text-slate-400"></i>
+              </div>
+            </div>
+            <div class="mt-5 flex items-center gap-3 rounded-2xl bg-blue-600 p-4 text-white">
+              <i class="fas fa-heart text-lg"></i>
+              <p class="text-xs font-semibold leading-5 sm:text-sm">Built around clarity, accessibility and a better user experience.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="py-20 bg-white">
-      <div class="max-w-3xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-black text-gray-900 mb-4">Explore what Redmit has to offer.</h2>
-        <p class="text-gray-500 mb-8 text-sm leading-relaxed">Discover products, assets and opportunities or get in touch with our team.</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <router-link to="/opportunities" class="px-8 py-4 bg-secondary hover:bg-secondary-dark text-white font-bold rounded-xl shadow-lg shadow-secondary/20 transition-all text-sm">Explore Opportunities</router-link>
-          <router-link to="/contact-us" class="px-8 py-4 bg-white border border-slate-200 hover:border-primary/40 text-gray-700 hover:text-primary font-semibold rounded-xl transition-all text-sm shadow-sm">Contact Us</router-link>
+    <section class="bg-white py-14 sm:py-20">
+      <div class="mx-auto grid max-w-6xl grid-cols-1 items-start gap-8 px-5 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8">
+        <div>
+          <span class="inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.18em] text-blue-700"><i class="fas fa-flag"></i> Our mission</span>
+          <h2 class="mt-4 max-w-lg text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl">Make digital access simpler and more useful.</h2>
+          <p class="mt-5 text-sm leading-7 text-slate-600 sm:text-base">We believe digital products, services and opportunities should be easier to discover, understand and access.</p>
+          <p class="mt-3 text-sm leading-7 text-slate-600 sm:text-base">Redmit is building a straightforward experience that helps people find useful resources and make informed choices without unnecessary complexity.</p>
+        </div>
+        <div class="rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 sm:p-8">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-blue-600 shadow-sm"><i class="fas fa-route text-lg"></i></div>
+          <h3 class="mt-5 text-xl font-extrabold tracking-tight text-slate-900">Designed around your journey</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-600">Whether you are looking for a useful digital resource, a service or a new opportunity, our focus is to make the next step clearer.</p>
+          <div class="mt-6 border-t border-blue-100 pt-5">
+            <p class="flex items-center gap-2 text-xs font-bold text-slate-700"><i class="fas fa-check-circle text-blue-600"></i> Clear information</p>
+            <p class="mt-3 flex items-center gap-2 text-xs font-bold text-slate-700"><i class="fas fa-check-circle text-blue-600"></i> Straightforward navigation</p>
+            <p class="mt-3 flex items-center gap-2 text-xs font-bold text-slate-700"><i class="fas fa-check-circle text-blue-600"></i> A people-first experience</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-y border-slate-100 bg-slate-50 py-14 sm:py-20">
+      <div class="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+        <div class="mx-auto mb-10 max-w-2xl text-center sm:mb-12">
+          <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-blue-700"><i class="fas fa-gem"></i> What guides us</span>
+          <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Our principles, in practice.</h2>
+          <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base">The values that shape how we build and improve Redmit.</p>
+        </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <article v-for="(val, index) in values" :key="val.title" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg sm:p-6">
+            <div class="flex items-start justify-between">
+              <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white"><i :class="[val.icon, 'text-base']"></i></div>
+              <span class="text-xs font-bold tracking-widest text-slate-300">0{{ index + 1 }}</span>
+            </div>
+            <h3 class="mt-5 text-base font-extrabold text-slate-900">{{ val.title }}</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">{{ val.desc }}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white px-5 py-14 sm:px-6 sm:py-20">
+      <div class="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-slate-950 px-6 py-10 text-center sm:px-12 sm:py-14">
+        <div class="pointer-events-none absolute -right-12 -top-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-24 -left-10 h-56 w-56 rounded-full bg-indigo-500/20 blur-3xl"></div>
+        <div class="relative">
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200"><i class="fas fa-paper-plane"></i> Take the next step</span>
+          <h2 class="mt-4 text-2xl font-black tracking-tight text-white sm:text-3xl">Ready to explore Redmit?</h2>
+          <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-300">Browse opportunities or reach out if you have a question. We would be glad to hear from you.</p>
+          <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+            <router-link to="/opportunities" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-500 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-blue-400">Explore opportunities <i class="fas fa-arrow-right text-xs"></i></router-link>
+            <router-link to="/contact-us" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-white/10"><i class="far fa-envelope"></i> Contact us</router-link>
+          </div>
         </div>
       </div>
     </section>
