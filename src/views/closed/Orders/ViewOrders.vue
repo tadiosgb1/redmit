@@ -48,7 +48,8 @@ export default {
     async fetchOrders() {
       this.loading = true;
       try {
-        const response = await this.$apiGet('/orders');
+        const endpoint = (localStorage.getItem('role') || '').toUpperCase() === 'ADMIN' ? '/orders' : '/orders/my';
+        const response = await this.$apiGet(endpoint);
         this.orders = response?.orders || response?.data || response || [];
       } catch (error) { console.error('Error loading orders:', error); this.orders = []; }
       finally { this.loading = false; }
