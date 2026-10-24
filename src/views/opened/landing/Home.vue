@@ -50,7 +50,7 @@
           </article>
         </div>
         <div v-else class="rounded-xl border border-amber-200 bg-white p-6 sm:p-8">
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-center"><div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700"><i class="fas fa-passport text-2xl"></i></div><div class="flex-1"><h3 class="text-base font-extrabold text-slate-950">DV programs are coming soon</h3><p class="mt-1 text-sm leading-6 text-slate-600">Published programs will appear here with their thumbnails and application dates. You can explore the rest of Redmit while new programs are prepared.</p></div></div>
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center"><div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700"><i class="fas fa-passport text-2xl"></i></div><div class="flex-1"><h3 class="text-base font-extrabold text-slate-950">Diversity Visa assistance</h3><p class="mt-1 text-sm leading-6 text-slate-600">Explore our DV assistance service and review the program details above when available. You can sign in to contact our team and begin a request.</p></div><button type="button" @click="startDvApplication()" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-amber-500 px-5 py-3 text-sm font-extrabold text-slate-950 transition hover:bg-amber-400">{{ localIsAuthenticated ? 'Start a DV request' : 'Sign in to get started' }} <i class="fas fa-arrow-right text-xs"></i></button></div>
         </div>
       </div>
     </section>
@@ -221,11 +221,29 @@ export default {
     async fetchDvServices() {
       this.dvLoading = true;
       try {
-        const response = await this.$apiGet('/dv-programs?page=1&limit=3');
-        const records = Array.isArray(response?.data) ? response.data : Array.isArray(response?.programs) ? response.programs : Array.isArray(response?.dvPrograms) ? response.dvPrograms : Array.isArray(response?.data?.programs) ? response.data.programs : Array.isArray(response?.data?.dvPrograms) ? response.data.dvPrograms : [];
-        this.dvServices = records.filter(item => item && item.isActive !== false);
-      } catch (error) { console.error('Failed to load DV assistance services:', error); this.dvServices = []; }
-      finally { this.dvLoading = false; }
+        const response = await this.$apiGet('/dv-programs?page=1&limit=12');
+        const payload = response?.data ?? response;
+        const records = Array.isArray(payload)
+          ? payload
+          : Array.isArray(payload?.data) ? payload.data
+          : Array.isArray(payload?.items) ? payload.items
+          : Array.isArray(payload?.results) ? payload.results
+          : Array.isArray(payload?.programs) ? payload.programs
+          : Array.isArray(payload?.dvPrograms) ? payload.dvPrograms
+          : Array.isArray(payload?.data?.items) ? payload.data.items
+          : Array.isArray(payload?.data?.results) ? payload.data.results
+          : Array.isArray(payload?.data?.programs) ? payload.data.programs
+          : Array.isArray(payload?.data?.dvPrograms) ? payload.data.dvPrograms
+          : Array.isArray(response?.programs) ? response.programs
+          : Array.isArray(response?.dvPrograms) ? response.dvPrograms
+          : [];
+        this.dvServices = records.filter(item => item && item.isActive !== false && item.isPublished !== false);
+      } catch (error) {
+        console.error('Failed to load public DV programs:', error);
+        this.dvServices = [];
+      } finally {
+        this.dvLoading = false;
+      }
     },
     startDvApplication(service) {
       const target = '/dashboard/dv-applications' + (service?.id ? '?apply=' + encodeURIComponent(service.id) : '');
