@@ -100,7 +100,7 @@
         <div v-else class="divide-y divide-slate-100">
           <article v-for="request in myRequests" :key="request.id" class="p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div><h3 class="font-extrabold text-slate-900">DV {{ request.dvYear || request.program?.dvYear || 'Program' }} · {{ humanize(request.requestType) }}</h3><p class="mt-1 text-xs text-slate-500">Submitted {{ formatDate(request.createdAt || request.submittedAt) }}</p></div><span class="self-start bg-slate-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-slate-600">{{ humanize(request.status || 'SUBMITTED') }}</span></div>
-            <div v-if="request.orderId || request.order?.orderNumber || request.paymentId || request.payment?.paymentNumber" class="mt-3 flex flex-wrap gap-3 text-xs text-slate-500"><span v-if="request.orderId || request.order?.orderNumber">Order: <strong>{{ request.order?.orderNumber || request.orderId }}</strong></span><span v-if="request.paymentId || request.payment?.paymentNumber">Payment: <strong>{{ request.payment?.paymentNumber || request.paymentId }}</strong></span></div><div class="mt-3 flex flex-wrap gap-3 text-xs"><router-link to="/dashboard/orders" class="font-bold text-amber-800 hover:underline">View my orders</router-link><router-link to="/dashboard/payments" class="font-bold text-amber-800 hover:underline">View my payments</router-link></div>
+            <div v-if="request.orderId || request.order?.orderNumber || request.paymentId || request.payment?.paymentNumber" class="mt-3 flex flex-wrap gap-3 text-xs text-slate-500"><span v-if="request.orderId || request.order?.orderNumber">Order: <strong>{{ request.order?.orderNumber || request.orderId }}</strong></span><span v-if="request.paymentId || request.payment?.paymentNumber">Payment: <strong>{{ request.payment?.paymentNumber || request.paymentId }}</strong></span></div><div class="mt-3 flex flex-wrap gap-3 text-xs"><router-link to="/dashboard/orders" class="font-bold text-amber-800 hover:underline">View my orders</router-link><router-link to="/dashboard/payments" class="font-bold text-amber-800 hover:underline">View my payments</router-link></div><div class="mt-4 grid grid-cols-1 gap-2 border-t border-slate-100 pt-3 sm:grid-cols-[1fr_1.5fr_auto]"><label class="text-[10px] font-bold text-slate-500">Document type<select v-model="documentUploadType" class="mt-1 w-full border border-slate-200 bg-white px-2 py-2 text-xs"><option v-for="doc in documentTypes" :key="doc.value" :value="doc.value">{{ doc.label }}</option></select></label><label class="text-[10px] font-bold text-slate-500">Choose file<input type="file" @change="onRetryDocumentSelected" class="mt-1 block w-full text-xs file:mr-2 file:border-0 file:bg-slate-100 file:px-2 file:py-2" /></label><button type="button" @click="uploadDocumentForRequest(request)" :disabled="!documentUploadFile || uploadingDocumentFor === request.id" class="self-end bg-slate-900 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{{ uploadingDocumentFor === request.id ? "Uploading…" : "Upload document" }}</button></div>
           </article>
         </div>
       </section>
@@ -136,6 +136,9 @@ export default {
       selectedProgram: null,
       requestForm: EMPTY_REQUEST(),
       selectedDocuments: {},
+      documentUploadType: 'SUPPORTING_DOCUMENT',
+      documentUploadFile: null,
+      uploadingDocumentFor: null,
       documentTypes: [
         { value: 'APPLICANT_PHOTO', label: 'Applicant photo', subjectType: 'APPLICANT' },
         { value: 'SPOUSE_PHOTO', label: 'Spouse photo', subjectType: 'SPOUSE' },
@@ -244,6 +247,24 @@ export default {
       this.selectedDocuments = {};
       this.notice = '';
       this.$nextTick(() => document.querySelector('section form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    },
+    onRetryDocumentSelected(event) { this.documentUploadFile = event.target.files?.[0] || null; },
+    async uploadDocumentForRequest(request) {
+      if (!request?.id || !this.documentUploadFile) return;
+      this.uploadingDocumentFor = request.id;
+      const formData = new FormData();
+      formData.append('file', this.documentUploadFile);
+      formData.append('documentType', this.documentUploadType);
+      const selectedType = this.documentTypes.find(doc => doc.value === this.documentUploadType);
+      if (selectedType?.subjectType) formData.append('subjectType', selectedType.subjectType);
+      try {
+        await this.$apiPost('/dv-application-requests/' + encodeURIComponent(request.id) + '/documents', formData, { 'Content-Type': 'multipart/form-data' });
+        this.documentUploadFile = null;
+        this.showNotice('Document uploaded to your DV request.');
+        await this.fetchMyRequests();
+      } catch (error) {
+        this.showNotice(this.errorMessage(error, 'Unable to upload this document. Please try again.'), 'error');
+      } finally { this.uploadingDocumentFor = null; }
     },
     setDocument(event, documentType) {
       const file = event.target.files?.[0];
