@@ -3,6 +3,52 @@
     <Header />
 
     <HeroSection class="landing-section" />
+    <section id="dv-programs" class="landing-section relative overflow-hidden border-y border-amber-200 bg-gradient-to-br from-amber-50 via-white to-rose-50 py-12 sm:py-16">
+      <div class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl"></div>
+      <div class="relative mx-auto max-w-7xl px-5 sm:px-6">
+        <div class="mb-7 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-3xl">
+            <span class="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-amber-800"><i class="fas fa-star text-amber-500"></i> Featured opportunity</span>
+            <h2 class="mt-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl lg:text-4xl">Explore Diversity Visa (DV) programs</h2>
+            <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">See current program details, application dates, and available assistance before you sign in. Browse freely—an account is only needed when you’re ready to submit a request.</p>
+          </div>
+          <div class="flex shrink-0 flex-wrap gap-3">
+            <a href="#dv-programs-list" class="inline-flex items-center justify-center gap-2 border border-amber-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 transition hover:border-amber-400 hover:bg-amber-50">Browse programs <i class="fas fa-arrow-down text-xs"></i></a>
+            <button type="button" @click="startDvApplication()" class="inline-flex items-center justify-center gap-2 bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-rose-700">{{ localIsAuthenticated ? 'Start a DV request' : 'Sign in to apply' }} <i class="fas fa-arrow-right text-xs"></i></button>
+          </div>
+        </div>
+        <div id="dv-programs-list" v-if="dvLoading" class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div v-for="n in 3" :key="n" class="overflow-hidden rounded-xl border border-amber-100 bg-white"><div class="h-44 animate-pulse bg-amber-100/70"></div><div class="space-y-3 p-5"><div class="h-4 w-2/3 animate-pulse bg-slate-100"></div><div class="h-3 w-full animate-pulse bg-slate-100"></div><div class="h-3 w-1/2 animate-pulse bg-slate-100"></div></div></div>
+        </div>
+        <div v-else-if="dvServices.length" class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <article v-for="service in dvServices" :key="service.id || service.dvYear" class="group flex h-full flex-col overflow-hidden rounded-xl border border-amber-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-xl">
+            <div class="relative h-48 overflow-hidden bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100">
+              <img v-if="dvThumbnail(service)" :src="dvThumbnail(service)" :alt="'DV Program ' + (service.dvYear || '')" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+              <div v-else class="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top_right,_rgba(251,191,36,0.35),_transparent_45%),linear-gradient(135deg,#fff7ed,#ffedd5,#ffe4e6)]">
+                <div class="flex h-20 w-20 items-center justify-center rounded-2xl border border-white/80 bg-white/80 text-amber-700 shadow-sm"><i class="fas fa-passport text-4xl"></i></div>
+              </div>
+              <span class="absolute left-4 top-4 rounded-full bg-slate-950/90 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">DV {{ service.dvYear || 'Program' }}</span>
+              <span class="absolute bottom-3 right-3 rounded-full bg-white/95 px-3 py-1.5 text-[10px] font-bold text-emerald-700 shadow-sm"><i class="fas fa-unlock-alt mr-1"></i> Public preview</span>
+            </div>
+            <div class="flex flex-1 flex-col p-5 sm:p-6">
+              <h3 class="text-lg font-black tracking-tight text-slate-950">Diversity Visa {{ service.dvYear || 'Program' }}</h3>
+              <p class="mt-2 flex-1 text-sm leading-6 text-slate-600">{{ service.description || service.summary || 'Explore the application window and available support for your Diversity Visa process. Review the details below before requesting assistance.' }}</p>
+              <div class="mt-5 grid grid-cols-2 gap-3">
+                <div class="rounded-lg bg-amber-50 p-3"><p class="text-[9px] font-black uppercase tracking-wider text-amber-800">Application opens</p><p class="mt-1 text-sm font-bold text-slate-900">{{ formatDvDate(service.startDate) }}</p></div>
+                <div class="rounded-lg bg-rose-50 p-3"><p class="text-[9px] font-black uppercase tracking-wider text-rose-800">Application closes</p><p class="mt-1 text-sm font-bold text-slate-900">{{ formatDvDate(service.endDate) }}</p></div>
+              </div>
+              <div class="mt-4 border-t border-slate-100 pt-4">
+                <p class="text-xs leading-5 text-slate-500">Assistance may help with preparation and document guidance; it does not guarantee selection or a visa. Official government entry is separate.</p>
+                <button type="button" @click="startDvApplication(service)" class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-3 text-sm font-extrabold text-slate-950 transition hover:bg-amber-400">{{ localIsAuthenticated ? 'Request assistance' : 'Sign in to request assistance' }} <i class="fas fa-arrow-right text-xs"></i></button>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div v-else class="rounded-xl border border-amber-200 bg-white p-6 sm:p-8">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center"><div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700"><i class="fas fa-passport text-2xl"></i></div><div class="flex-1"><h3 class="text-base font-extrabold text-slate-950">DV programs are coming soon</h3><p class="mt-1 text-sm leading-6 text-slate-600">Published programs will appear here with their thumbnails and application dates. You can explore the rest of Redmit while new programs are prepared.</p></div></div>
+        </div>
+      </div>
+    </section>
     <section class="landing-section border-y border-slate-100 bg-white py-10 sm:py-12">
       <div class="mx-auto max-w-7xl px-6">
         <div class="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><span class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-rose-600"><i class="fas fa-fire"></i> Hot Trends</span><h2 class="mt-2 text-xl font-extrabold tracking-tight text-slate-950 sm:text-2xl">What to explore on Redmit right now</h2></div><p class="max-w-xl text-sm leading-6 text-slate-500">Featured areas to discover across our marketplace and services.</p></div>
@@ -22,19 +68,6 @@
     <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
 
 
-    <section class="landing-section border-y border-amber-100 bg-gradient-to-br from-amber-50 via-white to-rose-50 py-14 sm:py-16">
-      <div class="mx-auto max-w-7xl px-6">
-        <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div class="max-w-2xl"><span class="inline-flex items-center gap-2 bg-rose-600 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white"><i class="fas fa-fire"></i> Hot service</span><h2 class="mt-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">American Diversity Visa (DV) assistance</h2><p class="mt-2 text-sm leading-6 text-slate-600">Get help preparing your Diversity Visa entry and understanding the information needed. Official U.S. government entry is separate; assistance does not guarantee selection or a visa.</p></div>
-          <button type="button" @click="startDvApplication()" class="inline-flex shrink-0 items-center justify-center gap-2 bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-rose-700">{{ localIsAuthenticated ? 'Explore DV assistance' : 'Sign in to get started' }} <i class="fas fa-arrow-right text-xs"></i></button>
-        </div>
-        <div v-if="dvLoading" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-28 animate-pulse border border-amber-100 bg-white"></div></div>
-        <div v-else-if="dvServices.length" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <article v-for="service in dvServices.slice(0, 3)" :key="service.id || service.name" class="border border-amber-100 bg-white p-4 transition hover:border-amber-300 hover:shadow-md"><h3 class="text-sm font-bold text-slate-900"><i class="fas fa-passport mr-2 text-amber-600"></i>DV Program {{ service.dvYear || "" }}</h3><p class="mt-2 text-xs leading-5 text-slate-500">Personalized assistance for your Diversity Visa request. Review the application window before starting.</p><div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3"><span class="text-[10px] font-bold uppercase tracking-wide text-amber-700">Request-based service</span><div class="flex items-center gap-3"><button type="button" @click="startDvApplication(service)" class="text-xs font-bold text-rose-700 hover:underline">{{ localIsAuthenticated ? 'Start request' : 'Sign in to request' }} <i class="fas fa-arrow-right ml-1"></i></button></div></div><div class="mt-2 space-y-1 text-[10px] text-slate-500"><p>Opens: {{ formatDvDate(service.startDate) }}</p><p>Closes: {{ formatDvDate(service.endDate) }}</p></div></article>
-        </div>
-        <div v-else class="border border-amber-100 bg-white p-4 text-xs text-slate-500">DV assistance options will appear here as they are published.</div>
-      </div>
-    </section>
 
     <section class="landing-section bg-slate-50 py-20">
       <div class="mx-auto max-w-7xl px-6">
@@ -185,7 +218,7 @@ export default {
       try {
         const response = await this.$apiGet('/dv-programs?page=1&limit=3');
         const records = Array.isArray(response?.data) ? response.data : Array.isArray(response?.programs) ? response.programs : Array.isArray(response?.dvPrograms) ? response.dvPrograms : Array.isArray(response?.data?.programs) ? response.data.programs : Array.isArray(response?.data?.dvPrograms) ? response.data.dvPrograms : [];
-        this.dvServices = records.filter(item => item && item.id && item.isActive !== false);
+        this.dvServices = records.filter(item => item && item.isActive !== false);
       } catch (error) { console.error('Failed to load DV assistance services:', error); this.dvServices = []; }
       finally { this.dvLoading = false; }
     },
@@ -193,6 +226,12 @@ export default {
       const target = '/dashboard/dv-applications' + (service?.id ? '?apply=' + encodeURIComponent(service.id) : '');
       if (localStorage.getItem('token')) { this.$router.push(target); return; }
       this.$router.push({ path: '/login', query: { redirect: target } });
+    },
+    dvThumbnail(service) {
+      const image = service?.thumbnailUrl || service?.thumbnail || service?.imageUrl || service?.image || service?.bannerUrl || service?.banner;
+      if (typeof image === 'string') return image.trim() || '';
+      if (image && typeof image === 'object') return image.url || image.secure_url || image.location || '';
+      return '';
     },
     formatDvDate(value) { if (!value) return 'Not set'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleDateString(); },
     async fetchCategories() {
