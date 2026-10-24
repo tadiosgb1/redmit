@@ -73,7 +73,6 @@ export default {
         ]},
         { id: "admin-marketplace", spacing: true, items: [
           { key: "products", label: "Digital Products", route: "Products-view", icon: "fa-box-open" },
-          { key: "assets", label: "Digital Assets", route: "Assets-view", icon: "fa-exchange-alt" },
         ]},
         { id: "admin-services", spacing: true, items: [
           { key: "admin-pay-for-me", label: "Pay For Me", route: "Access-view", icon: "fa-hand-holding-usd", badge: "New" },
@@ -97,8 +96,6 @@ export default {
         { id: "user-buy-sell", spacing: true, items: [
           { key: "user-products", label: "Browse Products", route: "Products-view", icon: "fa-box-open" },
           { key: "user-add-product", label: "Sell a Product", route: "Products-add", icon: "fa-upload" },
-          { key: "user-assets", label: "Browse Assets", route: "Assets-view", icon: "fa-exchange-alt" },
-          { key: "user-add-asset", label: "Sell an Asset", route: "Assets-add", icon: "fa-tiktok", iconType: "fab" },
         ]},
         { id: "user-services", spacing: true, items: [
           { key: "user-pay-for-me", label: "Pay For Me", route: "Access-view", icon: "fa-hand-holding-usd", badge: "New" },
