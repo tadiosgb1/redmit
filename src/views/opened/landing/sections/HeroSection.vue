@@ -3,7 +3,7 @@
     <div class="pointer-events-none absolute -right-24 -top-28 h-96 w-96 rounded-full bg-blue-200/50 blur-3xl"></div>
     <div class="pointer-events-none absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-indigo-200/40 blur-3xl"></div>
 
-    <div class="relative mx-auto grid max-w-7xl items-center gap-9 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
+    <div class="relative mx-auto grid max-w-7xl items-center gap-7 px-5 pb-10 pt-24 sm:gap-9 sm:px-6 sm:pb-16 sm:pt-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
       <div class="max-w-2xl">
         <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/90 px-3.5 py-1.5 text-[11px] font-black uppercase tracking-[0.18em] text-blue-700 shadow-sm">
           <span class="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
@@ -35,10 +35,10 @@
         </div>
       </div>
 
-      <div class="relative mx-auto w-[calc(100%+1rem)] max-w-xl sm:w-full lg:ml-auto">
+      <div class="relative mx-auto w-full max-w-[26rem] sm:max-w-xl lg:ml-auto">
         <div class="pointer-events-none absolute inset-10 rounded-full bg-blue-100/70 blur-3xl"></div>
         <div class="relative">
-          <svg class="redmit-sketch h-auto w-full overflow-visible" viewBox="0 0 560 470" role="img" aria-labelledby="redmit-sketch-title redmit-sketch-desc" xmlns="http://www.w3.org/2000/svg">
+          <svg class="redmit-sketch mx-auto block h-auto w-full max-w-full overflow-visible" viewBox="0 0 560 470" role="img" aria-labelledby="redmit-sketch-title redmit-sketch-desc" xmlns="http://www.w3.org/2000/svg">
             <title id="redmit-sketch-title">A hand-drawn sketch of Redmit services</title>
             <desc id="redmit-sketch-desc">A laptop surrounded by five simple doodles representing digital products, social media marketing, online course access, digital growth, and DV form-filling help.</desc>
             <defs>
