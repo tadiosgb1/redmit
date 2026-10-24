@@ -16,7 +16,7 @@
         </h1>
 
         <p class="mt-4 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-          Discover digital products, social media assets, and real opportunities—all through one marketplace built to help you move forward.
+          Discover digital products, useful digital services, and real opportunities—all through one marketplace built to help you move forward.
         </p>
 
         <div class="mt-6 flex flex-wrap items-center gap-3">
@@ -30,7 +30,7 @@
 
         <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2 border-t border-slate-200/80 pt-5 text-xs font-medium text-slate-600">
           <span class="inline-flex items-center gap-2"><i class="fas fa-check-circle text-emerald-500"></i> Discover digital goods</span>
-          <span class="inline-flex items-center gap-2"><i class="fas fa-check-circle text-emerald-500"></i> Grow your online presence</span>
+          <span class="inline-flex items-center gap-2"><i class="fas fa-check-circle text-emerald-500"></i> Access useful digital services</span>
           <span class="inline-flex items-center gap-2"><i class="fas fa-check-circle text-emerald-500"></i> Find new opportunities</span>
         </div>
       </div>
@@ -40,7 +40,7 @@
         <div class="relative">
           <svg class="redmit-sketch mx-auto block h-auto w-full max-w-full overflow-visible" viewBox="0 0 560 470" role="img" aria-labelledby="redmit-sketch-title redmit-sketch-desc" xmlns="http://www.w3.org/2000/svg">
             <title id="redmit-sketch-title">A hand-drawn sketch of Redmit services</title>
-            <desc id="redmit-sketch-desc">A laptop surrounded by five simple doodles representing digital products, social media marketing, online course access, digital growth, and DV form-filling help.</desc>
+            <desc id="redmit-sketch-desc">A laptop surrounded by simple doodles representing digital products, online course access, digital growth, and DV form-filling help.</desc>
             <defs>
               <linearGradient id="screenWash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbeafe"/><stop offset="1" stop-color="#eef2ff"/></linearGradient>
             </defs>
@@ -57,15 +57,6 @@
               <path d="M326 201 L350 201 M326 212 L357 212 M326 223 L346 223" stroke="#818cf8" stroke-width="3" stroke-linecap="round"/>
               <circle cx="339" cy="251" r="17" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
               <path d="M330 251 L337 258 L349 244" fill="none" stroke="#15803d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-            <!-- social media marketing: connected channels -->
-            <g class="redmit-sketch-float redmit-sketch-delay" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M120 112 L144 130 L120 148 M144 130 L164 112" stroke="#64748b" stroke-width="1.8" stroke-dasharray="3 4"/>
-              <circle cx="106" cy="102" r="17" fill="#dbeafe" stroke="#2563eb" stroke-width="2.2"/>
-              <path d="M101 111 L101 94 L111 94 L111 111 M97 99 L115 99" stroke="#2563eb" stroke-width="2.2"/>
-              <circle cx="158" cy="101" r="15" fill="#fee2e2" stroke="#b91c1c" stroke-width="2.2"/>
-              <path d="M153 95 L164 101 L153 107Z" fill="#b91c1c" stroke="#b91c1c" stroke-width="1.5"/>
-              <text x="79" y="76" fill="#475569" stroke="none" font-size="11" font-weight="600">Social media</text>
             </g>
             <!-- online course access: open book and graduation cap -->
             <g class="redmit-sketch-float">
