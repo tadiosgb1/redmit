@@ -37,6 +37,11 @@
                 <div class="rounded-lg bg-amber-50 p-3"><p class="text-[9px] font-black uppercase tracking-wider text-amber-800">Application opens</p><p class="mt-1 text-sm font-bold text-slate-900">{{ formatDvDate(service.startDate) }}</p></div>
                 <div class="rounded-lg bg-rose-50 p-3"><p class="text-[9px] font-black uppercase tracking-wider text-rose-800">Application closes</p><p class="mt-1 text-sm font-bold text-slate-900">{{ formatDvDate(service.endDate) }}</p></div>
               </div>
+              <div v-if="hasDvFees(service)" class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <div v-if="service.paymentAssistanceFee != null" class="rounded-lg border border-slate-100 p-3"><p class="text-[9px] font-bold uppercase tracking-wider text-slate-500">Payment assistance</p><p class="mt-1 text-sm font-extrabold text-slate-900">{{ formatDvFee(service.paymentAssistanceFee, service.currency) }}</p></div>
+                <div v-if="service.formFillingFee != null" class="rounded-lg border border-slate-100 p-3"><p class="text-[9px] font-bold uppercase tracking-wider text-slate-500">Form-filling support</p><p class="mt-1 text-sm font-extrabold text-slate-900">{{ formatDvFee(service.formFillingFee, service.currency) }}</p></div>
+                <div v-if="service.internationalPaymentFee != null" class="rounded-lg border border-slate-100 p-3 sm:col-span-2"><p class="text-[9px] font-bold uppercase tracking-wider text-slate-500">International payment assistance</p><p class="mt-1 text-sm font-extrabold text-slate-900">{{ formatDvFee(service.internationalPaymentFee, service.currency) }}</p></div>
+              </div>
               <div class="mt-4 border-t border-slate-100 pt-4">
                 <p class="text-xs leading-5 text-slate-500">Assistance may help with preparation and document guidance; it does not guarantee selection or a visa. Official government entry is separate.</p>
                 <button type="button" @click="startDvApplication(service)" class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-4 py-3 text-sm font-extrabold text-slate-950 transition hover:bg-amber-400">{{ localIsAuthenticated ? 'Request assistance' : 'Sign in to request assistance' }} <i class="fas fa-arrow-right text-xs"></i></button>
@@ -232,6 +237,15 @@ export default {
       if (typeof image === 'string') return image.trim() || '';
       if (image && typeof image === 'object') return image.url || image.secure_url || image.location || '';
       return '';
+    },
+    hasDvFees(service) {
+      return ['paymentAssistanceFee', 'formFillingFee', 'internationalPaymentFee'].some(key => service?.[key] !== null && service?.[key] !== undefined && service?.[key] !== '');
+    },
+    formatDvFee(value, currency) {
+      const amount = Number(value);
+      if (!Number.isFinite(amount)) return String(value);
+      try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD', maximumFractionDigits: 2 }).format(amount); }
+      catch (_error) { return `${currency || 'USD'} ${amount.toFixed(2)}`; }
     },
     formatDvDate(value) { if (!value) return 'Not set'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleDateString(); },
     async fetchCategories() {
