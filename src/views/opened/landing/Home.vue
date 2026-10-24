@@ -60,7 +60,6 @@
       :loading="productsLoading || categoriesLoading"
       @select-category="handleCategoryChange"
     />
-    <DigitalAssetsSection class="landing-section" :assets="assets" :loading="assetsLoading" />
 
 
 
@@ -148,7 +147,6 @@ export default {
       trendCategories: [
         { title: 'Digital Products', subtitle: 'Templates, tools and downloads', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: false },
         { title: 'Creator Growth', subtitle: 'Monetization and promotion', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: false },
-        { title: 'Social Accounts', subtitle: 'Explore available platforms', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: false },
         { title: 'Pay For Me', subtitle: 'Request digital service payments', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: false },
         { title: 'American DV', subtitle: 'Diversity Visa application assistance', path: '/dashboard/dv-applications', icon: 'fas fa-passport', bg: 'bg-amber-50', color: 'text-amber-700', isHot: true },
       ],
@@ -170,7 +168,6 @@ export default {
       const trends = [
         ...this.products.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending digital product', path: '/products', icon: 'fas fa-box-open', bg: 'bg-blue-50', color: 'text-blue-600', isHot: true })),
         ...this.growthServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending growth service', path: '/growth', icon: 'fas fa-chart-line', bg: 'bg-emerald-50', color: 'text-emerald-600', isHot: true })),
-        ...this.assets.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending social account', path: '/assets', icon: 'fas fa-bullhorn', bg: 'bg-indigo-50', color: 'text-indigo-600', isHot: true })),
         ...this.accessServices.filter(isHot).map(item => ({ title: item.name, subtitle: 'Trending Pay For Me service', path: '/access', icon: 'fas fa-wallet', bg: 'bg-rose-50', color: 'text-rose-600', isHot: true })),
       ];
       const featuredTitles = new Set(featured.map(item => item.title.toLowerCase()));
