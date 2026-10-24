@@ -6,16 +6,13 @@
         <div class="mx-auto max-w-7xl px-6 py-12 sm:py-16">
           <p class="text-xs font-bold uppercase tracking-widest text-blue-700">Opportunities</p>
           <h1 class="mt-3 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-4xl">Find opportunities for your next step</h1>
-          <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600">Explore scholarships, jobs, internships, grants, fellowships, events and more—all in one place.</p>
-          <div class="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-t border-slate-200 pt-5 text-sm text-slate-600">
-            <span v-for="type in opportunityTypes" :key="type.value" class="inline-flex items-center gap-2"><i :class="type.icon" class="text-blue-700"></i>{{ type.label }}</span>
-          </div>
+          <p class="mt-3 max-w-xl text-sm leading-6 text-slate-600">Browse jobs, scholarships, grants, and more.</p>
         </div>
       </section>
 
       <section class="mx-auto max-w-7xl px-6 py-12 sm:py-14">
         <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div><h2 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Latest opportunities</h2><p class="mt-2 text-sm leading-6 text-slate-600">Review the details and deadlines, then follow the application link to learn more.</p></div>
+          <div><h2 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Latest opportunities</h2></div>
           <p v-if="pagination.total" class="text-sm text-slate-500">{{ pagination.total }} opportunities available</p>
         </div>
 
@@ -24,9 +21,7 @@
         </div>
 
         <div v-else-if="!opportunities.length" class="border border-slate-200 bg-white px-6 py-14 text-center">
-          <i class="fas fa-compass text-xl text-slate-400"></i>
-          <h3 class="mt-3 font-bold text-slate-900">No opportunities available right now</h3>
-          <p class="mt-2 text-sm text-slate-500">Please check back soon for new listings.</p>
+          <h3 class="font-bold text-slate-900">No opportunities available right now</h3>
         </div>
 
         <div v-else class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -44,7 +39,7 @@
               </div>
               <p class="mt-4 flex-1 text-sm leading-6 text-slate-600">{{ opportunity.description }}</p>
               <div class="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-4">
-                <p class="text-xs leading-5 text-slate-500">{{ opportunity.benefits || 'See the original listing for benefits and eligibility details.' }}</p>
+                <p v-if="opportunity.benefits" class="text-xs leading-5 text-slate-500">{{ opportunity.benefits }}</p>
                 <a v-if="opportunity.applicationUrl" :href="opportunity.applicationUrl" target="_blank" rel="noopener noreferrer" class="inline-flex w-full items-center justify-center gap-2 bg-blue-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-800">View application <i class="fas fa-external-link-alt text-[10px]"></i></a>
                 <span v-else class="text-xs text-slate-400">Application link not provided</span>
               </div>
