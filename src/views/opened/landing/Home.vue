@@ -30,7 +30,7 @@
         </div>
         <div v-if="dvLoading" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"><div v-for="n in 3" :key="n" class="h-28 animate-pulse border border-amber-100 bg-white"></div></div>
         <div v-else-if="dvServices.length" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <article v-for="service in dvServices.slice(0, 3)" :key="service.id || service.name" class="border border-amber-100 bg-white p-4 transition hover:border-amber-300 hover:shadow-md"><h3 class="text-sm font-bold text-slate-900"><i class="fas fa-passport mr-2 text-amber-600"></i>{{ service.name || 'DV Application Assistance' }}</h3><p class="mt-2 text-xs leading-5 text-slate-500">{{ service.description || 'Guidance for preparing your Diversity Visa entry.' }}</p><div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3"><span class="text-sm font-black text-slate-900">{{ formatDvPrice(service.price, service.currency) }}</span><div class="flex items-center gap-3"><button type="button" @click="addDvToCart(service)" class="text-xs font-bold text-emerald-700 hover:underline"><i class="fas fa-cart-plus mr-1"></i>Add to cart</button><button type="button" @click="startDvApplication(service)" class="text-xs font-bold text-rose-700 hover:underline">{{ localIsAuthenticated ? 'Submit details' : 'Sign in to submit' }} <i class="fas fa-arrow-right ml-1"></i></button></div></div><p v-if="service.dvYear" class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">DV year {{ service.dvYear }}</p></article>
+          <article v-for="service in dvServices.slice(0, 3)" :key="service.id || service.name" class="border border-amber-100 bg-white p-4 transition hover:border-amber-300 hover:shadow-md"><h3 class="text-sm font-bold text-slate-900"><i class="fas fa-passport mr-2 text-amber-600"></i>DV Program {{ service.dvYear || "" }}</h3><p class="mt-2 text-xs leading-5 text-slate-500">Personalized assistance for your Diversity Visa request. Review the application window before starting.</p><div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3"><span class="text-[10px] font-bold uppercase tracking-wide text-amber-700">Request-based service</span><div class="flex items-center gap-3"><button type="button" @click="startDvApplication(service)" class="text-xs font-bold text-rose-700 hover:underline">{{ localIsAuthenticated ? 'Start request' : 'Sign in to request' }} <i class="fas fa-arrow-right ml-1"></i></button></div></div><p v-if="service.dvYear" class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">DV year {{ service.dvYear }}</p></article>
         </div>
         <div v-else class="border border-amber-100 bg-white p-4 text-xs text-slate-500">DV assistance options will appear here as they are published.</div>
       </div>
@@ -184,9 +184,9 @@ export default {
     async fetchDvServices() {
       this.dvLoading = true;
       try {
-        const response = await this.$apiGet('/dv-applications?page=1&limit=3');
-        const records = Array.isArray(response?.data) ? response.data : Array.isArray(response?.dvApplications) ? response.dvApplications : Array.isArray(response?.data?.dvApplications) ? response.data.dvApplications : [];
-        this.dvServices = records.filter(item => item.isActive !== false);
+        const response = await this.$apiGet('/dv-programs?page=1&limit=3');
+        const records = Array.isArray(response?.data) ? response.data : Array.isArray(response?.programs) ? response.programs : Array.isArray(response?.dvPrograms) ? response.dvPrograms : Array.isArray(response?.data?.programs) ? response.data.programs : Array.isArray(response?.data?.dvPrograms) ? response.data.dvPrograms : [];
+        this.dvServices = records.filter(item => item && item.id && item.isActive !== false);
       } catch (error) { console.error('Failed to load DV assistance services:', error); this.dvServices = []; }
       finally { this.dvLoading = false; }
     },
@@ -205,6 +205,7 @@ export default {
       if (localStorage.getItem('token')) { this.$router.push(target); return; }
       this.$router.push({ path: '/login', query: { redirect: target } });
     },
+    formatDvDate(value) { if (!value) return 'Not set'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleDateString(); },
     formatDvPrice(price, currency) {
       const amount = Number(price);
       if (!Number.isFinite(amount)) return 'Contact us';
