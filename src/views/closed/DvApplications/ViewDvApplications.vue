@@ -86,7 +86,7 @@
             <label class="block text-xs font-bold text-slate-600">Passport status<select v-model="requestForm.passportStatus" class="mt-1 w-full border border-slate-200 px-3 py-2.5 text-sm"><option value="">Select status</option><option value="HAS_PASSPORT">I have a passport</option><option value="IN_PROGRESS">In progress</option><option value="NO_PASSPORT">Not yet</option></select></label>
           </div></div>
           <div class="border-t border-slate-100 pt-4"><h3 class="mb-2 text-sm font-extrabold text-slate-800">Documents (optional)</h3><p class="mb-3 text-xs leading-5 text-slate-500">Upload only relevant documents. Files are sent to the application's document endpoint after the request is created.</p><div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <label v-for="doc in documentTypes" :key="doc.value" class="block border border-slate-200 p-3 text-xs font-bold text-slate-600">{{ doc.label }}<input type="file" :accept="doc.value.includes('PHOTO') ? 'image/*' : undefined" @change="setDocument($event, doc.value)" class="mt-2 block w-full text-xs file:mr-2 file:border-0 file:bg-slate-100 file:px-2 file:py-1.5" /></label>
+            <label v-for="doc in documentTypes" :key="doc.value" class="block border border-slate-200 p-3 text-xs font-bold text-slate-600">{{ doc.label }}<input type="file" :accept="doc.value.includes('PHOTO') ? 'image/*' : undefined" @change="setDocument($event, doc)" class="mt-2 block w-full text-xs file:mr-2 file:border-0 file:bg-slate-100 file:px-2 file:py-1.5" /></label>
           </div></div>
           <label class="flex items-start gap-3 text-xs leading-5 text-slate-600"><input v-model="requestForm.consent" type="checkbox" required class="mt-1 h-4 w-4 accent-amber-600" /><span>I confirm the information is accurate and consent to Redmit using the submitted details and documents to process this assistance request. I understand assistance does not guarantee selection or a visa and does not replace the official U.S. government entry process.</span></label>
           <button :disabled="submittingRequest" type="submit" class="bg-amber-700 px-5 py-3 text-sm font-bold text-white hover:bg-amber-800 disabled:opacity-50">{{ submittingRequest ? 'Submitting…' : 'Submit DV request' }}</button>
@@ -100,7 +100,7 @@
         <div v-else class="divide-y divide-slate-100">
           <article v-for="request in myRequests" :key="request.id" class="p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div><h3 class="font-extrabold text-slate-900">DV {{ request.dvYear || request.program?.dvYear || 'Program' }} · {{ humanize(request.requestType) }}</h3><p class="mt-1 text-xs text-slate-500">Submitted {{ formatDate(request.createdAt || request.submittedAt) }}</p></div><span class="self-start bg-slate-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-slate-600">{{ humanize(request.status || 'SUBMITTED') }}</span></div>
-            <div class="mt-3 flex flex-wrap gap-3 text-xs"><router-link to="/dashboard/orders" class="font-bold text-amber-800 hover:underline">View related orders</router-link><router-link to="/dashboard/payments" class="font-bold text-amber-800 hover:underline">View payments</router-link></div>
+            <div v-if="request.orderId || request.order?.orderNumber || request.paymentId || request.payment?.paymentNumber" class="mt-3 flex flex-wrap gap-3 text-xs text-slate-500"><span v-if="request.orderId || request.order?.orderNumber">Order: <strong>{{ request.order?.orderNumber || request.orderId }}</strong></span><span v-if="request.paymentId || request.payment?.paymentNumber">Payment: <strong>{{ request.payment?.paymentNumber || request.paymentId }}</strong></span></div><div class="mt-3 flex flex-wrap gap-3 text-xs"><router-link to="/dashboard/orders" class="font-bold text-amber-800 hover:underline">View my orders</router-link><router-link to="/dashboard/payments" class="font-bold text-amber-800 hover:underline">View my payments</router-link></div>
           </article>
         </div>
       </section>
@@ -137,10 +137,13 @@ export default {
       requestForm: EMPTY_REQUEST(),
       selectedDocuments: {},
       documentTypes: [
-        { value: 'APPLICANT_PHOTO', label: 'Applicant photo' },
+        { value: 'APPLICANT_PHOTO', label: 'Applicant photo', subjectType: 'APPLICANT' },
+        { value: 'SPOUSE_PHOTO', label: 'Spouse photo', subjectType: 'SPOUSE' },
+        { value: 'CHILD_PHOTO', label: 'Child photo', subjectType: 'CHILD' },
         { value: 'PASSPORT', label: 'Passport' },
         { value: 'SUPPORTING_DOCUMENT', label: 'Supporting document' },
         { value: 'INTERNATIONAL_PAYMENT_CONFIRMATION', label: 'International payment confirmation' },
+        { value: 'OTHER', label: 'Other document' },
       ],
       submittingRequest: false,
       myRequests: [],
@@ -244,8 +247,8 @@ export default {
     },
     setDocument(event, documentType) {
       const file = event.target.files?.[0];
-      if (file) this.selectedDocuments[documentType] = file;
-      else delete this.selectedDocuments[documentType];
+      if (file) this.selectedDocuments[documentType.value] = { file, subjectType: documentType.subjectType || '' };
+      else delete this.selectedDocuments[documentType.value];
     },
     async submitRequest() {
       if (!this.selectedProgram?.id) return this.showNotice('Select a DV program first.', 'error');
@@ -270,13 +273,14 @@ export default {
         const requestId = request?.id || request?.requestId;
         if (requestId) {
           const failedUploads = [];
-          for (const [documentType, file] of Object.entries(this.selectedDocuments)) {
+          for (const [documentType, document] of Object.entries(this.selectedDocuments)) {
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('file', document.file);
             formData.append('documentType', documentType);
+            if (document.subjectType) formData.append('subjectType', document.subjectType);
             try {
               await this.$apiPost('/dv-application-requests/' + encodeURIComponent(requestId) + '/documents', formData, { 'Content-Type': 'multipart/form-data' });
-            } catch (_uploadError) { failedUploads.push(file.name); }
+            } catch (_uploadError) { failedUploads.push(document.file.name); }
           }
           this.showNotice(failedUploads.length ? 'Your request was submitted, but these documents could not be uploaded: ' + failedUploads.join(', ') + '. Open your request and retry uploading.' : 'Your DV request was submitted successfully.');
         } else {
