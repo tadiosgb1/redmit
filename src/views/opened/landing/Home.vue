@@ -102,7 +102,6 @@ import Footer from './footer.vue';
 import HeroSection from './sections/HeroSection.vue';
 import DigitalProductsSection from './sections/DigitalProductsSection.vue';
 import DigitalAssetsSection from './sections/DigitalAssetsSection.vue';
-import { useDigitalCart } from '@/utils/digitalCart';
 
 export default {
   name: 'HomePage',
@@ -190,28 +189,12 @@ export default {
       } catch (error) { console.error('Failed to load DV assistance services:', error); this.dvServices = []; }
       finally { this.dvLoading = false; }
     },
-    addDvToCart(service) {
-      if (!localStorage.getItem('token')) {
-        const target = '/dashboard/dv-applications' + (service?.id ? '?cart=' + encodeURIComponent(service.id) : '');
-        this.$router.push({ path: '/login', query: { redirect: target } });
-        return;
-      }
-      const cart = useDigitalCart();
-      if (!cart.add(service, 'DIGITAL_DV_APPLICATION')) window.alert('This DV service cannot be added to the cart because it has no listing ID.');
-      else window.alert('DV assistance added to your cart.');
-    },
     startDvApplication(service) {
       const target = '/dashboard/dv-applications' + (service?.id ? '?apply=' + encodeURIComponent(service.id) : '');
       if (localStorage.getItem('token')) { this.$router.push(target); return; }
       this.$router.push({ path: '/login', query: { redirect: target } });
     },
     formatDvDate(value) { if (!value) return 'Not set'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleDateString(); },
-    formatDvPrice(price, currency) {
-      const amount = Number(price);
-      if (!Number.isFinite(amount)) return 'Contact us';
-      try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD', maximumFractionDigits: 2 }).format(amount); }
-      catch (_error) { return (currency || 'USD') + ' ' + amount.toFixed(2); }
-    },
     async fetchCategories() {
       this.categoriesLoading = true;
       try {
