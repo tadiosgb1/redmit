@@ -1,83 +1,17 @@
 <template>
-  <footer class="bg-slate-900 text-white pt-16 pb-8 px-6">
-    <div class="max-w-7xl mx-auto">
-
-      <!-- Top section -->
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-12 pb-12 border-b border-white/10">
-
-        <!-- Brand column -->
-        <div class="md:col-span-2 space-y-5">
-          <div class="flex items-center gap-3">
-            <img
-              src="@/assets/img/logo.jpg"
-              alt="Redmit Market"
-              class="h-9 w-auto object-contain"
-            />
-          </div>
-
-          <p class="text-white/50 text-sm leading-relaxed max-w-sm">
-            Ethiopia's unified digital marketplace — buy and sell digital products, trade digital assets, access global digital services, and grow your online presence.
-          </p>
-
-          <div class="flex items-start gap-2 text-xs text-white/40">
-            <i class="fas fa-map-marker-alt mt-0.5 text-secondary-light"></i>
-            <span>Addis Ababa, Ethiopia</span>
-          </div>
-
-          <!-- Tagline pills -->
-          <div class="flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-widest">
-            <span class="px-2.5 py-1 rounded-full bg-white/10 text-white/60">Create</span>
-            <span class="px-2.5 py-1 rounded-full bg-white/10 text-white/60">Sell</span>
-            <span class="px-2.5 py-1 rounded-full bg-white/10 text-white/60">Buy</span>
-            <span class="px-2.5 py-1 rounded-full bg-white/10 text-white/60">Grow</span>
-          </div>
-
-          <!-- Social links -->
-          <div class="flex gap-3">
-            <a v-for="social in socials" :key="social.name" href="#"
-              :aria-label="social.name"
-              class="w-8 h-8 rounded-lg bg-white/5 hover:bg-primary flex items-center justify-center transition-all duration-200 group">
-              <i :class="[social.icon, 'text-xs transition-colors', social.name === 'YouTube' ? 'text-red-500 group-hover:text-red-400' : social.name === 'Instagram' ? 'text-pink-400 group-hover:text-pink-300' : social.name === 'Facebook' ? 'text-blue-400 group-hover:text-blue-300' : social.name === 'Telegram' ? 'text-sky-400 group-hover:text-sky-300' : 'text-white/50 group-hover:text-white']"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Nav columns -->
-        <div v-for="group in navGroups" :key="group.title">
-          <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mb-5">{{ group.title }}</h3>
-          <ul class="space-y-3">
-            <li v-for="link in group.links" :key="link.name">
-              <router-link v-if="link.route" :to="link.route"
-                class="text-sm text-white/60 hover:text-primary-light transition-colors">
-                {{ link.name }}
-              </router-link>
-              <a v-else href="#"
-                class="text-sm text-white/60 hover:text-primary-light transition-colors">
-                {{ link.name }}
-              </a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-
-      <!-- Bottom bar -->
-      <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-xs text-white/30">
-          © {{ new Date().getFullYear() }} Redmit Market — Ethiopia's Digital Marketplace. All rights reserved.
-        </p>
-        <div class="flex gap-6">
-          <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy Policy</a>
-          <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Terms of Use</a>
-          <a href="#" class="text-xs text-white/30 hover:text-white/60 transition-colors">Seller Guidelines</a>
-        </div>
-        <a href="#top" @click.prevent="scrollToTop"
-          class="w-9 h-9 bg-white/5 hover:bg-primary border border-white/10 hover:border-primary rounded-lg flex items-center justify-center text-white/40 hover:text-white transition-all duration-300 hover:-translate-y-0.5"
-          aria-label="Back to top" title="Back to top">
-          <i class="fas fa-arrow-up text-xs"></i>
-        </a>
-      </div>
-
+  <footer class="border-t border-slate-200 bg-slate-950 px-4 py-4 text-white sm:px-6 sm:py-5">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 sm:flex-row">
+      <router-link to="/" class="flex items-center gap-3" aria-label="Redmit home">
+        <img src="@/assets/img/logo.jpg" alt="Redmit" class="h-7 w-auto object-contain" />
+        <span class="text-xs text-slate-400">Digital services, made simpler.</span>
+      </router-link>
+      <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-slate-400" aria-label="Footer navigation">
+        <router-link to="/" class="transition hover:text-white">Home</router-link>
+        <router-link to="/products" class="transition hover:text-white">Products</router-link>
+        <router-link to="/growth" class="transition hover:text-white">Growth</router-link>
+        <router-link to="/contact-us" class="transition hover:text-white">Contact</router-link>
+      </nav>
+      <p class="text-center text-[11px] text-slate-500 sm:text-right">© {{ new Date().getFullYear() }} Redmit</p>
     </div>
   </footer>
 </template>
@@ -85,52 +19,5 @@
 <script>
 export default {
   name: 'SiteFooter',
-  methods: {
-    scrollToTop() {
-      const top = document.getElementById('top');
-      if (top) top.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-      else window.scrollTo({ top: 0, behavior: 'smooth' });
-    },
-  },
-  data() {
-    return {
-      socials: [
-        { name: 'Telegram',  icon: 'fab fa-telegram-plane' },
-        { name: 'Facebook',  icon: 'fab fa-facebook-f' },
-        { name: 'Twitter',   icon: 'fab fa-twitter' },
-        { name: 'YouTube',   icon: 'fab fa-youtube' },
-        { name: 'Instagram', icon: 'fab fa-instagram' },
-      ],
-      navGroups: [
-        {
-          title: 'Marketplace',
-          links: [
-            { name: 'Digital Products',  route: null },
-            { name: 'Digital Assets',    route: null },
-            { name: 'Browse Categories', route: null },
-            { name: 'Sell Your Products',route: null },
-          ],
-        },
-        {
-          title: 'Services',
-          links: [
-            { name: 'Digital Access',   route: null },
-            { name: 'Digital Growth',   route: null },
-            { name: 'Advertising',      route: null },
-            { name: 'Monetization',     route: null },
-          ],
-        },
-        {
-          title: 'Redmit',
-          links: [
-            { name: 'About Us',   route: '/about' },
-            { name: 'News',       route: '/news-events' },
-            { name: 'Contact',    route: '/contact' },
-            { name: 'Get Started',route: null },
-          ],
-        },
-      ],
-    };
-  },
 };
 </script>
