@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-white font-sans text-slate-800 antialiased">
+  <div class="min-h-screen bg-white pt-16 font-sans text-slate-800 antialiased">
     <Header />
     <section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-b border-slate-100">
       <div class="absolute -top-32 -right-20 w-96 h-96 rounded-full bg-blue-200/40 blur-3xl pointer-events-none"></div>
